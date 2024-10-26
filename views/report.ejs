@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SafePath is a platform for reporting bullying incidents and seeking support.">
+    <meta name="author" content="Reymel Rey Mislang">
+    <title>Complaints | Bullying Reporting System</title>       
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="/script/script.js" defer></script> 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-21ZRHLSG08"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-21ZRHLSG08');
+    </script>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            font-size: 16px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .required {
+            color: red;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/header') %>
+    <br>
+    <br>
+    <div class="container">
+        <h1>SafePath Complaint Report</h1>
+        <form action="/report/submit-complaint" method="POST">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="You may provide your name or remain anonymous.">
+
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input type="email" id="email" name="email" placeholder="Provide your email if you wish to receive follow-up information." required>
+
+            <label for="student-id">Student ID <span class="required">*</span></label>
+            <input type="text" id="student-id" name="student_id" placeholder="Enter your student ID" required>
+
+            <label for="department">College Department <span class="required">*</span></label>
+            <select id="department" name="department" required>
+                <option value="" disabled selected>Select your department</option>
+                <option value="CCS">College of Computer Studies (CCS)</option>
+                <option value="CAS">College of Arts and Sciences (CAS)</option>
+                <option value="CTE">College of Teacher Education (CTE)</option>
+                <option value="CBM">College of Business And Management (CBM)</option>
+                <option value="CCJE">College of Criminal Justice(CCJE)</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="text" id="other-department" name="other_department" class="hidden" placeholder="Please specify your department">
+            <label for="year-level">Year Level <span class="required">*</span></label>
+            <select id="year-level" name="year_level" required>
+                <option value="" disabled selected>Select your year level</option>
+                <option value="1">1st Year</option>
+                <option value="2">2nd Year</option>
+                <option value="3">3rd Year</option>
+                <option value="4">4th Year</option>
+            </select>
+
+
+            <label for="issue-type">Type of Issue <span class="required">*</span></label>
+            <select id="issue-type" name="issue_type" required>
+                <option value="" disabled selected>Select an issue</option>
+                <option value="bullying">Bullying Incident</option>
+                <option value="guidance">Guidance Office Consultation</option>
+                <option value="technical">Technical Support</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="issue-description">Describe Your Issue <span class="required">*</span></label>
+            <textarea id="issue-description" name="issue_description" rows="5" placeholder="Please briefly describe your issue or concern." required></textarea>
+
+            <label for="contact-method">Preferred Contact Method <span class="required">*</span></label>
+            <select id="contact-method" name="contact_method" required>
+                <option value="email">Email</option>
+                <option value="phone">Phone Call (if applicable)</option>
+                <option value="chat">Chat via SafePath Platform</option>
+                <option value="other">Other</option>
+            </select>
+
+            <input type="text" id="phone-number" name="phone_number" class="hidden" placeholder="Enter your phone number">
+            <input type="text" id="other-contact-method" name="other_contact_method" class="hidden" placeholder="Please specify other contact method">
+
+            <input type="submit" value="Submit Complaint">
+        </form>
+    </div> 
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('department').addEventListener('change', function() {
+                const otherDepartmentInput = document.getElementById('other-department');
+                otherDepartmentInput.classList.toggle('hidden', this.value !== 'Other');
+            });
+
+            document.getElementById('contact-method').addEventListener('change', function() {
+                const phoneNumberInput = document.getElementById('phone-number');
+                const otherContactMethodInput = document.getElementById('other-contact-method');
+
+                if (this.value === 'phone') {
+                    phoneNumberInput.classList.remove('hidden');
+                    otherContactMethodInput.classList.add('hidden');
+                } else if (this.value === 'other') {
+                    phoneNumberInput.classList.add('hidden');
+                    otherContactMethodInput.classList.remove('hidden');
+                } else {
+                    phoneNumberInput.classList.add('hidden');
+                    otherContactMethodInput.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+    <%- include('partials/footer') %>
+</body>
+</html>

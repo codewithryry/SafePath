@@ -1,0 +1,164 @@
+<script>
+$(document).ready(function() {
+    $('#complaintsTable').DataTable();
+    function fetchUpdatedStatusCounts() {
+        $.ajax({
+            url: '/get-status-counts',
+            method: 'GET',
+            success: function(statusCounts) {
+                updateStatusUI(statusCounts);
+            },
+            error: function(xhr) {
+                console.error('Error fetching status counts: ' + xhr.responseText);
+            }
+        });
+    }
+    function updateStatusUI(counts) {
+        $('#pendingCount').text(counts.pending || 0);
+        $('#inProgressCount').text(counts['in_progress'] || 0);
+        $('#resolvedCount').text(counts.resolved || 0);
+        $('#rejectedCount').text(counts.rejected || 0);
+    }
+
+   
+    
+
+
+
+    $('.status-dropdown').change(function() {
+    const complaintId = $(this).data('id');
+    const newStatus = $(this).val();
+
+    console.log(`Updating status for complaint ID: ${complaintId} to new status: ${newStatus}`);
+
+    $.ajax({
+        url: `/admin/dashboard/update-status/${complaintId}`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ status: newStatus }),
+        success: function(response) {
+            console.log('Response from server:', response);
+            alert('Status updated successfully!');
+            fetchUpdatedStatusCounts(); // Make sure this function is defined
+        },
+        error: function(xhr) {
+            console.error('Error updating status:', xhr.responseText);
+            alert('Error updating status: ' + xhr.responseText);
+        }
+    });
+});
+
+    // Initial call to fetch status counts on page load
+    fetchUpdatedStatusCounts();
+
+
+
+    const departmentData = <%- JSON.stringify(departmentCounts) %>;
+    const labels = Object.keys(departmentData);
+    const data = Object.values(departmentData);
+
+    // Create Pie Chart
+    const ctx = document.getElementById('complaintsChart').getContext('2d');
+    const complaintsChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Number of Complaints',
+                data: data,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)', // Red
+                    'rgba(54, 162, 235, 0.6)', // Blue
+                    'rgba(255, 206, 86, 0.6)', // Yellow
+                    'rgba(75, 192, 192, 0.6)', // Cyan
+                    'rgba(153, 102, 255, 0.6)', // Purple
+                    'rgba(255, 159, 64, 0.6)' // Orange
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)', 
+                    'rgba(54, 162, 235, 1)', 
+                    'rgba(255, 206, 86, 1)', 
+                    'rgba(75, 192, 192, 1)', 
+                    'rgba(153, 102, 255, 1)', 
+                    'rgba(255, 159, 64, 1)' 
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+
+
+
+
+
+
+
+// Initialize an empty array for recent activities
+let recentActivities = [];
+
+// Function to report a complaint
+function reportComplaint(complaintId, studentId) {
+    const activity = `New complaint submitted by Student ID ${studentId}. Complaint ID ${complaintId}.`;
+    recentActivities.push(activity);
+    console.log('Activity added:', activity); // Log the activity
+    updateActivityList(); // Ensure this is called
+}
+
+// Function to update the status of a complaint
+function updateStatus(complaintId, status) {
+    const activity = `Complaint ID ${complaintId} status changed to ${status}.`;
+    recentActivities.push(activity);
+    console.log('Activity added:', activity); // Log the activity
+    updateActivityList(); // Ensure this is called
+}
+
+// Function to update the activity list in the UI
+function updateActivityList() {
+    const activityList = document.getElementById('activityList');
+    activityList.innerHTML = ''; // Clear the current list
+
+    // Append each activity to the list
+    recentActivities.forEach(activity => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item';
+        li.textContent = activity; // Set the text of the list item
+        activityList.appendChild(li); // Append to the activity list
+    });
+}
+
+// Event listener for status dropdown changes
+$(document).ready(function() {
+    // Use delegated event binding if elements are added dynamically
+    $(document).on('change', '.status-dropdown', function() {
+        const complaintId = $(this).data('id'); // Get the complaint ID from the data attribute
+        const status = $(this).val(); // Get the new status value
+        updateStatus(complaintId, status); // Call the updateStatus function
+    });
+});
+
+// Initialize DataTables
+$(document).ready(function() {
+    $('#complaintsTable').DataTable();
+    $('#feedbackTable').DataTable();
+});
+
+
+    </script>
+    

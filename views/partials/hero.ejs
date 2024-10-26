@@ -1,0 +1,27 @@
+
+<section id="hero" class="d-flex align-items-center text-center">
+    <div class="container">
+        <h1 class="display-4">Forward. Thinking.</h1>
+        <p class="lead">A platform for reporting bullying incidents.</p>
+        <a href="javascript:void(0)" class="btn btn-light btn-lg mr-2" onclick="toggleChatbot()">SafePath AI </a>
+        <a href="/report" class="btn btn-light btn-lg mr-2">Report Incident</a>
+        <blockquote class="blockquote text-center mt-4">
+            <p id="quote" class="mb-0"></p>
+        </blockquote>
+    </div>
+</section>
+
+<div class="chatbot-container" id="chatbot">
+    <div class="chatbot-header">
+        <h5>SafePath</h5>
+        <span id="connection-status" style="color: green;">Connected</span> 
+        <button onclick="toggleChatbot()">&times;</button>
+    </div>
+    <div class="chatbot-body" id="chatbot-body">
+    </div>
+    <div class="chatbot-input">
+        <input type="text" id="chatbot-input" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+</section>
