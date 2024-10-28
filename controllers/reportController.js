@@ -10,7 +10,7 @@ export const getComplaints = (req, res) => {
             console.error('Error fetching complaints:', err);
             return res.status(500).send('Error fetching complaints');
         }
-        console.log('Fetched complaints:', results); // Log the results for debugging
+      //  console.log('Fetched complaints:', results); // Log the results for debugging
         res.render('admin', { complaints: results || [] }); // Ensure results are passed
     });
 };

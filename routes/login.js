@@ -8,9 +8,15 @@ router.get('/admin/login', (req, res) => {
 
 router.post('/admin/login', (req, res) => {
     const { username, password } = req.body;
-    console.log('Login attempt:', { username, password });
 
-    res.redirect('/admin/dashboard');
+    // Simulate credential verification (replace with actual verification logic)
+    if (username === 'guidanceoffice@gmail.com' && password === 'guidanceoffice') {
+        req.session.isAuthenticated = true; // Set session as authenticated
+        res.redirect('/admin/dashboard');
+    } else {
+        res.render('login', { message: 'Invalid credentials' });
+    }
 });
+
 
 export default router; 

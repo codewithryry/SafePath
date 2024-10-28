@@ -29,7 +29,7 @@ $(document).ready(function() {
     const complaintId = $(this).data('id');
     const newStatus = $(this).val();
 
-    console.log(`Updating status for complaint ID: ${complaintId} to new status: ${newStatus}`);
+   // console.log(`Updating status for complaint ID: ${complaintId} to new status: ${newStatus}`);
 
     $.ajax({
         url: `/admin/dashboard/update-status/${complaintId}`,
@@ -37,7 +37,7 @@ $(document).ready(function() {
         contentType: 'application/json',
         data: JSON.stringify({ status: newStatus }),
         success: function(response) {
-            console.log('Response from server:', response);
+            //console.log('Response from server:', response);
             alert('Status updated successfully!');
             fetchUpdatedStatusCounts(); // Make sure this function is defined
         },
@@ -117,7 +117,7 @@ let recentActivities = [];
 function reportComplaint(complaintId, studentId) {
     const activity = `New complaint submitted by Student ID ${studentId}. Complaint ID ${complaintId}.`;
     recentActivities.push(activity);
-    console.log('Activity added:', activity); // Log the activity
+ //   console.log('Activity added:', activity); // Log the activity
     updateActivityList(); // Ensure this is called
 }
 
@@ -125,7 +125,7 @@ function reportComplaint(complaintId, studentId) {
 function updateStatus(complaintId, status) {
     const activity = `Complaint ID ${complaintId} status changed to ${status}.`;
     recentActivities.push(activity);
-    console.log('Activity added:', activity); // Log the activity
+   // console.log('Activity added:', activity); // Log the activity
     updateActivityList(); // Ensure this is called
 }
 

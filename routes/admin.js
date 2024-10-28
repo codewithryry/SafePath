@@ -1,6 +1,8 @@
 import express from 'express';
 import db from '../config/db.js';
 import { analyzeSeverity } from '../utils/analyzeSeverity.js';
+import { isAuthenticated } from '../middlewares/authMiddleware.js';
+
 
 const router = express.Router();
 
@@ -42,14 +44,14 @@ router.post('/complaints', async (req, res) => {
 
 
 // Route to get the dashboard data
-router.get('/dashboard', (req, res) => {
+router.get('/dashboard', isAuthenticated, (req, res) => {
     db.query('SELECT * FROM complaints ORDER BY created_at DESC', (err, complaints) => {
         if (err) {
             console.error('Error retrieving complaints:', err);
             return res.status(500).send('Error retrieving complaints');
         }
 
-        console.log('Retrieved complaints:', complaints);
+   //     console.log('Retrieved complaints:', complaints);
 
         // Get department counts
         db.query('SELECT department, COUNT(*) AS count FROM complaints GROUP BY department', (err, departmentResults) => {

@@ -5,11 +5,11 @@ export const updateStatus = (req, res) => {
     const complaintId = req.params.id;
     const newStatus = req.body.status;
 
-    console.log(`Request to update status for complaint ID: ${complaintId} with new status: ${newStatus}`);
+   // console.log(`Request to update status for complaint ID: ${complaintId} with new status: ${newStatus}`);
 
     // Validate the new status
     if (!newStatus || typeof newStatus !== 'string') {
-        console.log('Invalid status provided');
+       // console.log('Invalid status provided');
         return res.status(400).json({ message: 'Valid status is required.' });
     }
 
@@ -17,7 +17,7 @@ export const updateStatus = (req, res) => {
     const selectQuery = 'SELECT * FROM complaints WHERE id = ?';
     db.query(selectQuery, [complaintId], (err, complaint) => {
         if (err) {
-            console.error('Error fetching complaint:', err);
+           // console.error('Error fetching complaint:', err);
             return res.status(500).json({ message: 'Error fetching complaint', error: err.message });
         }
 
@@ -35,11 +35,11 @@ export const updateStatus = (req, res) => {
             }
 
             if (results.affectedRows === 0) {
-                console.log('Complaint not found or already updated');
+          //      console.log('Complaint not found or already updated');
                 return res.status(404).json({ message: 'Complaint not found or already updated' });
             }
 
-            console.log('Status updated successfully');
+          //  console.log('Status updated successfully');
             res.json({ message: 'Status updated successfully' });
         });
     });
