@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="SafePath is a platform for reporting bullying incidents and seeking support.">
     <meta name="author" content="Reymel Rey Mislang">
-    <title>Admin Dashboard | Bullying Reporting System</title>
+    <title>Feedback Dashboard | Bullying Reporting System</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -51,10 +51,16 @@
             text-decoration: underline;
             font-weight: bold; /* Optional: make active link bold */
         }
+        .table-responsive {
+            width: 100%; /* Makes the table responsive */
+            max-width: 1500px; /* Set a max-width as needed */
+        }
+        #feedbackTable {
+            width: 100%; /* Ensures the table takes full width of its container */
+        }
     </style>
 </head>
-<body>
-    <!-- Header -->
+<body>  <!-- Header -->
     <header class="bg-light py-3 shadow-sm sticky-header">
         <div class="container d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
@@ -66,9 +72,9 @@
             </div>
             <nav id="nav" class="nav-links">
                 <ul class="nav-links" id="navbar">
-                    <li><a href="/admin/dashboard" class="active" >Home</a></li>
+                    <li><a href="/admin/dashboard">Home</a></li>
                     <li><a href="/admin/dashboard/complaints">Complaints</a></li>
-                    <li><a href="/admin/dashboard/feedback">Feedback</a></li>
+                    <li><a href="/admin/dashboard/feedback" class="active">Feedback</a></li>
                     <li><a href="/admin/dashboard/customization">Customization</a></li>
                     <li><a href="/admin/logout">Logout</a></li>
                 </ul>        
@@ -89,5 +95,50 @@
             });
         });
     </script>
+
+  <br>
+    <!-- Feedback Section -->
+    <div class="col-12 mb-4">
+        <div class="card border-0 shadow">
+            <div class="card-body feedback-container">
+                <h4 class="card-title text-left">Feedback</h4>
+                <div class="table-responsive">
+                    <table id="feedbackTable" class="table table-hover table-striped align-middle">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th>Name</th>
+                                <th>Feedback</th>
+                                <th>Rating</th>
+                                <th>Suggestions</th>
+                                <th>Recommend</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (feedback && feedback.length > 0) { 
+                                // Get the last 5 feedback items
+                                const latestFeedback = feedback.slice(-5); %>
+                                <% latestFeedback.forEach(item => { %>
+                                    <tr>
+                                        <td><%= item.name %></td>
+                                        <td><%= item.feedback %></td>
+                                        <td><%= item.rating %></td>
+                                        <td><%= item.suggestions %></td>
+                                        <td><%= item.recommend ? 'Yes' : 'No' %></td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="5" class="text-center">No feedback available.</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/adminFooter') %>
+    <%- include('partials/adminScript') %>
 </body>
 </html>

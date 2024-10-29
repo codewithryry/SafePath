@@ -61,13 +61,11 @@ const chatbotResponses = {
     ]
 };
 
-// New variables to improve chatbot's intelligence
 let messageCount = 0;
-let awaitingReportResponse = false; // Flag to check if awaiting a report response
-let inactivityTimer; // Timer for inactivity
-const conversationHistory = []; // Store previous conversations for context awareness
+let awaitingReportResponse = false; 
+let inactivityTimer; 
+const conversationHistory = [];
 
-// Function to classify the severity of the message
 function classifySeverity(message) {
     const mildKeywords = ["tease", "joke", "annoy", "ignore", "biru-biruan", "pang-aasar", "ini-ignore"];
     const severeKeywords = ["hit", "threaten", "cyberbully", "harass", "attack", "saktan", "banta", "pambu-bully", "pangha-harass", "inaatake"];

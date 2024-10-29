@@ -1,182 +1,69 @@
 <%- include('partials/adminHeader') %>
-<!-- Include DataTables CSS and JS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 
-<section class="mb-5">
-    <div class="container">
-        <div class="row">
+<!-- Dashboard Home Section -->
+<div id="dashboard-home" class="container mt-4">
+    <div class="row">
+        <!-- Department Complaints Chart Card -->
+        <div class="col-lg-8 col-md-12 mb-4">
+            <div class="card border-0 shadow rounded-3 mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Department Complaints</h4>
+                    <div class="chart-container position-relative" style="height: 300px;">
+                        <canvas id="complaintsChart"></canvas>
+                    </div>
+                </div>
+            </div>
 
-<div class="col-12 mb-4">
-    <div class="card border-0 shadow">
-        <div class="card-body">
-            <h4 class="card-title text-left">Complaints</h4>
-            <br>
-            <div class="table-responsive">
-                <table id="complaintsTable" class="table table-hover table-striped align-middle">
-                    <thead class="bg-primary text-white">
-                        <tr>
-                            <th scope="col">Student ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Issue Type</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Contact Method</th>
-                            <th scope="col">Phone Number</th>
-                            <th scope="col">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% if (complaints && complaints.length > 0) { 
-                            // Get the last 5 complaints
-                            const latestComplaints = complaints.slice(-5); %>
-                            <% latestComplaints.forEach(complaint => { %>
-                                <tr>
-                                    <td><%= complaint.student_id %></td>
-                                    <td><%= complaint.name %></td>
-                                    <td><%= complaint.email %></td>
-                                    <td><%= complaint.issue_type %></td>
-                                    <td><%= complaint.issue_description %></td>
-                                    <td><%= complaint.contact_method %></td>
-                                    <td><%= complaint.phone_number %></td>
-                                    <td>
-                                        <select class="form-select status-dropdown rounded-pill" data-id="<%= complaint.id %>">
-                                            <option value="pending" <%= complaint.status === 'pending' ? 'selected' : '' %>>Pending</option>
-                                            <option value="in_progress" <%= complaint.status === 'in_progress' ? 'selected' : '' %>>In Progress</option>
-                                            <option value="resolved" <%= complaint.status === 'resolved' ? 'selected' : '' %>>Resolved</option>
-                                            <option value="rejected" <%= complaint.status === 'rejected' ? 'selected' : '' %>>Rejected</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            <% }) %>
-                        <% } else { %>
-                            <tr>
-                                <td colspan="8" class="text-center">No complaints available.</td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                </table>
+            <!-- Year Level Complaints Chart Card -->
+            <div class="card border-0 shadow rounded-3 mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Year Level Complaints</h4>
+                    <div class="chart-container position-relative" style="height: 300px;">
+                        <canvas id="yearLevelComplaintsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Complaint Status Counts and Recent Activity -->
+        <div class="col-lg-4 col-md-12 mb-4">
+            <!-- Complaints Status Card -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Complaints Status</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 bg-light mb-2 rounded">
+                            <span class="badge bg-warning p-2 rounded-pill">Pending</span>
+                            <span id="pendingCount" class="badge bg-light text-dark fw-bold"><%= statusCounts.pending || 0 %></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 bg-light mb-2 rounded">
+                            <span class="badge bg-info p-2 rounded-pill">In Progress</span>
+                            <span id="inProgressCount" class="badge bg-light text-dark fw-bold"><%= statusCounts['in_progress'] || 0 %></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 bg-light mb-2 rounded">
+                            <span class="badge bg-success p-2 rounded-pill">Resolved</span>
+                            <span id="resolvedCount" class="badge bg-light text-dark fw-bold"><%= statusCounts.resolved || 0 %></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 bg-light mb-2 rounded">
+                            <span class="badge bg-secondary p-2 rounded-pill">Rejected</span>
+                            <span id="rejectedCount" class="badge bg-light text-dark fw-bold"><%= statusCounts.rejected || 0 %></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Recent Activity Card -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Recent Activity</h4>
+                    <ul class="list-group" id="activityList">
+                        <!-- Activities will be dynamically added here -->
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    $(document).ready(function() {
-        // Initialize DataTable with pagination and search features
-        $('#complaintsTable').DataTable({
-            "paging": true,       // Enable pagination
-            "lengthMenu": [5, 10, 25],  // Options for the number of entries to show
-            "pageLength": 5,     // Default number of entries to show
-            "searching": true,    // Enable searching
-            "lengthChange": true  // Allow the user to change the number of entries displayed
-        });
-    });
-</script>
-
-
-            <!-- Right Column: Complaint Status Counts, Department Complaints Chart, and Recent Activity -->
-            <div class="col-lg-4 col-md-12 mb-4">
-                <!-- Complaints Status Card -->
-                <div class="card border-0 shadow mb-4">
-                    <div class="card-body">
-                        <h4 class="card-title">Complaints Status</h4>
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 bg-light mb-2 rounded">
-                                <span class="badge bg-warning p-2 rounded-pill">Pending</span>
-                                <span id="pendingCount" class="badge bg-light text-dark fw-bold"><%= statusCounts.pending || 0 %></span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 bg-light mb-2 rounded">
-                                <span class="badge bg-info p-2 rounded-pill">In Progress</span>
-                                <span id="inProgressCount" class="badge bg-light text-dark fw-bold"><%= statusCounts['in_progress'] || 0 %></span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 bg-light mb-2 rounded">
-                                <span class="badge bg-success p-2 rounded-pill">Resolved</span>
-                                <span id="resolvedCount" class="badge bg-light text-dark fw-bold"><%= statusCounts.resolved || 0 %></span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 bg-light mb-2 rounded">
-                                <span class="badge bg-secondary p-2 rounded-pill">Rejected</span>
-                                <span id="rejectedCount" class="badge bg-light text-dark fw-bold"><%= statusCounts.rejected || 0 %></span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Department Complaints Chart Card -->
-                <div class="card border-0 shadow rounded-3 mb-4">
-                    <div class="card-body">
-                        <h4 class="card-title">Department Complaints</h4>
-                        <div class="chart-container position-relative" style="height: 300px;">
-                            <canvas id="complaintsChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Year Level Complaints Chart Card -->
-<div class="card border-0 shadow rounded-3 mb-4">
-    <div class="card-body">
-        <h4 class="card-title">Year Level Complaints</h4>
-        <div class="chart-container position-relative" style="height: 300px;">
-            <canvas id="yearLevelComplaintsChart"></canvas>
-        </div>
-    </div>
-</div>
-
-                <!-- Recent Activity Card -->
-                <div class="card border-0 shadow mb-4">
-                    <div class="card-body">
-                        <h4 class="card-title">Recent Activity</h4>
-                        <ul class="list-group" id="activityList">
-                            <!-- Activities will be dynamically added here -->
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Feedback Section -->
-            <div class="col-lg-8 col-md-12 mb-4">
-                <div class="card border-0 shadow">
-                    <div class="card-body feedback-container">
-                        <h4 class="card-title text-left">Feedback</h4>
-                        <div class="table-responsive">
-                            <table id="feedbackTable" class="table table-hover table-striped align-middle">
-                                <thead class="bg-primary text-white">
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Feedback</th>
-                                        <th>Rating</th>
-                                        <th>Suggestions</th>
-                                        <th>Recommend</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% if (feedback && feedback.length > 0) { 
-                                        // Get the last 5 feedback items
-                                        const latestFeedback = feedback.slice(-5); %>
-                                        <% latestFeedback.forEach(item => { %>
-                                            <tr>
-                                                <td><%= item.name %></td>
-                                                <td><%= item.feedback %></td>
-                                                <td><%= item.rating %></td>
-                                                <td><%= item.suggestions %></td>
-                                                <td><%= item.recommend ? 'Yes' : 'No' %></td>
-                                            </tr>
-                                        <% }) %>
-                                    <% } else { %>
-                                        <tr>
-                                            <td colspan="5" class="text-center">No feedback available.</td>
-                                        </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
 <%- include('partials/adminFooter') %>
 <%- include('partials/adminScript') %>
