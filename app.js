@@ -17,7 +17,7 @@ app.use(
         saveUninitialized: true,
         cookie: { 
             secure: false, // Set to true if using HTTPS
-            maxAge: 120000 // 2 minutes in milliseconds
+            maxAge: 6000000 // 2 minutes in milliseconds
         }
     })
 );
@@ -36,6 +36,8 @@ import adminRoutes from './routes/admin.js';
 import loginRoutes from './routes/login.js'; 
 import feedbackRouter from './routes/feedback.js'; // Adjust the path if necessary
 import statusRouter from './routes/status.js'; // Ensure the path is correct
+import faqRouter from './routes/faqRoutes.js'; // Adjust the path to your router file
+import aboutUsRouter from './routes/aboutus.js';  // Import the About Us router
 
 app.use('/', indexRouter); 
 app.use('/report', reportRouter); 
@@ -43,6 +45,8 @@ app.use('/admin', adminRoutes);
 app.use('/', loginRoutes);
 app.use('/user', feedbackRouter); 
 app.use('/admin/dashboard', statusRouter); // Correct usage of statusRoutes
+app.use('/', faqRouter);
+app.use('/', aboutUsRouter);
 
 // API endpoint to report a complaint
 app.post('/report', (req, res) => {
@@ -58,6 +62,13 @@ app.post('/update-status', (req, res) => {
     const activity = `Complaint ID ${complaintId} status changed to ${status}.`;
     recentActivities.push(activity);
     res.send({ message: 'Status updated!', activities: recentActivities });
+});
+
+app.get('/faqs', (req, res) => {
+    db.query('SELECT * FROM faqs', (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
 });
 
 
