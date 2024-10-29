@@ -21,7 +21,6 @@ Note: The live site of this project is currently not working, but you can visit 
 - MySQL: Database to store user reports and chatbot interactions.
 - Wit.ai: Integrated chatbot for emotional support and guidance based on sentiment analysis.
 - Bootstrap: Front-end framework for responsive design.
-- TensorFlow/PyTorch: Used for implementing sentiment analysis to classify bullying reports.
 
 ## What You Can Do with This Project
 - Learn Node.js: This project offers a practical example of building a web application using Node.js.
