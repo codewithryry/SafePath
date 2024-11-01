@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -150,10 +151,76 @@
             <h5 class="card-title small">Rejected Complaints</h5> <!-- Made card-title smaller -->
             <span class="badge bg-secondary p-2 rounded-pill"></span>
             <span id="rejectedCount" class="badge bg-light text-dark fw-bold fs-4"><%= statusCounts.rejected || 0 %></span> <!-- Increased font size for numbers -->
+=======
+<%- include('partials/adminHeader') %>
+
+<!-- Dashboard Home Section -->
+<div id="dashboard-home" class="container mt-4">
+    <div class="row">
+        <!-- Department Complaints Chart Card -->
+        <div class="col-lg-8 col-md-12 mb-4">
+            <div class="card border-0 shadow rounded-3 mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Department Complaints</h4>
+                    <div class="chart-container position-relative" style="height: 300px;">
+                        <canvas id="complaintsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Year Level Complaints Chart Card -->
+            <div class="card border-0 shadow rounded-3 mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Year Level Complaints</h4>
+                    <div class="chart-container position-relative" style="height: 300px;">
+                        <canvas id="yearLevelComplaintsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Complaint Status Counts and Recent Activity -->
+        <div class="col-lg-4 col-md-12 mb-4">
+            <!-- Complaints Status Card -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Complaints Status</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 bg-light mb-2 rounded">
+                            <span class="badge bg-warning p-2 rounded-pill">Pending</span>
+                            <span id="pendingCount" class="badge bg-light text-dark fw-bold"><%= statusCounts.pending || 0 %></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 bg-light mb-2 rounded">
+                            <span class="badge bg-info p-2 rounded-pill">In Progress</span>
+                            <span id="inProgressCount" class="badge bg-light text-dark fw-bold"><%= statusCounts['in_progress'] || 0 %></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 bg-light mb-2 rounded">
+                            <span class="badge bg-success p-2 rounded-pill">Resolved</span>
+                            <span id="resolvedCount" class="badge bg-light text-dark fw-bold"><%= statusCounts.resolved || 0 %></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 bg-light mb-2 rounded">
+                            <span class="badge bg-secondary p-2 rounded-pill">Rejected</span>
+                            <span id="rejectedCount" class="badge bg-light text-dark fw-bold"><%= statusCounts.rejected || 0 %></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Recent Activity Card -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Recent Activity</h4>
+                    <ul class="list-group" id="activityList">
+                        <!-- Activities will be dynamically added here -->
+                    </ul>
+                </div>
+            </div>
+>>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
         </div>
     </div>
 </div>
 
+<<<<<<< HEAD
 
             <!-- Row for Charts (Top Section) -->
             <div class="row mt-2">
@@ -185,3 +252,7 @@
     
 </body>
 </html>
+=======
+<%- include('partials/adminFooter') %>
+<%- include('partials/adminScript') %>
+>>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74

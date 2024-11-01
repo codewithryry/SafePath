@@ -44,13 +44,27 @@ router.post('/complaints', async (req, res) => {
 
 
 // Route to get the dashboard data
+<<<<<<< HEAD
     router.get('/dashboard', isAuthenticated, (req, res) => {
         // Get department counts
         db.query('SELECT department, COUNT(*) AS count FROM complaints GROUP BY department', (err, departmentResults) => {
+=======
+router.get('/dashboard', isAuthenticated, (req, res) => {
+    // Get department counts
+    db.query('SELECT department, COUNT(*) AS count FROM complaints GROUP BY department', (err, departmentResults) => {
+        if (err) {
+            console.error('Error retrieving department counts:', err);
+            return res.status(500).send('Error retrieving department counts');
+        }
+
+        // Get status counts
+        db.query('SELECT status, COUNT(*) AS count FROM complaints GROUP BY status', (err, statusResults) => {
+>>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
             if (err) {
-                console.error('Error retrieving department counts:', err);
-                return res.status(500).send('Error retrieving department counts');
+                console.error('Error retrieving status counts:', err);
+                return res.status(500).send('Error retrieving status counts');
             }
+<<<<<<< HEAD
     
             // Get status counts
             db.query('SELECT status, COUNT(*) AS count FROM complaints GROUP BY status', (err, statusResults) => {
@@ -87,7 +101,23 @@ router.post('/complaints', async (req, res) => {
                     // Render the dashboard with department, status, and year level counts
                     res.render('dashboard', { departmentCounts, statusCounts, yearLevelCounts });
                 });
+=======
+
+            // Prepare department counts
+            const departmentCounts = {};
+            departmentResults.forEach(row => {
+                departmentCounts[row.department] = row.count;
+>>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
             });
+
+            // Prepare status counts
+            const statusCounts = {};
+            statusResults.forEach(row => {
+                statusCounts[row.status] = row.count;
+            });
+
+            // Render the dashboard with department and status counts only
+            res.render('dashboard', { departmentCounts, statusCounts });
         });
     });
     
@@ -152,7 +182,11 @@ router.get('/dashboard/feedback', isAuthenticated, (req, res) => {
     });
 });
 
+<<<<<<< HEAD
 // Route to get complaints data with department counts and year level counts
+=======
+// Route to get complaints data with department counts
+>>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 router.get('/dashboard/complaints', isAuthenticated, (req, res) => {
     db.query('SELECT * FROM complaints ORDER BY created_at DESC', (err, complaints) => {
         if (err) {
@@ -173,6 +207,7 @@ router.get('/dashboard/complaints', isAuthenticated, (req, res) => {
                 departmentCounts[row.department] = row.count;
             });
 
+<<<<<<< HEAD
             // Get year level counts
             db.query('SELECT year_level, COUNT(*) AS count FROM complaints GROUP BY year_level', (err, yearLevelResults) => {
                 if (err) {
@@ -189,10 +224,21 @@ router.get('/dashboard/complaints', isAuthenticated, (req, res) => {
                 // Render complaints view with department counts and year level counts
                 res.render('adminComplaints', { complaints, departmentCounts, yearLevelCounts }); // Pass yearLevelCounts to the view
             });
+=======
+            // Render complaints view with department counts
+            res.render('adminComplaints', { complaints, departmentCounts }); // Pass departmentCounts to the view
+>>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
         });
     });
 });
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 // GET all FAQs
 router.get('/admin/dashboard/customization/faq', (req, res) => {
     db.query('SELECT * FROM faqs', (error, faqs) => {
@@ -204,8 +250,11 @@ router.get('/admin/dashboard/customization/faq', (req, res) => {
     });
 });
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 router.post('/admin/dashboard/customization/faq', (req, res) => {
     const { question, answer } = req.body;
 
@@ -226,6 +275,7 @@ router.post('/admin/dashboard/customization/faq', (req, res) => {
 });
 
 
+<<<<<<< HEAD
 
 // GET all "Why We Are Here" content
 router.get('/admin/dashboard/customization/why-we-are-here', (req, res) => {
@@ -261,4 +311,6 @@ router.post('/admin/dashboard/customization/why-we-are-here', (req, res) => {
 
 
 
+=======
+>>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 export default router;

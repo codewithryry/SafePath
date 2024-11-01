@@ -1,18 +1,15 @@
 # SafePath: Bullying Complaint System for Student Safety
 
-SafePath is a Node.js-based web application that helps students anonymously report bullying incidents and receive support through a chatbot integrated with sentiment analysis. Developed by Gwen Basconcillo, Erica Joy Rubio, and Reymel Mislang for our Application Development course at Mindoro State University, SafePath provides administrators with tools to monitor bullying trends and take action.
+SafePath is a Node.js-based web application designed to empower students to anonymously report bullying incidents and receive immediate support through an integrated chatbot that utilizes sentiment analysis. Developed by Gwen Basconcillo, Erica Joy Rubio, and Reymel Mislang for our Application Development course at Mindoro State University, SafePath aims to create a safer school environment by enabling proactive measures against bullying.
 
-Note: The live site of this project is currently not working, but you can visit our prototype at: https://codewithryry.github.io/minsu-safepath.
-
-
-
+Note: The live site for this project is currently not functioning, but you can explore our prototype at: SafePath Prototype https://codewithryry.github.io/minsu-safepath.
 
 ## Features
-- **Anonymous Reporting**: Enables students to securely report bullying incidents anonymously.
-- **Sentiment Analysis**: Categorizes reports based on emotional tone (severe, mid, low) to prioritize responses.
-- **Chatbot Support**: Offers personalized, comforting messages based on the severity of the incident.
-- **Admin Dashboard**: Displays real-time analytics for monitoring bullying incidents, trends, and severity.
-- **Educational Resources**: Provides articles and tips on how to handle bullying, empowering students with knowledge.
+- **Anonymous Reporting**: SafePath ensures students can report bullying incidents without fear of identification, fostering a culture of openness and support. This anonymity encourages more students to speak up and seek help.
+- **Sentiment Analysis**: Each report is evaluated for emotional tone, categorizing incidents as severe, mid, or low. This prioritization allows school authorities to address the most critical cases first, ensuring timely intervention.
+- **Chatbot Support**: Our AI-powered chatbot engages students with personalized and comforting messages based on the severity of the incident reported. The chatbot serves as a first point of contact, offering reassurance and directing students to appropriate resources.
+- **Admin Dashboard**: Administrators can monitor real-time analytics that highlight bullying trends, frequency of incidents, and emotional severity levels. This data-driven approach enables schools to formulate effective anti-bullying strategies.
+- **Educational Resources**: SafePath is not just about reporting; it also provides students with valuable articles and tips on handling bullying. Empowering students with knowledge is a crucial step in prevention.
   
 ## Technologies Used
 
@@ -21,11 +18,15 @@ Note: The live site of this project is currently not working, but you can visit 
 - MySQL: Database to store user reports and chatbot interactions.
 - Wit.ai: Integrated chatbot for emotional support and guidance based on sentiment analysis.
 - Bootstrap: Front-end framework for responsive design.
+<<<<<<< HEAD
+=======
+
+>>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 
 ## What You Can Do with This Project
-- Learn Node.js: This project offers a practical example of building a web application using Node.js.
-- Explore Backend Development: Modify the code, add new features, or enhance functionalities to further your understanding of web development with Node.js.
-- Contribute: Feel free to fork the repository, improve the system, or adapt it for other purposes.
+- Learn Node.js: SafePath provides a hands-on example of building a full-stack web application, perfect for beginners looking to deepen their understanding of Node.js.
+- Explore Backend Development: Dive into the codebase to modify existing features, add new functionalities, or improve performance, enhancing your backend development skills.
+- Contribute: We welcome contributions! Feel free to fork the repository, suggest enhancements, or adapt SafePath for other applications, such as community support systems or wellness initiatives.
 
 ## Cloning the Repository
 
