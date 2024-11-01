@@ -9,21 +9,14 @@ const quotes = [
     '"The greatest glory in living lies not in never falling, but in rising every time we fall." - Nelson Mandela'
 ];
 
-// Function to set a random quote on page load
+// Function to set a random quote
 function setRandomQuote() {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     document.getElementById("quote").innerText = quotes[randomIndex];
 }
 
-
-document.addEventListener('DOMContentLoaded', () => {
-    const hamburger = document.getElementById('hamburger');
-    const nav = document.getElementById('navbar');
-
-    hamburger.addEventListener('click', () => {
-        nav.classList.toggle('active'); // Toggle the active class
-    });
-});
+// Set a random quote when the page loads
+window.onload = setRandomQuote;
 
 
 

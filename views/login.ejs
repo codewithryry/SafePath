@@ -84,11 +84,6 @@
     <header class="bg-light py-3 shadow-sm sticky-header">
         <div class="container d-flex align-items-center">
             <div class="d-flex align-items-center">
-                <div class="hamburger" id="hamburger">
-                    <div class="line"></div>
-                    <div class="line"></div>
-                    <div class="line"></div>
-                </div>
                 <a href="/" class="logo d-flex align-items-center">
                     <img src="/images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2">
                     <span class="logo-text font-weight-bold">SafePath</span>
@@ -97,6 +92,8 @@
             </div>
         </div>
     </header>
+
+    <br>
 
     <div class="login-container">
         <div class="image-container">
@@ -118,71 +115,11 @@
                 </div>
             </form>
             <div class="text-center">
-                <a href="/forgot-password">Forgot Password?</a>
+                <a href="/auth/forgot-password">Forgot Password?</a>
+                <span class="ml-2">|</span>
+                <a href="/auth/signup" class="ml-2">Sign Up</a> <!-- Sign Up link added here -->
             </div>
         </div>
     </div>
-<!-- Footer -->
-<footer class="bg-light text-dark py-5" style="background-image: url('/images/campus2.jpg'); background-size: cover; background-position: center; color: white;">
-    <div class="container">
-        <div class="row">
-
-            <div class="col-md-4 mb-4"> <!-- About Us on the left -->
-                <h4 class="font-weight-bold text-white">About</h4>
-                <p class="text-white">SafePath: Bullying Complaint System for Student Safety with Chatbot Support and Sentiment Analysis</p>
-                <h5 class="font-weight-bold text-white">Our Team:</h5>
-                <ul class="text-white">
-                    <li><strong>Reymel Mislang</strong> - Project Manager</li>
-                    <li><strong>Gwen</strong> - Quality Assurance</li>
-                    <li><strong>Erika</strong> - Designer</li>
-                </ul>
-            </div>
-
-            <div class="col-md-4 mb-4 text-left">
-                <!-- Stay Connected Section -->
-                <h4 class="font-weight-bold text-white">Stay Connected</h4>
-                <ul class="list-unstyled mb-3">
-                    <li>
-                        <a href="https://www.facebook.com/MinSUCalapanGuidanceOffice" 
-                           class="text-white d-flex align-items-center" 
-                           aria-label="Facebook" 
-                           target="_blank">
-                            <i class="fab fa-facebook-f mr-2"></i>MinSU Calapan Guidance Office
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" 
-                           class="text-white d-flex align-items-center" 
-                           aria-label="Twitter">
-                            <i class="fab fa-twitter mr-2"></i> Twitter
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" 
-                           class="text-white d-flex align-items-center" 
-                           aria-label="Instagram">
-                            <i class="fab fa-instagram mr-2"></i> Instagram
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="col-md-4 mb-4 text-left"> <!-- Help Links on the left -->
-                <h4 class="font-weight-bold text-white">Help Links</h4>
-                <ul class="list-unstyled">
-                    <li><a href="#" class="text-white">FAQ</a></li>
-                    <li><a href="#" class="text-white">Admissions</a></li>
-                    <li><a href="#" class="text-white">Contact</a></li>
-                    <li><a href="#" class="text-white">Guidance Office</a></li> <!-- Added Guidance Office -->
-                </ul>
-            </div>
-        </div>
-        <div class="text-center mt-4">
-            <p class="small text-muted">© 2024 SafePath. All Rights Reserved.</p>
-        </div>
-    </div>    
-</footer>
-
-    
 </body>
 </html>

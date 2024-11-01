@@ -23,7 +23,7 @@ router.get('/admin/login', (req, res) => {
     res.render('login');
 });
 
-router.get('/admin/signup', (req, res) => {
+router.get('/auth/signup', (req, res) => {
     res.render('signup');
 });
 
@@ -34,5 +34,8 @@ router.get('/admin/signup', (req, res) => {
 router.get('/', (req, res) => {
     res.render('dashboard'); // Your EJS file for the feedback
 });
+
+
+
   
 export default router;

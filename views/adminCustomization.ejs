@@ -5,300 +5,216 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="SafePath is a platform for reporting bullying incidents and seeking support.">
     <meta name="author" content="Reymel Rey Mislang">
-    <title> Customization Dashboard | Bullying Reporting System</title>
+    <title>Admin Dashboard | Bullying Reporting System</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <script src="/script/script.js" defer></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-21ZRHLSG08"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/script/script.js" defer></script>
     <style>
         body {
             background-color: #f4f7fa;
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 15px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .sidebar a {
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 0.25rem; /* Rounded corners for normal state */
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Highlight on hover */
+    border-radius: 0.25rem; /* Keep rounded corners on hover */
+}
+
+.sidebar .nav-link.active {
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.2); /* Active link background */
+    border-radius: 0.25rem; /* Keep rounded corners on active */
+}
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .card {
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
         }
         .chart-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .small-chart {
-            width: 100% !important;
-            height: 300px !important;
-        }
-        .status-counts {
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            background-color: #f9f9f9;
+            border-radius: 0.5rem;
             padding: 15px;
-            margin-top: 20px;
-            background-color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            height: 250px;
         }
-        /* Styling for Date and Clock */
-        .date-time-container {
-            font-size: 18px;
-            color: #fff;
-            font-weight: bold;
+        .status-card {
             display: flex;
-            align-items: center;
-            gap: 10px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
-        /* Add underline to active nav links */
-        .nav-links a.active {
-            text-decoration: underline;
-            font-weight: bold; /* Optional: make active link bold */
+        .status-card .card {
+            flex: 1 1 150px;
+            text-align: center;
+            padding: 15px;
+        }
+        .badge {
+            font-size: 0.85rem;
+        }
+        .small {
+            font-size: 1.0rem;
+        }
+        .fs-4 {
+            font-size: 1.5rem;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="bg-light py-3 shadow-sm sticky-header">
-        <div class="container d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <a href="/" class="logo d-flex align-items-center">
-                    <img src="/images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2">
-                    <span class="logo-text font-weight-bold">SafePath</span>
-                    <span class="login-text ml-1 font-weight-bold text-dark">Dashboard</span>
-                </a>
-            </div>
-            <nav id="nav" class="nav-links">
-                <ul class="nav-links" id="navbar">
-                    <li><a href="/admin/dashboard">Home</a></li>
-                    <li><a href="/admin/dashboard/complaints">Complaints</a></li>
-                    <li><a href="/admin/dashboard/feedback">Feedback</a></li>
-                    <li><a href="/admin/dashboard/customization" class="active">Customization</a></li>
-                    <li><a href="/admin/logout">Logout</a></li>
-                </ul>        
-            </nav>
-        </div>
-    </header>
+    <div style="display: flex; width: 100%;">
+        <nav class="sidebar">
+            <a href="/" class="logo d-flex align-items-center mb-3">
+                <img src="/images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2" style="width: 40px;">
+                <span class="logo-text font-weight-bold text-white">SafePath</span>
+            </a>
+            <ul class="nav flex-column" id="navbar">
+                <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/dashboard/complaints">Complaints</a></li>
+                <li class="nav-item"><a class="nav-link " href="/admin/dashboard/feedback">Feedback</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/admin/dashboard/customization">Customization</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/dashboard/customization/why-we-here">Why We’re Here</a></li>
+                </ul>
+            <a class="nav-link mt-auto" href="/admin/logout">Logout</a>
+        </nav>
+        <div class="content">
+            <header class="bg-light py-2 shadow-sm mb-3">
+                <h1 class="h4">Admin / Customization / FAQ</h1>
+            </header>
+                <div class="row">
+                    <!-- Left Side: Forms for Adding FAQ -->
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4 class="mb-0">Add FAQ</h4>
+                            </div>
+                            <div class="card-body">
+                                <form id="faqForm">
+                                    <div class="form-group">
+                                        <label for="question">Question:</label>
+                                        <input type="text" id="question" class="form-control" placeholder="Enter your question here..." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="answer">Answer:</label>
+                                        <textarea id="answer" class="form-control" rows="4" placeholder="Provide the answer here..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">Add FAQ</button>
+                                </form>
+                                <div id="faqResponse" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
 
-    <script>
-        // Add event listeners to nav links
-        const navLinks = document.querySelectorAll('#navbar a');
-        
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                // Remove active class from all links
-                navLinks.forEach(nav => nav.classList.remove('active'));
-                // Add active class to the clicked link
-                this.classList.add('active');
-            });
-        });
-    </script>
-</body>
-</html>
-
-<div class="container mt-4">
-    <div class="row">
-        <!-- Left Side: Forms for Adding FAQ and About Us Content -->
-        <div class="col-md-6">
-            <!-- FAQ Form Container -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h4 class="mb-0">Add FAQ</h4>
-                </div>
-                <div class="card-body">
-                    <form id="faqForm">
-                        <div class="form-group">
-                            <label for="question">Question:</label>
-                            <input type="text" id="question" class="form-control" placeholder="Enter your question here..." required>
+                    <!-- Right Side: Display Existing FAQs -->
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4 class="mb-0">Existing FAQs</h4>
+                            </div>
+                            <div class="card-body" id="faqList">
+                                <!-- FAQ items will be populated here -->
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="answer">Answer:</label>
-                            <textarea id="answer" class="form-control" rows="4" placeholder="Provide the answer here..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Add FAQ</button>
-                    </form>
-                    <div id="faqResponse" class="mt-3"></div>
-                </div>
-            </div>
-
-            <!-- About Us Form Container -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h4 class="mb-0">Add About Us Content</h4>
-                </div>
-                <div class="card-body">
-                    <form id="aboutUsForm">
-                        <div class="form-group">
-                            <label for="title">Title:</label>
-                            <input type="text" id="title" class="form-control" placeholder="Enter title here..." required>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Description:</label>
-                            <textarea id="description" class="form-control" rows="4" placeholder="Enter description here..." required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="image_url">Image URL:</label>
-                            <input type="text" id="image_url" class="form-control" placeholder="Enter image URL here..." required>
-                        </div>
-                        <div class="form-group">
-                            <label for="alt_text">Image Alt Text:</label>
-                            <input type="text" id="alt_text" class="form-control" placeholder="Enter image alt text here..." required>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Add About Us Content</button>
-                    </form>
-                    <div id="aboutUsResponse" class="mt-3"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Side: Display Existing FAQs and About Us Content -->
-        <div class="col-md-6">
-            <!-- Existing FAQs -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h4 class="mb-0">Existing FAQs</h4>
-                </div>
-                <div class="card-body" id="faqList">
-                    <!-- FAQ items will be populated here -->
-                </div>
-            </div>
-
-            <!-- Existing About Us Content -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h4 class="mb-0">Existing About Us Content</h4>
-                </div>
-                <div class="card-body" id="aboutUsList">
-                    <!-- About Us items will be populated here -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</body>
+</html>
+
+
+    <script>
+        // Load data on page load
+        loadFAQs();
+
+        // Function to load FAQs from the server
+        async function loadFAQs() {
+            try {
+                const response = await fetch('/admin/dashboard/customization/faq');
+                const faqs = await response.json();
+                const faqList = document.getElementById('faqList');
+                faqList.innerHTML = ''; // Clear existing content
+
+                faqs.forEach(faq => {
+                    const faqItem = document.createElement('div');
+                    faqItem.classList.add('faq-item');
+                    faqItem.innerHTML = `
+                        <h5>${faq.question}</h5>
+                        <p>${faq.answer}</p>
+                        <button class="btn btn-warning btn-sm" onclick="editFAQ(${faq.id}, '${faq.question}', '${faq.answer}')">Edit</button>
+                        <hr>
+                    `;
+                    faqList.appendChild(faqItem);
+                });
+            } catch (error) {
+                console.error('Error loading FAQs:', error);
+            }
+        }
+
+        // Submit handler for FAQ Form
+        document.getElementById('faqForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const question = document.getElementById('question').value;
+            const answer = document.getElementById('answer').value;
+
+            try {
+                const response = await fetch('/admin/dashboard/customization/faq', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ question, answer })
+                });
+
+                const data = await response.json();
+                document.getElementById('faqResponse').innerText = data.message;
+                if (response.ok) {
+                    document.getElementById('faqForm').reset();
+                    loadFAQs(); // Refresh the FAQ list
+                }
+            } catch (error) {
+                console.error('Error adding FAQ:', error);
+            }
+        });
+
+        // Function to edit FAQ
+        function editFAQ(id, question, answer) {
+            document.getElementById('question').value = question;
+            document.getElementById('answer').value = answer;
+            // Set a data attribute for the form to indicate editing
+            document.getElementById('faqForm').setAttribute('data-edit-id', id);
+        }
+
+    </script>
 </div>
-
-<script>
-// Function to load FAQs from the server
-async function loadFAQs() {
-    try {
-        const response = await fetch('/admin/dashboard/customization/faq');
-        const faqs = await response.json();
-        const faqList = document.getElementById('faqList');
-        faqList.innerHTML = ''; // Clear existing content
-
-        faqs.forEach(faq => {
-            const faqItem = document.createElement('div');
-            faqItem.classList.add('faq-item');
-            faqItem.innerHTML = `
-                <h5>${faq.question}</h5>
-                <p>${faq.answer}</p>
-                <button class="btn btn-warning btn-sm" onclick="editFAQ(${faq.id}, '${faq.question}', '${faq.answer}')">Edit</button>
-                <hr>
-            `;
-            faqList.appendChild(faqItem);
-        });
-    } catch (error) {
-        console.error('Error loading FAQs:', error);
-    }
-}
-
-// Function to load About Us content from the server
-async function loadAboutUs() {
-    try {
-        const response = await fetch('/admin/dashboard/customization/aboutus');
-        const aboutUsList = await response.json();
-        const aboutUsContent = document.getElementById('aboutUsList');
-        aboutUsContent.innerHTML = ''; // Clear existing content
-
-        aboutUsList.forEach(item => {
-            const aboutUsItem = document.createElement('div');
-            aboutUsItem.classList.add('about-us-item');
-            aboutUsItem.innerHTML = `
-                <h5>${item.title}</h5>
-                <p>${item.description}</p>
-                <img src="${item.image_url}" alt="${item.alt_text}" style="width: 100%; height: auto;">
-                <button class="btn btn-warning btn-sm" onclick="editAboutUs(${item.id}, '${item.title}', '${item.description}', '${item.image_url}', '${item.alt_text}')">Edit</button>
-                <hr>
-            `;
-            aboutUsContent.appendChild(aboutUsItem);
-        });
-    } catch (error) {
-        console.error('Error loading About Us content:', error);
-    }
-}
-
-// Load data on page load
-loadFAQs();
-loadAboutUs();
-
-// Submit handler for FAQ Form
-document.getElementById('faqForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    const question = document.getElementById('question').value;
-    const answer = document.getElementById('answer').value;
-
-    try {
-        const response = await fetch('/admin/dashboard/customization/faq', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ question, answer })
-        });
-
-        const data = await response.json();
-        document.getElementById('faqResponse').innerText = data.message;
-        if (response.ok) {
-            document.getElementById('faqForm').reset();
-            loadFAQs(); // Refresh the FAQ list
-        }
-    } catch (error) {
-        console.error('Error adding FAQ:', error);
-    }
-});
-
-// Submit handler for About Us Form
-document.getElementById('aboutUsForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
-    const image_url = document.getElementById('image_url').value;
-    const alt_text = document.getElementById('alt_text').value;
-
-    try {
-        const response = await fetch('/admin/dashboard/customization/aboutus', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ title, description, image_url, alt_text })
-        });
-
-        const data = await response.json();
-        document.getElementById('aboutUsResponse').innerText = data.message;
-        if (response.ok) {
-            document.getElementById('aboutUsForm').reset();
-            loadAboutUs(); // Refresh the About Us list
-        }
-    } catch (error) {
-        console.error('Error adding About Us content:', error);
-    }
-});
-
-// Function to edit FAQ
-function editFAQ(id, question, answer) {
-    document.getElementById('question').value = question;
-    document.getElementById('answer').value = answer;
-    // Set a data attribute for the form to indicate editing
-    document.getElementById('faqForm').setAttribute('data-edit-id', id);
-}
-
-// Function to edit About Us content
-function editAboutUs(id, title, description, image_url, alt_text) {
-    document.getElementById('title').value = title;
-    document.getElementById('description').value = description;
-    document.getElementById('image_url').value = image_url;
-    document.getElementById('alt_text').value = alt_text;
-    // Set a data attribute for the form to indicate editing
-    document.getElementById('aboutUsForm').setAttribute('data-edit-id', id);
-}
-</script>
-
-<%- include('partials/adminFooter') %>

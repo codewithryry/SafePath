@@ -19,12 +19,6 @@ $(document).ready(function() {
         $('#resolvedCount').text(counts.resolved || 0);
         $('#rejectedCount').text(counts.rejected || 0);
     }
-
-   
-    
-
-
-
     $('.status-dropdown').change(function() {
     const complaintId = $(this).data('id');
     const newStatus = $(this).val();
@@ -46,8 +40,7 @@ $(document).ready(function() {
             alert('Error updating status: ' + xhr.responseText);
         }
     });
-});
-
+})
     // Initial call to fetch status counts on page load
     fetchUpdatedStatusCounts();
 
@@ -104,12 +97,6 @@ $(document).ready(function() {
     });
 });
 
-
-
-
-
-
-
 // Initialize an empty array for recent activities
 let recentActivities = [];
 
@@ -159,6 +146,82 @@ $(document).ready(function() {
     $('#feedbackTable').DataTable();
 });
 
+// Ensure 'yearLevelCounts' is defined
+const yearLevelData = <%- JSON.stringify(yearLevelCounts || {}) %>; // Use default to avoid reference error
+const labels = Object.keys(yearLevelData); // ["1st", "2nd", "3rd", "4th"]
+const data = Object.values(yearLevelData); // Array of complaint counts for each year level
 
-    </script>
-    
+// Create Year Level Bar Chart
+const ctx = document.getElementById('yearLevelComplaintsChart').getContext('2d');
+const yearLevelChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels, // Year levels as X-axis labels
+        datasets: [{
+            label: 'Number of Complaints',
+            data: data, // Complaint count per year level
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.6)', // Color for 1st year
+                'rgba(54, 162, 235, 0.6)', // Color for 2nd year
+                'rgba(255, 206, 86, 0.6)', // Color for 3rd year
+                'rgba(75, 192, 192, 0.6)'  // Color for 4th year
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)', 
+                'rgba(54, 162, 235, 1)', 
+                'rgba(255, 206, 86, 1)', 
+                'rgba(75, 192, 192, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true, // Start y-axis at 0
+                ticks: {
+                    stepSize: 1 // Set step size to 1 for whole numbers only
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Year Level'
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false // Hide legend if unnecessary
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return `${tooltipItem.raw} Complaints`;
+                    }
+                }
+            }
+        }
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

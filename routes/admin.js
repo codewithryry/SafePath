@@ -44,38 +44,53 @@ router.post('/complaints', async (req, res) => {
 
 
 // Route to get the dashboard data
-router.get('/dashboard', isAuthenticated, (req, res) => {
-    // Get department counts
-    db.query('SELECT department, COUNT(*) AS count FROM complaints GROUP BY department', (err, departmentResults) => {
-        if (err) {
-            console.error('Error retrieving department counts:', err);
-            return res.status(500).send('Error retrieving department counts');
-        }
-
-        // Get status counts
-        db.query('SELECT status, COUNT(*) AS count FROM complaints GROUP BY status', (err, statusResults) => {
+    router.get('/dashboard', isAuthenticated, (req, res) => {
+        // Get department counts
+        db.query('SELECT department, COUNT(*) AS count FROM complaints GROUP BY department', (err, departmentResults) => {
             if (err) {
-                console.error('Error retrieving status counts:', err);
-                return res.status(500).send('Error retrieving status counts');
+                console.error('Error retrieving department counts:', err);
+                return res.status(500).send('Error retrieving department counts');
             }
-
-            // Prepare department counts
-            const departmentCounts = {};
-            departmentResults.forEach(row => {
-                departmentCounts[row.department] = row.count;
+    
+            // Get status counts
+            db.query('SELECT status, COUNT(*) AS count FROM complaints GROUP BY status', (err, statusResults) => {
+                if (err) {
+                    console.error('Error retrieving status counts:', err);
+                    return res.status(500).send('Error retrieving status counts');
+                }
+    
+                // Get year level counts
+                db.query('SELECT year_level, COUNT(*) AS count FROM complaints GROUP BY year_level', (err, yearLevelResults) => {
+                    if (err) {
+                        console.error('Error retrieving year level counts:', err);
+                        return res.status(500).send('Error retrieving year level counts');
+                    }
+    
+                    // Prepare department counts
+                    const departmentCounts = {};
+                    departmentResults.forEach(row => {
+                        departmentCounts[row.department] = row.count;
+                    });
+    
+                    // Prepare status counts
+                    const statusCounts = {};
+                    statusResults.forEach(row => {
+                        statusCounts[row.status] = row.count;
+                    });
+    
+                    // Prepare year level counts
+                    const yearLevelCounts = {};
+                    yearLevelResults.forEach(row => {
+                        yearLevelCounts[row.year_level] = row.count;
+                    });
+    
+                    // Render the dashboard with department, status, and year level counts
+                    res.render('dashboard', { departmentCounts, statusCounts, yearLevelCounts });
+                });
             });
-
-            // Prepare status counts
-            const statusCounts = {};
-            statusResults.forEach(row => {
-                statusCounts[row.status] = row.count;
-            });
-
-            // Render the dashboard with department and status counts only
-            res.render('dashboard', { departmentCounts, statusCounts });
         });
     });
-});
+    
 
 router.get('/get-status-counts', async (req, res) => {
     try {
@@ -137,7 +152,7 @@ router.get('/dashboard/feedback', isAuthenticated, (req, res) => {
     });
 });
 
-// Route to get complaints data with department counts
+// Route to get complaints data with department counts and year level counts
 router.get('/dashboard/complaints', isAuthenticated, (req, res) => {
     db.query('SELECT * FROM complaints ORDER BY created_at DESC', (err, complaints) => {
         if (err) {
@@ -158,15 +173,25 @@ router.get('/dashboard/complaints', isAuthenticated, (req, res) => {
                 departmentCounts[row.department] = row.count;
             });
 
-            // Render complaints view with department counts
-            res.render('adminComplaints', { complaints, departmentCounts }); // Pass departmentCounts to the view
+            // Get year level counts
+            db.query('SELECT year_level, COUNT(*) AS count FROM complaints GROUP BY year_level', (err, yearLevelResults) => {
+                if (err) {
+                    console.error('Error retrieving year level counts:', err);
+                    return res.status(500).send('Error retrieving year level counts');
+                }
+
+                // Prepare year level counts
+                const yearLevelCounts = {};
+                yearLevelResults.forEach(row => {
+                    yearLevelCounts[row.year_level] = row.count;
+                });
+
+                // Render complaints view with department counts and year level counts
+                res.render('adminComplaints', { complaints, departmentCounts, yearLevelCounts }); // Pass yearLevelCounts to the view
+            });
         });
     });
 });
-
-
-
-
 
 // GET all FAQs
 router.get('/admin/dashboard/customization/faq', (req, res) => {
@@ -178,6 +203,8 @@ router.get('/admin/dashboard/customization/faq', (req, res) => {
         res.json(faqs);
     });
 });
+
+
 
 router.post('/admin/dashboard/customization/faq', (req, res) => {
     const { question, answer } = req.body;
@@ -197,6 +224,41 @@ router.post('/admin/dashboard/customization/faq', (req, res) => {
         res.status(201).json({ message: 'FAQ added successfully!', id: results.insertId });
     });
 });
+
+
+
+// GET all "Why We Are Here" content
+router.get('/admin/dashboard/customization/why-we-are-here', (req, res) => {
+    db.query('SELECT * FROM why_we_are_here', (error, whyWeAreHere) => {
+        if (error) {
+            console.error('Error fetching "Why We Are Here" content:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        res.json(whyWeAreHere);
+    });
+});
+
+
+// POST to add new "Why We Are Here" content
+router.post('/admin/dashboard/customization/why-we-are-here', (req, res) => {
+    const { title, paragraph1, paragraph2, paragraph3, video_link } = req.body;
+
+    // Validate required fields
+    if (!title || !paragraph1 || !paragraph2 || !paragraph3) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Add your logic to save the data to the database
+    const sql = 'INSERT INTO why_we_are_here (title, paragraph1, paragraph2, paragraph3, video_link) VALUES (?, ?, ?, ?, ?)';
+    db.query(sql, [title, paragraph1, paragraph2, paragraph3, video_link], (error, results) => {
+        if (error) {
+            console.error('Error saving content:', error);
+            return res.status(500).send('Error saving content'); // Send an error response
+        }
+        res.status(201).json({ message: 'Content added successfully!', id: results.insertId }); // Send success response with ID
+    });
+});
+
 
 
 export default router;

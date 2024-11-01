@@ -1,21 +1,108 @@
-<!-- views/signup.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Signup</title>
+    <meta name="description" content="Admin Signup - SafePath Bullying Complaint System">
+    <meta name="author" content="Reymel Rey Mislang">
+    <title>Admin Signup | SafePath</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .signup-container {
+            display: flex;
+            max-width: 800px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Prevent content overflow */
+        }
+        .signup-image {
+            flex: 1; /* Take up half of the container */
+            background-image: url('/images/safepath.jpg'); /* Replace with your image path */
+            background-size: cover; /* Cover the entire area */
+            background-position: center; /* Center the image */
+        }
+        .signup-form {
+            flex: 1; /* Take up half of the container */
+            padding: 20px;
+        }
+        .signup-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+        .form-group button:active {
+            background-color: #004494;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .signup-container {
+                flex-direction: column; /* Stack content vertically on small screens */
+            }
+            .signup-image {
+                height: 200px; /* Set a specific height for the image on small screens */
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Admin Signup</h2>
-    <form action="/admin/signup" method="POST">
-        <label for="username">Email:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        <button type="submit">Sign Up</button>
-    </form>
+    
+    <header class="bg-light py-3 shadow-sm sticky-header">
+        <div class="container d-flex align-items-center">
+            <div class="d-flex align-items-center">
+                <a href="/" class="logo d-flex align-items-center">
+                    <img src="/images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2">
+                    <span class="logo-text font-weight-bold">SafePath</span>
+                    <span class="login-text ml-1 font-weight-bold text-dark">Signup</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <br>
+
+    <div class="signup-container">
+        <div class="signup-image"></div> <!-- Image side -->
+        <div class="signup-form">
+            <h2>Admin Signup</h2>
+            <form action="/admin/signup" method="POST">
+                <div class="form-group">
+                    <label for="username">Email:</label>
+                    <input type="email" id="username" name="username" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Sign Up</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
