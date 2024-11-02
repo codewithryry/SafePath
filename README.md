@@ -18,11 +18,8 @@ Note: The live site for this project is currently not functioning, but you can e
 - MySQL: Database to store user reports and chatbot interactions.
 - Wit.ai: Integrated chatbot for emotional support and guidance based on sentiment analysis.
 - Bootstrap: Front-end framework for responsive design.
-<<<<<<< HEAD
-=======
 - Tensorflow: Machine learning library used for building models to analyze and predict user behavior or sentiment.
 - SMTP4dev: SMTP server for testing and debugging email functionalities, particularly for the "forgot password" feature.
->>>>>>> 5b06b9ad7a5e32a6ba03f0f8c2ea727e899e006d
 
 
 ## What You Can Do with This Project
