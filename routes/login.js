@@ -1,28 +1,17 @@
 import express from 'express';
-<<<<<<< HEAD
 import db from '../config/db.js';
 import bcrypt from 'bcrypt';
-=======
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 import { isAuthenticated } from '../middlewares/authMiddleware.js'; // Importing the middleware
 
 const router = express.Router(); 
 
 // Route for login page
-<<<<<<< HEAD
 // Assuming you have a route for your login page
-=======
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 router.get('/admin/login', (req, res) => {
     const resetSuccess = req.query.reset === 'success' ? true : false;
     res.render('login', { resetSuccess }); // Pass resetSuccess to the login view
 });
 
-<<<<<<< HEAD
-
-=======
-// Route for handling login form submission
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 router.post('/admin/login', (req, res) => {
     const { username, password } = req.body;
 
@@ -32,9 +21,10 @@ router.post('/admin/login', (req, res) => {
         if (err) {
             return res.status(500).send('Database error.');
         }
-        
+
         if (results.length === 0) {
-            return res.render('login', { message: 'Invalid credentials' });
+            // Pass the error variable to the template if login fails
+            return res.render('login', { error: true });
         }
 
         const user = results[0];
@@ -42,19 +32,17 @@ router.post('/admin/login', (req, res) => {
         // Compare the hashed password with the entered password
         const match = await bcrypt.compare(password, user.password);
         if (match) {
-            req.session.isAuthenticated = true; // Set session as authenticated
+            req.session.isAuthenticated = true;
             return res.redirect('/admin/dashboard');
         } else {
-            return res.render('login', { message: 'Invalid credentials' });
+            // If password does not match, pass the error variable to the template
+            return res.render('login', { error: true });
         }
     });
 });
 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 router.get('/admin/logout', (req, res) => {
     res.render('login');
 });
@@ -73,12 +61,8 @@ router.get('/admin/dashboard/complaints', isAuthenticated, (req, res) => {
 });
 
 
-<<<<<<< HEAD
 router.get('/admin/dashboard/customization/why-we-here', isAuthenticated, (req, res) => {
     res.render('adminwhy'); // Render customization page
 });
-=======
-
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 // Export the router
 export default router; 

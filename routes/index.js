@@ -34,11 +34,5 @@ router.get('/auth/signup', (req, res) => {
 router.get('/', (req, res) => {
     res.render('dashboard'); // Your EJS file for the feedback
 });
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
   
 export default router;

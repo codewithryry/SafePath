@@ -24,11 +24,7 @@ app.use(
         saveUninitialized: true,
         cookie: { 
             secure: false, // Set to true if using HTTPS
-<<<<<<< HEAD:app.mjs
             maxAge: 6000000 // 10 minutes in milliseconds
-=======
-            maxAge: 6000000 // 2 minutes in milliseconds
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74:app.js
         }
     })
 );
@@ -41,7 +37,6 @@ app.set('view engine', 'ejs');
 
 // Routes
 import indexRouter from './routes/index.js';
-<<<<<<< HEAD:app.mjs
 import reportRouter from './routes/report.js';
 import adminRoutes from './routes/admin.js';
 import loginRoutes from './routes/login.js';
@@ -51,15 +46,6 @@ import faqRouter from './routes/faqRoutes.js';
 import aboutUsRouter from './routes/aboutus.js';
 import authRoutes from './routes/auth.js';  // Updated to ES module import
 import why_we_are_hereRouter from './routes/whyRoutes.js';
-=======
-import reportRouter from './routes/report.js'; 
-import adminRoutes from './routes/admin.js'; 
-import loginRoutes from './routes/login.js'; 
-import feedbackRouter from './routes/feedback.js'; // Adjust the path if necessary
-import statusRouter from './routes/status.js'; // Ensure the path is correct
-import faqRouter from './routes/faqRoutes.js'; // Adjust the path to your router file
-import aboutUsRouter from './routes/aboutus.js';  // Import the About Us router
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74:app.js
 
 
 // Use Routes
@@ -67,7 +53,6 @@ app.use('/', indexRouter);
 app.use('/report', reportRouter);
 app.use('/admin', adminRoutes);
 app.use('/', loginRoutes);
-<<<<<<< HEAD:app.mjs
 app.use('/user', feedbackRouter);
 app.use('/admin/dashboard', statusRouter);
 app.use('/', faqRouter);
@@ -79,12 +64,6 @@ app.use('/auth', authRoutes); // Ensure this matches your routes structure
 
 // Placeholder for recent activities
 const recentActivities = [];
-=======
-app.use('/user', feedbackRouter); 
-app.use('/admin/dashboard', statusRouter); // Correct usage of statusRoutes
-app.use('/', faqRouter);
-app.use('/', aboutUsRouter);
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74:app.js
 
 // API endpoint to report a complaint
 app.post('/report', (req, res) => {
@@ -102,20 +81,13 @@ app.post('/update-status', (req, res) => {
     res.send({ message: 'Status updated!', activities: recentActivities });
 });
 
-<<<<<<< HEAD:app.mjs
 // Sample DB query for FAQs endpoint
-=======
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74:app.js
 app.get('/faqs', (req, res) => {
     db.query('SELECT * FROM faqs', (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(results);
     });
 });
-<<<<<<< HEAD:app.mjs
-=======
-
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74:app.js
 
 
 

@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="/script/script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         body {
             background-color: #f4f7fa;
@@ -92,13 +94,36 @@
                 <span class="logo-text font-weight-bold text-white">SafePath</span>
             </a>
             <ul class="nav flex-column" id="navbar">
-                <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin/dashboard/complaints">Complaints</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin/dashboard/feedback">Feedback</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin/dashboard/customization">Customization</a></li>
-                <li class="nav-item"><a class="nav-link active" href="/admin/dashboard/customization/why-we-here">Why We’re Here</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/complaints">
+                        <i class="fas fa-comments"></i> Complaints
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/feedback">
+                        <i class="fas fa-star"></i> Feedback
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/customization">
+                        <i class="fas fa-cogs"></i> Customization
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin/dashboard/customization/why-we-here">
+                        <i class="fas fa-info-circle"></i> Why We’re Here
+                    </a>
+                </li>
             </ul>
-            <a class="nav-link mt-auto" href="/admin/logout">Logout</a>
+            <a class="nav-link mt-auto" href="/admin/logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+            
         </nav>
         <div class="content">
             <header class="bg-light py-2 shadow-sm mb-3">

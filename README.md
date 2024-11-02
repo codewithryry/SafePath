@@ -18,10 +18,7 @@ Note: The live site for this project is currently not functioning, but you can e
 - MySQL: Database to store user reports and chatbot interactions.
 - Wit.ai: Integrated chatbot for emotional support and guidance based on sentiment analysis.
 - Bootstrap: Front-end framework for responsive design.
-<<<<<<< HEAD
-=======
 
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 
 ## What You Can Do with This Project
 - Learn Node.js: SafePath provides a hands-on example of building a full-stack web application, perfect for beginners looking to deepen their understanding of Node.js.

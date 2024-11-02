@@ -9,15 +9,12 @@ const router = express.Router();
 // Route to submit a complaint
 router.post('/complaints', async (req, res) => {
     const { description, ...otherData } = req.body;
-
     // Validate description
     if (!description || typeof description !== 'string' || description.trim().length === 0) {
         return res.status(400).json({ message: 'Description is required and cannot be empty.' });
     }
-
     try {
         const severity = await analyzeSeverity(description); // Analyze severity
-
         // Prepare the complaint data
         const complaintData = {
             ...otherData,
@@ -26,7 +23,6 @@ router.post('/complaints', async (req, res) => {
             created_at: new Date(),
             status: 'Pending', // Set initial status
         };
-
         // Save to the database
         db.query('INSERT INTO complaints SET ?', complaintData, (err, result) => {
             if (err) {
@@ -44,80 +40,44 @@ router.post('/complaints', async (req, res) => {
 
 
 // Route to get the dashboard data
-<<<<<<< HEAD
     router.get('/dashboard', isAuthenticated, (req, res) => {
         // Get department counts
         db.query('SELECT department, COUNT(*) AS count FROM complaints GROUP BY department', (err, departmentResults) => {
-=======
-router.get('/dashboard', isAuthenticated, (req, res) => {
-    // Get department counts
-    db.query('SELECT department, COUNT(*) AS count FROM complaints GROUP BY department', (err, departmentResults) => {
-        if (err) {
-            console.error('Error retrieving department counts:', err);
-            return res.status(500).send('Error retrieving department counts');
-        }
-
-        // Get status counts
-        db.query('SELECT status, COUNT(*) AS count FROM complaints GROUP BY status', (err, statusResults) => {
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
             if (err) {
-                console.error('Error retrieving status counts:', err);
-                return res.status(500).send('Error retrieving status counts');
+                console.error('Error retrieving department counts:', err);
+                return res.status(500).send('Error retrieving department counts');
             }
-<<<<<<< HEAD
-    
             // Get status counts
             db.query('SELECT status, COUNT(*) AS count FROM complaints GROUP BY status', (err, statusResults) => {
                 if (err) {
                     console.error('Error retrieving status counts:', err);
                     return res.status(500).send('Error retrieving status counts');
-                }
-    
+                } 
                 // Get year level counts
                 db.query('SELECT year_level, COUNT(*) AS count FROM complaints GROUP BY year_level', (err, yearLevelResults) => {
                     if (err) {
                         console.error('Error retrieving year level counts:', err);
                         return res.status(500).send('Error retrieving year level counts');
-                    }
-    
+                    } 
                     // Prepare department counts
                     const departmentCounts = {};
                     departmentResults.forEach(row => {
                         departmentCounts[row.department] = row.count;
-                    });
-    
+                    });  
                     // Prepare status counts
                     const statusCounts = {};
                     statusResults.forEach(row => {
                         statusCounts[row.status] = row.count;
-                    });
-    
+                    });  
                     // Prepare year level counts
                     const yearLevelCounts = {};
                     yearLevelResults.forEach(row => {
                         yearLevelCounts[row.year_level] = row.count;
                     });
-    
                     // Render the dashboard with department, status, and year level counts
                     res.render('dashboard', { departmentCounts, statusCounts, yearLevelCounts });
                 });
-=======
-
-            // Prepare department counts
-            const departmentCounts = {};
-            departmentResults.forEach(row => {
-                departmentCounts[row.department] = row.count;
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
             });
-
-            // Prepare status counts
-            const statusCounts = {};
-            statusResults.forEach(row => {
-                statusCounts[row.status] = row.count;
-            });
-
-            // Render the dashboard with department and status counts only
-            res.render('dashboard', { departmentCounts, statusCounts });
         });
     });
     
@@ -132,18 +92,15 @@ router.get('/get-status-counts', async (req, res) => {
             GROUP BY 
                 status
         `);
-
         const statusCounts = {
             pending: 0,
             in_progress: 0,
             resolved: 0,
             rejected: 0
         };
-
         counts.forEach(row => {
             statusCounts[row.status] = row.count;
         });
-
         res.json(statusCounts);
     } catch (error) {
         console.error('Error fetching status counts:', error);
@@ -160,10 +117,8 @@ router.get('/dashboard/feedback', isAuthenticated, (req, res) => {
             console.error('Error retrieving feedback:', err);
             return res.status(500).send('Error retrieving feedback');
         }
-
         // Initialize departmentCounts to an empty object
         let departmentCounts = {};
-
         // Query to get department counts
         db.query('SELECT department, COUNT(*) as count FROM feedback GROUP BY department', (err, counts) => {
             if (err) {
@@ -175,70 +130,48 @@ router.get('/dashboard/feedback', isAuthenticated, (req, res) => {
                     departmentCounts[row.department] = row.count;
                 });
             }
-
             // Render feedback view with both feedback and department data
             res.render('adminFeedback', { feedback, departmentCounts });
         });
     });
 });
 
-<<<<<<< HEAD
 // Route to get complaints data with department counts and year level counts
-=======
-// Route to get complaints data with department counts
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 router.get('/dashboard/complaints', isAuthenticated, (req, res) => {
     db.query('SELECT * FROM complaints ORDER BY created_at DESC', (err, complaints) => {
         if (err) {
             console.error('Error retrieving complaints:', err);
             return res.status(500).send('Error retrieving complaints');
         }
-
         // Get department counts
         db.query('SELECT department, COUNT(*) AS count FROM complaints GROUP BY department', (err, departmentResults) => {
             if (err) {
                 console.error('Error retrieving department counts:', err);
                 return res.status(500).send('Error retrieving department counts');
             }
-
             // Prepare department counts
             const departmentCounts = {};
             departmentResults.forEach(row => {
                 departmentCounts[row.department] = row.count;
             });
-
-<<<<<<< HEAD
             // Get year level counts
             db.query('SELECT year_level, COUNT(*) AS count FROM complaints GROUP BY year_level', (err, yearLevelResults) => {
                 if (err) {
                     console.error('Error retrieving year level counts:', err);
                     return res.status(500).send('Error retrieving year level counts');
                 }
-
                 // Prepare year level counts
                 const yearLevelCounts = {};
                 yearLevelResults.forEach(row => {
                     yearLevelCounts[row.year_level] = row.count;
                 });
-
                 // Render complaints view with department counts and year level counts
                 res.render('adminComplaints', { complaints, departmentCounts, yearLevelCounts }); // Pass yearLevelCounts to the view
             });
-=======
-            // Render complaints view with department counts
-            res.render('adminComplaints', { complaints, departmentCounts }); // Pass departmentCounts to the view
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
         });
     });
 });
 
-<<<<<<< HEAD
-=======
-
-
-
-
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 // GET all FAQs
 router.get('/admin/dashboard/customization/faq', (req, res) => {
     db.query('SELECT * FROM faqs', (error, faqs) => {
@@ -250,21 +183,15 @@ router.get('/admin/dashboard/customization/faq', (req, res) => {
     });
 });
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 router.post('/admin/dashboard/customization/faq', (req, res) => {
     const { question, answer } = req.body;
-
     // Log incoming data for debugging
     console.log('Received FAQ:', { question, answer });
-
     if (!question || !answer) {
         return res.status(400).json({ error: 'Question and answer are required' });
     }
-
     db.query('INSERT INTO faqs (question, answer) VALUES (?, ?)', [question, answer], (err, results) => {
         if (err) {
             console.error('Error adding FAQ:', err);
@@ -275,7 +202,6 @@ router.post('/admin/dashboard/customization/faq', (req, res) => {
 });
 
 
-<<<<<<< HEAD
 
 // GET all "Why We Are Here" content
 router.get('/admin/dashboard/customization/why-we-are-here', (req, res) => {
@@ -292,12 +218,10 @@ router.get('/admin/dashboard/customization/why-we-are-here', (req, res) => {
 // POST to add new "Why We Are Here" content
 router.post('/admin/dashboard/customization/why-we-are-here', (req, res) => {
     const { title, paragraph1, paragraph2, paragraph3, video_link } = req.body;
-
     // Validate required fields
     if (!title || !paragraph1 || !paragraph2 || !paragraph3) {
         return res.status(400).json({ error: 'All fields are required' });
     }
-
     // Add your logic to save the data to the database
     const sql = 'INSERT INTO why_we_are_here (title, paragraph1, paragraph2, paragraph3, video_link) VALUES (?, ?, ?, ?, ?)';
     db.query(sql, [title, paragraph1, paragraph2, paragraph3, video_link], (error, results) => {
@@ -311,6 +235,4 @@ router.post('/admin/dashboard/customization/why-we-are-here', (req, res) => {
 
 
 
-=======
->>>>>>> 71472ebecc35c07c100a3443d13dd6e6023b9e74
 export default router;

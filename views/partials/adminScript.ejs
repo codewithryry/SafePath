@@ -53,48 +53,57 @@ $(document).ready(function() {
     // Create Pie Chart
     const ctx = document.getElementById('complaintsChart').getContext('2d');
     const complaintsChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Number of Complaints',
-                data: data,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.6)', // Red
-                    'rgba(54, 162, 235, 0.6)', // Blue
-                    'rgba(255, 206, 86, 0.6)', // Yellow
-                    'rgba(75, 192, 192, 0.6)', // Cyan
-                    'rgba(153, 102, 255, 0.6)', // Purple
-                    'rgba(255, 159, 64, 0.6)' // Orange
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)', 
-                    'rgba(54, 162, 235, 1)', 
-                    'rgba(255, 206, 86, 1)', 
-                    'rgba(75, 192, 192, 1)', 
-                    'rgba(153, 102, 255, 1)', 
-                    'rgba(255, 159, 64, 1)' 
-                ],
-                borderWidth: 1
-            }]
+    type: 'pie',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Number of Complaints',
+            data: data,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.6)', // Red
+                'rgba(54, 162, 235, 0.6)', // Blue
+                'rgba(255, 206, 86, 0.6)', // Yellow
+                'rgba(75, 192, 192, 0.6)', // Cyan
+                'rgba(153, 102, 255, 0.6)', // Purple
+                'rgba(255, 159, 64, 0.6)' // Orange
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)', 
+                'rgba(54, 162, 235, 1)', 
+                'rgba(255, 206, 86, 1)', 
+                'rgba(75, 192, 192, 1)', 
+                'rgba(153, 102, 255, 1)', 
+                'rgba(255, 159, 64, 1)' 
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true, // Set to true to enable responsiveness
+        maintainAspectRatio: false, // Set to false to allow chart to fill its container
+        layout: {
+            padding: 20 // Add padding to center the chart
         },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return `${tooltipItem.label}: ${tooltipItem.raw}`;
-                        }
+        plugins: {
+            legend: {
+                display: true,
+                position: 'left', // Positioning the legend on the right
+                labels: {
+                    boxWidth: 10, // Optional: Adjust the width of the legend box
+                    padding: 15,  // Optional: Adjust padding between legend items
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return `${tooltipItem.label}: ${tooltipItem.raw}`;
                     }
                 }
             }
         }
-    });
+    }
+});
+
 });
 
 // Initialize an empty array for recent activities

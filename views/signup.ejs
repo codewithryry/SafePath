@@ -58,6 +58,18 @@
             background-color: #004494;
         }
         
+        .additional-links {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .additional-links a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .additional-links a:hover {
+            text-decoration: underline;
+        }
+
         /* Responsive styles */
         @media (max-width: 768px) {
             .signup-container {
@@ -100,6 +112,10 @@
                 </div>
                 <div class="form-group">
                     <button type="submit">Sign Up</button>
+                </div>
+                <div class="additional-links">
+                    <p><a href="/admin/login">Already have an account? Login</a></p>
+                    <p><a href="/admin/forgot-password">Forgot Password?</a></p>
                 </div>
             </form>
         </div>
