@@ -9,73 +9,83 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
-                .additional-links {
+        /* General Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* More formal font */
+        }
+
+        /* Additional links styling */
+        .additional-links {
             text-align: center;
             margin-top: 15px;
         }
         .additional-links a {
-            color: #007bff;
+            color: #347928;
             text-decoration: none;
         }
         .additional-links a:hover {
             text-decoration: underline;
         }
+
+        /* Login Container */
         .login-container {
             display: flex;
-            max-width: 1000px;
-            margin: 20px auto;
-            border: 1px solid #ccc;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #C0EBA6;
             border-radius: 8px;
-            background-color: white;
+            background-color: #FFFBE6;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-top: 5%;
+            height: auto;
         }
+
+        /* Login Form Styling */
         .login-form {
             flex: 1;
             padding: 20px;
+            background-color: #FFFBE6;
         }
         .login-form h2 {
             text-align: center;
             margin-bottom: 20px;
+            color: #347928;
         }
+
+        /* Form Group Styling */
         .form-group {
             margin-bottom: 15px;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #347928;
         }
         .form-group input {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #C0EBA6;
             border-radius: 4px;
         }
+
+        /* Button Styling */
         .form-group button {
             width: 100%;
             padding: 10px;
-            background-color: #007bff;
+            background-color: #FCCD2A;
             color: white;
             border: none;
             border-radius: 4px;
             transition: background-color 0.3s ease;
         }
         .form-group button:hover {
-            background-color: #0056b3;
+            background-color: #D9A10D;
         }
         .form-group button:active {
-            background-color: #004494;
+            background-color: #A67900;
         }
-        .form-group button.loading {
-            background-color: #0056b3;
-            cursor: not-allowed;
-        }
-        .form-group button.loading:after {
-            content: '';
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid white;
-            border-radius: 50%;
-            border-right-color: transparent;
-            margin-left: 10px;
-            animation: spinner 0.6s linear infinite;
-        }
+
+        /* Image Container */
         .image-container {
             flex: 1;
             display: flex;
@@ -89,10 +99,12 @@
             border-radius: 8px;
             object-fit: cover;
         }
-        /* Spinner animation */
+
+        /* Spinner Animation */
         @keyframes spinner {
             to { transform: rotate(360deg); }
         }
+
         /* Responsive styles */
         @media (max-width: 768px) {
             .login-container {
@@ -114,15 +126,16 @@
             <div class="d-flex align-items-center">
                 <a href="/" class="logo d-flex align-items-center">
                     <img src="/images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2">
-                    <span class="logo-text font-weight-bold">SafePath</span>
+                    <span class="logo-text font-weight-bold" style="color: #347928;">SafePath</span>
                     <span class="login-text ml-1 font-weight-bold text-dark">Login</span>
                 </a>
             </div>
         </div>
     </header>
+    
     <div class="login-container">
         <div class="image-container">
-            <img src="/images/sAPEPATH2.jpg" alt="Admin Login Image">
+            <img src="/images/SafepathLOGO2.png" alt="Admin Login Image">
         </div>
         <div class="login-form">
             <h2>Admin Login</h2>
@@ -151,7 +164,6 @@
                 <p><a href="/auth/signup">Don't have an account? Sign Up</a></p>
                 <p><a href="/auth/forgot-password">Forgot Password?</a></p>
             </div>
-            
         </div>
     </div>
 
