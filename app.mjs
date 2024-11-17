@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import session from 'express-session';
 import { fileURLToPath } from 'url';
 
+
 // Initialize dotenv
 dotenv.config();
 
@@ -24,7 +25,7 @@ app.use(
         saveUninitialized: true,
         cookie: { 
             secure: false, // Set to true if using HTTPS
-            maxAge: 6000000 // 10 minutes in milliseconds
+            maxAge: 3600000 // 1 hour in milliseconds
         }
     })
 );
@@ -88,8 +89,6 @@ app.get('/faqs', (req, res) => {
         res.json(results);
     });
 });
-
-
 
 // Set the port
 const PORT = process.env.PORT || 3000;

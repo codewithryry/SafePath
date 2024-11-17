@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SafePath is a platform for reporting bullying incidents and seeking support.">
+    <meta name="author" content="Reymel Rey Mislang">
+    <title>Admin Dashboard | Bullying Reporting System</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { background-color: #f4f7fa; font-family: Arial, sans-serif; font-size: 0.9rem; margin: 0; height: 100vh; display: flex; }
+        .sidebar { width: 200px; background-color: #343a40; color: #ffffff; padding: 15px; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
+        .sidebar a { color: #ffffff; text-decoration: none; border-radius: 0.25rem; transition: background-color 0.3s; }
+        .sidebar a:hover { background-color: rgba(255, 255, 255, 0.1); border-radius: 0.25rem; }
+        .sidebar .nav-link.active { font-weight: bold; background-color: rgba(255, 255, 255, 0.2); border-radius: 0.25rem; }
+        .content { flex-grow: 1; padding: 20px; overflow-y: auto; }
+        .card { border-radius: 0.5rem; margin-bottom: 1rem; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body>
+    <div style="display: flex; width: 100%;">
+        <nav class="sidebar">
+            <a href="/" class="logo d-flex align-items-center mb-3">
+                <img src="/images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2" style="width: 40px;">
+                <span class="logo-text font-weight-bold text-white">SafePath</span>
+            </a>
+            <ul class="nav flex-column" id="navbar">
+                <li class="nav-item"><a class="nav-link" href="/admin/dashboard"><i class="fas fa-home"></i> Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/dashboard/complaints"><i class="fas fa-comments"></i> Complaints</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/dashboard/feedback"><i class="fas fa-star"></i> Feedback</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/dashboard/customization"><i class="fas fa-cogs"></i> Customization</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/admin/dashboard/customization/advocacy"><i class="fas fa-info-circle"></i> Advocacy</a></li>
+            </ul>
+            <a class="nav-link mt-auto" href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+        
+        <div class="content">
+            <header class="bg-light py-2 shadow-sm mb-3">
+                <h1 class="h4">Admin / Customization / Advocacy</h1>
+            </header>
+            <div class="container mt-5">
+                <form id="advocacyForm">
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea id="description" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="goals">Goals:</label>
+                        <textarea id="goals" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="how_to_help">How to Help:</label>
+                        <textarea id="how_to_help" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Update Advocacy</button>
+                </form>
+                <div id="responseMessage" class="mt-3"></div>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    // Fetch existing advocacy content
+                    fetch('/admin/dashboard/customization/advocacy/1') // Adjust the endpoint as needed
+                        .then(response => {
+                            if (!response.ok) throw new Error(`Failed to fetch advocacy: ${response.statusText}`);
+                            return response.json();
+                        })
+                        .then(data => {
+                            document.getElementById('title').value = data.title || '';
+                            document.getElementById('description').value = data.description || '';
+                            document.getElementById('goals').value = data.goals || '';
+                            document.getElementById('how_to_help').value = data.how_to_help || '';
+                        })
+                        .catch(error => {
+                            console.error('Error loading advocacy content:', error);
+                            document.getElementById('responseMessage').innerText = 'Failed to load advocacy content.';
+                        });
+
+                    // Handle form submission
+                    document.getElementById('advocacyForm').addEventListener('submit', event => {
+                        event.preventDefault();
+
+                        const title = document.getElementById('title').value;
+                        const description = document.getElementById('description').value;
+                        const goals = document.getElementById('goals').value;
+                        const how_to_help = document.getElementById('how_to_help').value;
+
+                        fetch('/api/advocacy/1', { // Adjust the endpoint as needed
+                            method: 'PUT', // Or POST if creating a new entry
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ title, description, goals, how_to_help }),
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                document.getElementById('responseMessage').innerText = data.message || 'Advocacy updated successfully!';
+                            })
+                            .catch(error => {
+                                console.error('Error updating advocacy content:', error);
+                                document.getElementById('responseMessage').innerText = 'Failed to update advocacy content.';
+                            });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</body>
+</html>

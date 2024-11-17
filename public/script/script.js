@@ -26,33 +26,51 @@ const chatbotResponses = {
     greeting: [
         "Hello! I'm here to listen. How are you feeling today?",
         "Hi there! You can talk to me anytime. How are you doing?",
-        "Hey! I’m here to support you. What’s on your mind?"
+        "Hey! I’m here to support you. What’s on your mind?",
+        "Hello! I’m always here to help you. How are things going today?"
     ],
     mild: [
         "It's important to remember that your feelings are valid. How about we discuss ways to cope with this?",
         "Talking about it can really help. You're not alone in this! What have you tried so far to address this?",
         "I understand how that can feel. Do you want to talk about what's been going on?",
-        "Sometimes, little things can build up. What’s been bothering you the most?"
+        "Sometimes, little things can build up. What’s been bothering you the most?",
+        "It’s okay to feel frustrated. Let’s see if we can find a way to make things easier.",
+        "Everyone goes through tough moments. How can I help you get through this?",
+        "It can be helpful to talk things out. Do you want to share more with me?",
+        "I can tell you're going through something. Would you like to discuss it?"
     ],
     severe: [
         "I'm really sorry to hear you're experiencing this. It's vital to talk to someone who can help. Would you like to report this situation?",
         "Your safety matters. If you want to discuss reporting this, I'm here to support you. Is there someone you trust that you can reach out to?",
         "I’m concerned about what you’re going through. Do you need help right away? I can assist with reporting if needed.",
-        "It sounds like this has really impacted you. Would you feel comfortable getting help for this?"
+        "It sounds like this has really impacted you. Would you feel comfortable getting help for this?",
+        "I’m really sorry you're going through this. Do you want to reach out to someone who can help right now?",
+        "Your well-being is the most important thing. Would you like assistance in finding someone to talk to?",
+        "I'm here for you. Please let me know if you need help in getting support or reporting anything.",
+        "It must be incredibly tough. Let me know if you'd like help in reporting or seeking professional support."
     ],
     neutral: [
         "Thank you for sharing your thoughts. Can you tell me more about what's been bothering you?",
         "It's okay to talk about it. What's on your mind right now?",
         "I'm here to listen. What would help you feel better right now?",
-        "Feel free to share as much or as little as you like. I’m here to listen."
+        "Feel free to share as much or as little as you like. I’m here to listen.",
+        "It sounds like you have a lot on your mind. Can you tell me more about it?",
+        "I understand you're going through a lot. Would you like to talk more about it?",
+        "Sometimes, just talking things through can be helpful. What’s been happening?",
+        "I’m here to listen whenever you're ready. What’s on your mind today?"
     ],
     encouraging: [
         "You’re doing your best, and that’s enough. Take things one step at a time.",
         "It’s okay to feel what you’re feeling. You’re stronger than you think.",
         "Remember, it’s okay to ask for help. Everyone needs support sometimes.",
-        "You’re not alone in this. Take your time, and we’ll figure it out together."
+        "You’re not alone in this. Take your time, and we’ll figure it out together.",
+        "You’re doing great, even if it doesn’t always feel that way.",
+        "No matter what you're facing, you're capable of handling it. Take it one day at a time.",
+        "It’s okay to go slow. What matters is that you’re moving forward.",
+        "Take a deep breath. You're making progress, even if it doesn’t seem like it."
     ]
 };
+
 
 let messageCount = 0;
 let awaitingReportResponse = false; 
@@ -60,14 +78,44 @@ let inactivityTimer;
 const conversationHistory = [];
 
 function classifySeverity(message) {
-    const mildKeywords = ["tease", "joke", "annoy", "ignore", "biru-biruan", "pang-aasar", "ini-ignore"];
-    const severeKeywords = ["hit", "threaten", "cyberbully", "harass", "attack", "saktan", "banta", "pambu-bully", "pangha-harass", "inaatake"];
+    const mildKeywords = [
+        "tease", "joke", "annoy", "ignore", "biru-biruan", "pang-aasar", 
+        "ini-ignore", "maliit na bagay", "nanghihirang", "peste", "biro", 
+        "huwag seryosohin", "just kidding", "lighthearted", "playful", "not serious", 
+        "masama lang ang loob", "huwag pansinin"
+    ];
+    
+    const severeKeywords = [
+        "hit", "threaten", "cyberbully", "harass", "attack", "saktan", 
+        "banta", "pambu-bully", "pangha-harass", "inaatake", "suicide", 
+        "self-harm", "abuse", "kill", "hurt", "stalk", "violent", "slap", 
+        "beaten", "punch", "danger", "trauma", "bullying", "rape", "torture",
+        "papatay", "takot", "patayin", "mangharrass", "bantang mamatay"
+    ];
+    
+    const neutralKeywords = [
+        "confused", "help", "sad", "lonely", "depressed", "frustrated", 
+        "feeling down", "isolated", "stressed", "troubled", "annoyed", 
+        "okay", "good", "bad", "normal", "unsure", "okay lang", "hindi masyado okay",
+        "medyo okay", "gusto ko ng tulong", "nakakalungkot", "hindi ko alam", 
+        "saan na ako pupunta", "how can I fix this?", "I’m okay", "nothing special"
+    ];
     
     const lowerCaseMessage = message.toLowerCase();
+    
+    // Check for mild severity
     if (mildKeywords.some(keyword => lowerCaseMessage.includes(keyword))) return "mild";
+    
+    // Check for severe severity
     if (severeKeywords.some(keyword => lowerCaseMessage.includes(keyword))) return "severe";
+    
+    // Check for neutral severity
+    if (neutralKeywords.some(keyword => lowerCaseMessage.includes(keyword))) return "neutral";
+    
     return "neutral"; // Default to neutral if no keywords match
 }
+
+
 
 function toggleChatbot() {
     const chatbot = document.getElementById("chatbot");
@@ -120,7 +168,7 @@ async function respondToMessage(userMessage) {
     } else {
         setTimeout(() => {
             addMessage("bot", "You will now be redirected to a real person for further assistance. Please hold on a moment...");
-            setTimeout(() => window.location.href = "https://forms.gle/5jgNyAiVsAACwSAAA", 2000); // Redirect to Google Form
+            setTimeout(() => window.location.href = "http://localhost:3000/report", 2000); // Redirect to Google Form
         }, 1000);
     }
 }
@@ -131,7 +179,7 @@ async function handleReportResponse(userMessage) {
     if (lowerCaseMessage === "yes" || lowerCaseMessage === "oo" || lowerCaseMessage.includes("report")) {
         addMessage("bot", "Thank you for your willingness to report this. You will be redirected to the reporting form.");
         setTimeout(() => {
-            window.location.href = "https://forms.gle/5jgNyAiVsAACwSAAA"; // Redirect to Google Form
+            window.location.href = "http://localhost:3000/report"; // Redirect to Google Form
         }, 2000);
     } else if (lowerCaseMessage === "no" || lowerCaseMessage === "hindi") {
         addMessage("bot", "That's okay! If you need to talk about it or need any help, I'm here.");

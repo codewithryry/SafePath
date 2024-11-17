@@ -91,7 +91,13 @@
 .fs-4 {
     font-size: 1.5rem; /* Adjust for larger number size */
 }
-
+th {
+        background-color: blue; /* Set background color to blue */
+        color: white; /* Set text color to white for contrast */
+        white-space: nowrap; /* Prevent line breaks */
+        text-align: center; /* Center-align text */
+        padding: 8px; /* Add padding for readability */
+    }
 /* Make sure pagination controls are visible */
 .dataTables_wrapper .dataTables_paginate {
     display: flex;
@@ -161,52 +167,49 @@
         <h1 class="h4">Admin / Complaints</h1>
     </header>
 
-    <div class="col-12 mb-4">
-        <div class="card border-0 shadow">
-            <div class="card-body">
-                <div class="complaints-table">
-                    <% if (complaints && complaints.length > 0) { %>
-                        <table id="complaintsTable" class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Student ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Issue Type</th>
-                                    <th>Description</th>
-                                    <th>Contact Method</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% complaints.forEach(complaint => { %>
-                                    <tr>
-                                        <td><%= complaint.student_id %></td>
-                                        <td><%= complaint.name %></td>
-                                        <td><%= complaint.email %></td>
-                                        <td><%= complaint.issue_type %></td>
-                                        <td><%= complaint.issue_description %></td>
-                                        <td><%= complaint.contact_method %></td>
-                                        <td>
-                                            <select class="form-select status-dropdown rounded-pill" data-id="<%= complaint.id %>">
-                                                <option value="pending" <%= complaint.status === 'pending' ? 'selected' : '' %>>Pending</option>
-                                                <option value="in_progress" <%= complaint.status === 'in_progress' ? 'selected' : '' %>>In Progress</option>
-                                                <option value="resolved" <%= complaint.status === 'resolved' ? 'selected' : '' %>>Resolved</option>
-                                                <option value="rejected" <%= complaint.status === 'rejected' ? 'selected' : '' %>>Rejected</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                <% }) %>
-                            </tbody>
-                        </table>
-                    <% } else { %>
-                        <p class="text-center">No complaints available.</p>
-                    <% } %>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="complaints-table">
+        <% if (complaints && complaints.length > 0) { %>
+            <table id="complaintsTable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Issue Type</th>
+                        <th>Description</th>
+                        <th>Contact Method</th>
+                        <th>Submit At</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% complaints.forEach(complaint => { %>
+                        <tr>
+                            <td><%= complaint.student_id %></td>
+                            <td><%= complaint.name %></td>
+                            <td><%= complaint.email %></td>
+                            <td><%= complaint.issue_type %></td>
+                            <td><%= complaint.issue_description %></td>
+                            <td><%= complaint.contact_method %></td>
+                            <td><%= new Date(complaint.created_at).toLocaleString('en-US', { timeZoneName: 'short' }).replace(/ GMT.*/g, '') %></td>
 
+                            <td>
+                                <select class="form-select status-dropdown rounded-pill" data-id="<%= complaint.id %>">
+                                    <option value="pending" <%= complaint.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                                    <option value="in_progress" <%= complaint.status === 'in_progress' ? 'selected' : '' %>>In Progress</option>
+                                    <option value="resolved" <%= complaint.status === 'resolved' ? 'selected' : '' %>>Resolved</option>
+                                    <option value="rejected" <%= complaint.status === 'rejected' ? 'selected' : '' %>>Rejected</option>
+                                </select>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p class="text-center">No complaints available.</p>
+        <% } %>
+    </div>
+    
     <script>
         $(document).ready(function() {
             // Initialize DataTable with pagination and search features
