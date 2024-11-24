@@ -27,6 +27,12 @@ Note: The live site for this project is currently not functioning, but you can e
 - Explore Backend Development: Dive into the codebase to modify existing features, add new functionalities, or improve performance, enhancing your backend development skills.
 - Contribute: We welcome contributions! Feel free to fork the repository, suggest enhancements, or adapt SafePath for other applications, such as community support systems or wellness initiatives.
 
+## UI Preview
+
+![SafePath UI Mockup](img/SafepathUI.png)
+
+The above mockup demonstrates the student dashboard for SafePath, featuring an anonymous reporting form, chatbot support, and complaint analytics.
+
 ## Cloning the Repository
 
 To clone the SafePath project repository, follow these steps:
