@@ -9,6 +9,7 @@ router.get('/admin/signup', (req, res) => {
     res.render('signup');
 });
 
+
 // Handle signup form submission
 router.post('/admin/signup', async (req, res) => {
     const { username, password } = req.body;

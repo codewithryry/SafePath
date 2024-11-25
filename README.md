@@ -54,3 +54,4 @@ To clone the SafePath project repository, follow these steps:
 6. Start the application:
    ```bash
     npm start
+

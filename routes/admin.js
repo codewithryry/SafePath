@@ -170,6 +170,8 @@ router.get('/dashboard/complaints', isAuthenticated, (req, res) => {
             });
         });
     });
+
+    
 });
 
 // GET all FAQs

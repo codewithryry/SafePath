@@ -84,6 +84,8 @@ INSERT INTO `advocacy` (`id`, `title`, `description`, `goals`, `how_to_help`, `a
 -- Table structure for table `complaints`
 --
 
+
+
 DROP TABLE IF EXISTS `complaints`;
 CREATE TABLE IF NOT EXISTS `complaints` (
   `id` int NOT NULL AUTO_INCREMENT,

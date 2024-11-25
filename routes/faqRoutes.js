@@ -31,6 +31,7 @@ router.post('/admin/dashboard/customization/faq', (req, res) => {
     });
 });
 
+
 // PUT (Update) an FAQ
 router.put('/admin/dashboard/customization/faq/:id', (req, res) => {
     const { id } = req.params;

@@ -4,6 +4,7 @@ import db from '../config/db.js'; // Ensure the .js extension is included
 export const submitFeedback = (req, res) => {
     const { name, email, feedback, rating, suggestions, recommend } = req.body;
 
+    
     // Check for required fields
     if (!name || !email || !feedback || !rating) {
         return res.status(400).send('Please provide all required fields.');

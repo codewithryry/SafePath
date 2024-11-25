@@ -125,6 +125,24 @@ th {
     border: 1px solid #007bff; /* Keep border same as background */
 }
 
+/* Ensure the page adjusts well when in fullscreen mode */
+:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* Optional: Adjust sidebar or other elements */
+:fullscreen .sidebar {
+    display: none; /* Hide the sidebar when in fullscreen */
+}
+
+:fullscreen .content-wrapper {
+    margin-left: 0; /* Adjust the main content layout */
+}
+
+
     </style>
 </head>
 <body>
@@ -162,12 +180,23 @@ th {
             <a class="nav-link mt-auto" href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </nav>
 
-<div class="content">
-    <header class="bg-light py-2 shadow-sm mb-3">
-        <h1 class="h4">Admin / Complaints</h1>
-    </header>
+        <div class="content">
+            <header class="bg-light py-2 shadow-sm mb-3 d-flex justify-content-between align-items-center">
+                <h1 class="h4 mb-0">Admin / Complaints</h1>
+                <!-- Fullscreen Button -->
+                <button id="fullscreenBtn" class="btn btn-primary">
+                    <i class="fas fa-expand"></i> Fullscreen
+                </button>
+            </header>
+        
 
     <div class="complaints-table">
+        <p class="text-muted text-left mb-3">
+            <small>
+                Tip: To view this page in fullscreen mode, click the <strong>Fullscreen</strong> button in the top-right corner of the header.
+            </small>
+        </p>
+        
         <% if (complaints && complaints.length > 0) { %>
             <table id="complaintsTable" class="table table-striped">
                 <thead>
@@ -178,6 +207,7 @@ th {
                         <th>Issue Type</th>
                         <th>Description</th>
                         <th>Contact Method</th>
+                        <th>Sentiment</th>
                         <th>Submit At</th>
                         <th>Status</th>
                     </tr>
@@ -191,6 +221,7 @@ th {
                             <td><%= complaint.issue_type %></td>
                             <td><%= complaint.issue_description %></td>
                             <td><%= complaint.contact_method %></td>
+                            <td><%= complaint.sentiment %></td>
                             <td><%= new Date(complaint.created_at).toLocaleString('en-US', { timeZoneName: 'short' }).replace(/ GMT.*/g, '') %></td>
 
                             <td>
@@ -211,16 +242,57 @@ th {
     </div>
     
     <script>
+        // $(document).ready(function() {
+        //     // Initialize DataTable with pagination and search features
+        //     $('#complaintsTable').DataTable({
+        //         "paging": true,                  // Enable pagination
+        //         "lengthMenu": [5, 10, 25],      // Options for the number of entries to show
+        //         "pageLength": 10,                // Default number of entries to show
+        //         "searching": true,               // Enable searching
+        //         "lengthChange": true             // Allow the user to change the number of entries displayed
+        //     });
+        // });
+
         $(document).ready(function() {
-            // Initialize DataTable with pagination and search features
-            $('#complaintsTable').DataTable({
-                "paging": true,                  // Enable pagination
-                "lengthMenu": [5, 10, 25],      // Options for the number of entries to show
-                "pageLength": 10,                // Default number of entries to show
-                "searching": true,               // Enable searching
-                "lengthChange": true             // Allow the user to change the number of entries displayed
-            });
-        });
+    // Initialize DataTable with pagination, search features, and default sorting
+    $('#complaintsTable').DataTable({
+        "paging": true,                  // Enable pagination
+        "lengthMenu": [5, 10, 25],      // Options for the number of entries to show
+        "pageLength": 10,                // Default number of entries to show
+        "searching": true,               // Enable searching
+        "lengthChange": true,            // Allow changing the number of entries displayed
+        "order": [[7, "desc"]]           // Default sort by 8th column ("Submit At") in descending order
+    });
+});
+
+
+    document.getElementById('fullscreenBtn').addEventListener('click', function () {
+        if (!document.fullscreenElement) {
+            // Request fullscreen
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
+        } else {
+            // Exit fullscreen
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { // Firefox
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { // IE/Edge
+                document.msExitFullscreen();
+            }
+        }
+    });
+
+
     </script>
 
          <%- include('partials/adminScript') %>

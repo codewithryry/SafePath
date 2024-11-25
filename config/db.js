@@ -14,5 +14,6 @@ db.connect((err) => {
     console.log('Connected to MySQL Database.');
 });
 
+
 // Export the database connection using ES module syntax
 export default db;

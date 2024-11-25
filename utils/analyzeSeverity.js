@@ -18,3 +18,5 @@ export async function analyzeSeverity(description) {
     }
     return 'unknown'; // Return 'unknown' if no severity was found
 }
+
+

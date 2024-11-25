@@ -7,6 +7,7 @@ export const updateStatus = (req, res) => {
 
    // console.log(`Request to update status for complaint ID: ${complaintId} with new status: ${newStatus}`);
 
+   
     // Validate the new status
     if (!newStatus || typeof newStatus !== 'string') {
        // console.log('Invalid status provided');

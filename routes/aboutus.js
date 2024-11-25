@@ -22,6 +22,7 @@ router.post('/admin/dashboard/customization/aboutus', (req, res) => {
         return res.status(400).json({ error: 'All fields are required' });
     }
 
+    
     db.query('INSERT INTO about_us (title, description, image_url, alt_text) VALUES (?, ?, ?, ?)', 
         [title, description, image_url, alt_text], 
         (err, results) => {

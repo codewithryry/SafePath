@@ -8,6 +8,7 @@ export const getComplaintsByYearLevel = (req, res) => {
         GROUP BY year_level
         ORDER BY year_level
     `;
+    
 
     db.query(query, (err, results) => {
         if (err) {

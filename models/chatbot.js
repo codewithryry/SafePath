@@ -23,6 +23,7 @@ function textToTensor(text) {
     return sequence;
 }
 
+
 // Prepare the data
 const xs = trainingData.map(item => textToTensor(item.input));
 const ys = trainingData.map(item => {

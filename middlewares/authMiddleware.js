@@ -5,3 +5,4 @@ export const isAuthenticated = (req, res, next) => {
     }
     res.redirect('/admin/login'); // Redirect to login if not authenticated
 };
+

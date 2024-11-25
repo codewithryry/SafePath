@@ -75,6 +75,7 @@ router.post('/signup', async (req, res) => {
 });
 
 
+
 // Route to handle password reset
 router.post('/reset-password', async (req, res) => {
     const { token, password } = req.body;
