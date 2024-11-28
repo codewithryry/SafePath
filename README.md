@@ -26,9 +26,11 @@ Note: The live site for this project is currently not functioning, but you can e
 
 
 ## What You Can Do with This Project
+
 - Learn Node.js: SafePath provides a hands-on example of building a full-stack web application, perfect for beginners looking to deepen their understanding of Node.js.
 - Explore Backend Development: Dive into the codebase to modify existing features, add new functionalities, or improve performance, enhancing your backend development skills.
-- Contribute: We welcome contributions! Feel free to fork the repository, suggest enhancements, or adapt SafePath for other applications, such as community support systems or wellness initiatives.
+- Contribute: We welcome contributions! Feel free to fork the repository, suggest enhancements, or adapt SafePath for other applications, such as community support systems or wellness initiatives
+- Future Enhancements (Vue.js & Firebase): In the future, SafePath will integrate Vue.js for building a responsive and dynamic frontend, and Firebase for enhanced backend services, including real-time data storage, authentication, and more.
 
 ## UI Preview
 
