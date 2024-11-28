@@ -19,6 +19,7 @@ Note: The live site for this project is currently not functioning, but you can e
 - Wit.ai: Integrated chatbot for emotional support and guidance based on sentiment analysis.
 - Bootstrap: Front-end framework for responsive design.
 - Tensorflow: Machine learning library used for building models to analyze and predict user behavior or sentiment.
+- Vader-sentiment: A Python library for sentiment analysis that uses a pre-built lexicon and rules to determine the emotional tone (positive, negative, or neutral) of short texts. It’s effective for analyzing informal language, including slang, emojis, and hashtags, making it ideal for chatbot interactions and user feedback analysis.
 - SMTP4dev: SMTP server for testing and debugging email functionalities, particularly for the "forgot password" feature.
 - GoogleEmail:likely refers to using Google's Gmail service for email sending and receiving, which can be done using Nodemailer with Gmail’s SMTP configuration.
 - Nodemailer: is an essential tool for applications that need to send emails, such as for user registration, password resets, complaint confirmations, notifications, etc
