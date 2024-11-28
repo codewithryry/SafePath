@@ -64,6 +64,13 @@ router.get('/admin/dashboard/complaints', isAuthenticated, (req, res) => {
 router.get('/admin/dashboard/customization/why-we-here', isAuthenticated, (req, res) => {
     res.render('adminwhy'); // Render customization page
 });
+
+
+// Admin "About" page route
+router.get('/admin/dashboard/about', isAuthenticated, (req, res) => {
+    res.render('adminAbout'); // Render about page
+});
+
 // Export the router
 export default router; 
 

@@ -50,6 +50,7 @@ $(document).ready(function() {
     const labels = Object.keys(departmentData);
     const data = Object.values(departmentData);
 
+
     // Create Pie Chart
     const ctx = document.getElementById('complaintsChart').getContext('2d');
     const complaintsChart = new Chart(ctx, {
@@ -223,6 +224,172 @@ const yearLevelChart = new Chart(ctx, {
 
 
 
+
+
+
+
+
+$(document).ready(function () {
+
+const monthlyTrends = <%- JSON.stringify(monthlyTrends) %>;
+const weeklyTrends = <%- JSON.stringify(weeklyTrends) %>;
+
+// Monthly and Weekly Trends Chart
+const trendsChart = new Chart(document.getElementById('trendsChart').getContext('2d'), {
+    type: 'line',
+    data: {
+        labels: Object.keys(monthlyTrends), // X-axis labels (months)
+        datasets: [
+            {
+                label: 'Monthly Trends',
+                data: Object.values(monthlyTrends),
+                borderColor: 'rgba(75, 192, 192, 1)',
+                // backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                // fill: true
+            },
+            {
+                label: 'Weekly Trends',
+                data: Object.values(weeklyTrends),
+                borderColor: 'rgba(255, 99, 132, 1)',
+                // backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                // fill: true
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' },
+            title: { display: true, text: 'Monthly and Weekly Trends' },
+            tooltip: { // Enable tooltips
+                enabled: true,
+                mode: 'index', // Can be 'index', 'nearest', etc.
+                intersect: false, // Allow tooltip on nearest item (not necessarily intersecting)
+                callbacks: {
+                    label: function (tooltipItem) {
+                        return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                },
+                title: { display: true, text: 'Number of Complaints' }
+            },
+            x: {
+                title: { display: true, text: 'Months' },
+                ticks: { autoSkip: false }
+            }
+        }
+    }
+});
+
+// Data for Analytics Overview Chart
+const departmentData = <%- JSON.stringify(departmentCounts) %>;
+const statusData = <%- JSON.stringify(statusCounts) %>;
+const yearLevelData = <%- JSON.stringify(yearLevelCounts) %>;
+
+// Combine the labels (departments, statuses, and year levels) and limit to 6
+const departmentLabels = Object.keys(departmentData).slice(0, 6); // Limit to 6
+const statusLabels = Object.keys(statusData);
+const yearLevelLabels = Object.keys(yearLevelData);
+
+// Function to generate a random color
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+// Create datasets for departments, statuses, and year levels
+const datasets = [];
+
+// For Departments
+if (departmentLabels.length > 0) {
+    const departmentDataset = {
+        label: 'Departments',
+        data: departmentLabels.map(label => departmentData[label] || 0),
+        borderColor: getRandomColor(),
+        backgroundColor: 'rgba(75, 192, 192, 0)',
+        fill: false,
+        tension: 0.1
+    };
+    datasets.push(departmentDataset);
+}
+
+// For Statuses
+if (statusLabels.length > 0) {
+    const statusDataset = {
+        label: 'Statuses',
+        data: statusLabels.map(label => statusData[label] || 0),
+        borderColor: getRandomColor(),
+        backgroundColor: 'rgba(255, 99, 132, 0)',
+        fill: false,
+        tension: 0.1
+    };
+    datasets.push(statusDataset);
+}
+
+// For Year Levels
+if (yearLevelLabels.length > 0) {
+    const yearLevelDataset = {
+        label: 'Year Levels',
+        data: yearLevelLabels.map(label => yearLevelData[label] || 0),
+        borderColor: getRandomColor(),
+        backgroundColor: 'rgba(153, 102, 255, 0)',
+        fill: false,
+        tension: 0.1
+    };
+    datasets.push(yearLevelDataset);
+}
+
+// Analytics Overview Chart
+const analyticsChart = new Chart(document.getElementById('analyticsOverviewChart').getContext('2d'), {
+    type: 'line',
+    data: {
+        labels: departmentLabels, // Use department labels as x-axis
+        datasets: datasets // Use the generated datasets
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' },
+            title: { display: true, text: 'Analytics Overview: Complaints by Category' },
+            tooltip: { // Enable tooltips for Analytics Overview chart
+                enabled: true,
+                mode: 'index', // Tooltip triggered at the index
+                intersect: false, // Tooltip will show on nearest element, not necessarily on intersection
+                callbacks: {
+                    label: function (tooltipItem) {
+                        return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: { display: true, text: 'Number of Complaints' },
+                ticks: {
+                    suggestedMin: 0,
+                    stepSize: 5
+                }
+            },
+            x: {
+                display: false, // Remove the x-axis
+            }
+        }
+    }
+});
+
+});
 
 
 

@@ -269,5 +269,3 @@ function hideTypingIndicator() {
         typingElement.remove();
     }
 }
-
-

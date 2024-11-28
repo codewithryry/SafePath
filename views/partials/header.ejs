@@ -1,4 +1,4 @@
-<header class="bg-light py-3 shadow-sm sticky-header">
+<!-- <header class="bg-light py-3 shadow-sm sticky-header">
     <div class="container d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
             <a href="/" class="logo d-flex align-items-center ml-2">
@@ -15,6 +15,135 @@
             </ul>
         </nav>
     </div>
+</header> -->
+
+
+
+
+
+<!-- Header -->
+<header class="bg-light py-3 shadow-sm sticky-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <a href="/" class="logo d-flex align-items-center ml-2">
+                <img src="images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2">
+                <span class="logo-text font-weight-bold">SafePath</span>
+            </a>
+        </div>
+        <nav id="nav" class="nav-links d-none d-lg-flex">
+            <ul class="nav-links" id="navbar">
+                <li><a href="/">Home</a></li> 
+                <li><a href="/advocacy">Advocacy</a></li>    
+                <li><a href="#contact">Contact Us</a></li>                     
+                <li><a href="/user/feedback">Feedback</a></li>   
+            </ul>
+        </nav>
+        <button class="navbar-toggler d-lg-none" type="button" id="menuToggle">
+            ☰
+        </button>
+    </div>
 </header>
 
+<!-- Mobile Sliding Transparent Menu -->
+<div class="sliding-menu d-lg-none" id="mobileMenu">
+    <div class="menu-content">
+        <div class="menu-text">
+            <p class="welcome-message">Welcome to SafePath!</p>
+            <p class="priority-message">Your safety, our priority.</p>
+        </div>
+        <ul class="menu-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/advocacy">Advocacy</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="/user/feedback">Feedback</a></li>
+            
+        </ul>
+    </div>
+</div>
 
+<style>
+/* Sliding menu container */
+.sliding-menu {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100%;
+    width: 50%;
+    max-width: 300px;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    transition: right 0.3s ease;
+    z-index: 1050;
+    padding: 20px;
+}
+
+/* Content inside sliding menu */
+.menu-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* Text section for the welcome message */
+.menu-text {
+    margin-bottom: 20px; /* Space between text and menu links */
+    color: #333;
+}
+
+.welcome-message {
+    font-size: 18px;
+    font-weight: bold;
+    color: #007BFF; /* Highlighted text color */
+}
+
+.priority-message {
+    font-size: 16px;
+    font-style: italic;
+    color: #555;
+}
+
+/* Menu links section */
+.menu-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-links li {
+    margin: 10px 0;
+}
+
+.menu-links li a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #333;
+}
+
+/* Active state for sliding menu */
+.sliding-menu.active {
+    right: 0;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuToggle.addEventListener('click', function() {
+        mobileMenu.classList.toggle('active');
+    });
+
+    // Close menu if clicking outside the menu
+    window.addEventListener('click', function(event) {
+        if (!mobileMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            mobileMenu.classList.remove('active');
+        }
+    });
+});
+</script>

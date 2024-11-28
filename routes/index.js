@@ -29,8 +29,6 @@ router.get('/auth/signup', (req, res) => {
 
 
 
-
-
 router.get('/', (req, res) => {
     res.render('dashboard'); // Your EJS file for the feedback
 });

@@ -82,6 +82,11 @@ app.post('/update-status', (req, res) => {
     res.send({ message: 'Status updated!', activities: recentActivities });
 });
 
+
+
+
+
+
 // Sample DB query for FAQs endpoint
 app.get('/faqs', (req, res) => {
     db.query('SELECT * FROM faqs', (err, results) => {

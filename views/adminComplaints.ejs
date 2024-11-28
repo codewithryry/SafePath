@@ -176,8 +176,16 @@ th {
                     </a>
                 </li>
             </ul>
+            <div class="mt-auto">
+                <!-- <a class="nav-link" href="/admin/dashboard/about">
+                    <i class="fas fa-info-circle"></i> About
+                </a> -->
+                <a class="nav-link" href="/admin/logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
             
-            <a class="nav-link mt-auto" href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <!-- <a class="nav-link mt-auto" href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a> -->
         </nav>
 
         <div class="content">
@@ -205,7 +213,7 @@ th {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Issue Type</th>
-                        <th>Description</th>
+                        <th>Reports Description</th>
                         <th>Contact Method</th>
                         <th>Sentiment</th>
                         <th>Submit At</th>
@@ -257,13 +265,23 @@ th {
     // Initialize DataTable with pagination, search features, and default sorting
     $('#complaintsTable').DataTable({
         "paging": true,                  // Enable pagination
-        "lengthMenu": [5, 10, 25],      // Options for the number of entries to show
+        "lengthMenu": [5, 10, 25],       // Options for the number of entries to show
         "pageLength": 10,                // Default number of entries to show
         "searching": true,               // Enable searching
         "lengthChange": true,            // Allow changing the number of entries displayed
-        "order": [[7, "desc"]]           // Default sort by 8th column ("Submit At") in descending order
+        "order": [[7, "desc"]],          // Default sort by 8th column ("Submit At") in descending order
+        "columnDefs": [
+            {
+                "targets": [7],          // Apply sorting to the 8th column (Submit At)
+                "type": "date",          // Sort as a date
+                "render": function(data) {
+                    return moment(data).format('YYYY-MM-DD HH:mm:ss'); // Format date to ensure correct sorting
+                }
+            }
+        ]
     });
 });
+
 
 
     document.getElementById('fullscreenBtn').addEventListener('click', function () {

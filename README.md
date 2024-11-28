@@ -20,6 +20,8 @@ Note: The live site for this project is currently not functioning, but you can e
 - Bootstrap: Front-end framework for responsive design.
 - Tensorflow: Machine learning library used for building models to analyze and predict user behavior or sentiment.
 - SMTP4dev: SMTP server for testing and debugging email functionalities, particularly for the "forgot password" feature.
+- GoogleEmail:likely refers to using Google's Gmail service for email sending and receiving, which can be done using Nodemailer with Gmail’s SMTP configuration.
+- Nodemailer: is an essential tool for applications that need to send emails, such as for user registration, password resets, complaint confirmations, notifications, etc
 
 
 ## What You Can Do with This Project

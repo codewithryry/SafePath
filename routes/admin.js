@@ -39,48 +39,112 @@ router.post('/complaints', async (req, res) => {
 
 
 
-// Route to get the dashboard data
-    router.get('/dashboard', isAuthenticated, (req, res) => {
-        // Get department counts
-        db.query('SELECT department, COUNT(*) AS count FROM complaints GROUP BY department', (err, departmentResults) => {
-            if (err) {
-                console.error('Error retrieving department counts:', err);
-                return res.status(500).send('Error retrieving department counts');
-            }
-            // Get status counts
-            db.query('SELECT status, COUNT(*) AS count FROM complaints GROUP BY status', (err, statusResults) => {
-                if (err) {
-                    console.error('Error retrieving status counts:', err);
-                    return res.status(500).send('Error retrieving status counts');
-                } 
-                // Get year level counts
-                db.query('SELECT year_level, COUNT(*) AS count FROM complaints GROUP BY year_level', (err, yearLevelResults) => {
-                    if (err) {
-                        console.error('Error retrieving year level counts:', err);
-                        return res.status(500).send('Error retrieving year level counts');
-                    } 
-                    // Prepare department counts
-                    const departmentCounts = {};
-                    departmentResults.forEach(row => {
-                        departmentCounts[row.department] = row.count;
-                    });  
-                    // Prepare status counts
-                    const statusCounts = {};
-                    statusResults.forEach(row => {
-                        statusCounts[row.status] = row.count;
-                    });  
-                    // Prepare year level counts
-                    const yearLevelCounts = {};
-                    yearLevelResults.forEach(row => {
-                        yearLevelCounts[row.year_level] = row.count;
+// // Route to get the dashboard data
+//     router.get('/dashboard', isAuthenticated, (req, res) => {
+//         // Get department counts
+//         db.query('SELECT department, COUNT(*) AS count FROM complaints GROUP BY department', (err, departmentResults) => {
+//             if (err) {
+//                 console.error('Error retrieving department counts:', err);
+//                 return res.status(500).send('Error retrieving department counts');
+//             }
+//             // Get status counts
+//             db.query('SELECT status, COUNT(*) AS count FROM complaints GROUP BY status', (err, statusResults) => {
+//                 if (err) {
+//                     console.error('Error retrieving status counts:', err);
+//                     return res.status(500).send('Error retrieving status counts');
+//                 } 
+//                 // Get year level counts
+//                 db.query('SELECT year_level, COUNT(*) AS count FROM complaints GROUP BY year_level', (err, yearLevelResults) => {
+//                     if (err) {
+//                         console.error('Error retrieving year level counts:', err);
+//                         return res.status(500).send('Error retrieving year level counts');
+//                     } 
+//                     // Prepare department counts
+//                     const departmentCounts = {};
+//                     departmentResults.forEach(row => {
+//                         departmentCounts[row.department] = row.count;
+//                     });  
+//                     // Prepare status counts
+//                     const statusCounts = {};
+//                     statusResults.forEach(row => {
+//                         statusCounts[row.status] = row.count;
+//                     });  
+//                     // Prepare year level counts
+//                     const yearLevelCounts = {};
+//                     yearLevelResults.forEach(row => {
+//                         yearLevelCounts[row.year_level] = row.count;
+//                     });
+//                     // Render the dashboard with department, status, and year level counts
+//                     res.render('dashboard', { departmentCounts, statusCounts, yearLevelCounts });
+//                 });
+//             });
+//         });
+//     });
+    
+
+
+router.get('/dashboard', isAuthenticated, (req, res) => {
+    // Get department counts
+    db.query('SELECT department, COUNT(*) AS count FROM complaints GROUP BY department', (err, departmentResults) => {
+        if (err) return res.status(500).send('Error retrieving department counts');
+
+        // Get status counts
+        db.query('SELECT status, COUNT(*) AS count FROM complaints GROUP BY status', (err, statusResults) => {
+            if (err) return res.status(500).send('Error retrieving status counts');
+
+            // Get year level counts
+            db.query('SELECT year_level, COUNT(*) AS count FROM complaints GROUP BY year_level', (err, yearLevelResults) => {
+                if (err) return res.status(500).send('Error retrieving year level counts');
+
+                // Get monthly trends
+                db.query('SELECT MONTHNAME(created_at) AS month, COUNT(*) AS count FROM complaints GROUP BY MONTH(created_at)', (err, monthlyResults) => {
+                    if (err) return res.status(500).send('Error retrieving monthly trends');
+
+                    // Get weekly trends
+                    db.query('SELECT WEEK(created_at) AS week, COUNT(*) AS count FROM complaints GROUP BY WEEK(created_at)', (err, weeklyResults) => {
+                        if (err) return res.status(500).send('Error retrieving weekly trends');
+
+                        // Prepare data
+                        const departmentCounts = departmentResults.reduce((acc, row) => {
+                            acc[row.department] = row.count;
+                            return acc;
+                        }, {});
+
+                        const statusCounts = statusResults.reduce((acc, row) => {
+                            acc[row.status] = row.count;
+                            return acc;
+                        }, {});
+
+                        const yearLevelCounts = yearLevelResults.reduce((acc, row) => {
+                            acc[row.year_level] = row.count;
+                            return acc;
+                        }, {});
+
+                        const monthlyTrends = monthlyResults.reduce((acc, row) => {
+                            acc[row.month] = row.count;
+                            return acc;
+                        }, {});
+
+                        const weeklyTrends = weeklyResults.reduce((acc, row) => {
+                            acc[row.week] = row.count;
+                            return acc;
+                        }, {});
+
+                        // Render the dashboard with all data
+                        res.render('dashboard', {
+                            departmentCounts,
+                            statusCounts,
+                            yearLevelCounts,
+                            monthlyTrends,
+                            weeklyTrends
+                        });
                     });
-                    // Render the dashboard with department, status, and year level counts
-                    res.render('dashboard', { departmentCounts, statusCounts, yearLevelCounts });
                 });
             });
         });
     });
-    
+});
+
 
 router.get('/get-status-counts', async (req, res) => {
     try {
@@ -136,43 +200,91 @@ router.get('/dashboard/feedback', isAuthenticated, (req, res) => {
     });
 });
 
-// Route to get complaints data with department counts and year level counts
 router.get('/dashboard/complaints', isAuthenticated, (req, res) => {
     db.query('SELECT * FROM complaints ORDER BY created_at DESC', (err, complaints) => {
         if (err) {
             console.error('Error retrieving complaints:', err);
             return res.status(500).send('Error retrieving complaints');
         }
+
         // Get department counts
         db.query('SELECT department, COUNT(*) AS count FROM complaints GROUP BY department', (err, departmentResults) => {
             if (err) {
                 console.error('Error retrieving department counts:', err);
                 return res.status(500).send('Error retrieving department counts');
             }
-            // Prepare department counts
+
             const departmentCounts = {};
             departmentResults.forEach(row => {
                 departmentCounts[row.department] = row.count;
             });
+
             // Get year level counts
             db.query('SELECT year_level, COUNT(*) AS count FROM complaints GROUP BY year_level', (err, yearLevelResults) => {
                 if (err) {
                     console.error('Error retrieving year level counts:', err);
                     return res.status(500).send('Error retrieving year level counts');
                 }
-                // Prepare year level counts
+
                 const yearLevelCounts = {};
                 yearLevelResults.forEach(row => {
                     yearLevelCounts[row.year_level] = row.count;
                 });
-                // Render complaints view with department counts and year level counts
-                res.render('adminComplaints', { complaints, departmentCounts, yearLevelCounts }); // Pass yearLevelCounts to the view
+
+                // Get status counts
+                db.query('SELECT status, COUNT(*) AS count FROM complaints GROUP BY status', (err, statusResults) => {
+                    if (err) {
+                        console.error('Error retrieving status counts:', err);
+                        return res.status(500).send('Error retrieving status counts');
+                    }
+
+                    const statusCounts = {};
+                    statusResults.forEach(row => {
+                        statusCounts[row.status] = row.count;
+                    });
+
+                    // Monthly Trends Query (example)
+                    db.query('SELECT MONTH(created_at) AS month, COUNT(*) AS count FROM complaints GROUP BY month ORDER BY month ASC', (err, monthlyResults) => {
+                        if (err) {
+                            console.error('Error retrieving monthly trends:', err);
+                            return res.status(500).send('Error retrieving monthly trends');
+                        }
+
+                        const monthlyTrends = monthlyResults.map(row => ({
+                            month: row.month,
+                            count: row.count
+                        }));
+
+                        // Weekly Trends Query (example)
+                        db.query('SELECT WEEK(created_at) AS week, COUNT(*) AS count FROM complaints GROUP BY week ORDER BY week ASC', (err, weeklyResults) => {
+                            if (err) {
+                                console.error('Error retrieving weekly trends:', err);
+                                return res.status(500).send('Error retrieving weekly trends');
+                            }
+
+                            const weeklyTrends = weeklyResults.map(row => ({
+                                week: row.week,
+                                count: row.count
+                            }));
+
+                            // Render the page and pass all the necessary data
+                            res.render('adminComplaints', {
+                                complaints,
+                                departmentCounts,
+                                yearLevelCounts,
+                                statusCounts,
+                                monthlyTrends,  // Pass monthly trends
+                                weeklyTrends    // Pass weekly trends
+                            });
+                        });
+                    });
+                });
             });
         });
     });
-
-    
 });
+
+
 
 // GET all FAQs
 router.get('/admin/dashboard/customization/faq', (req, res) => {
@@ -233,6 +345,38 @@ router.post('/admin/dashboard/customization/why-we-are-here', (req, res) => {
         }
         res.status(201).json({ message: 'Content added successfully!', id: results.insertId }); // Send success response with ID
     });
+});
+
+// Route to get severity analysis data
+router.get('/dashboard/severity-analysis', isAuthenticated, async (req, res) => {
+    try {
+        // Query to get severity counts
+        db.query(
+            `SELECT severity, COUNT(*) AS count FROM complaints GROUP BY severity`,
+            (err, results) => {
+                if (err) {
+                    console.error('Error retrieving severity counts:', err);
+                    return res.status(500).json({ message: 'Error retrieving severity counts' });
+                }
+
+                // Prepare severity counts
+                const severityCounts = {
+                    severe: 0,
+                    mild: 0,
+                    normal: 0,
+                };
+
+                results.forEach(row => {
+                    severityCounts[row.severity] = row.count;
+                });
+
+                res.json(severityCounts); // Send JSON response for frontend chart rendering
+            }
+        );
+    } catch (error) {
+        console.error('Error in severity analysis route:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
 
