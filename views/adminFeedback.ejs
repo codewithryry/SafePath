@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SafePath is a platform for reporting bullying incidents and seeking support.">
+    <meta name="author" content="Reymel Rey Mislang">
+    <title>Admin Dashboard | Bullying Reporting System</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-21ZRHLSG08"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/script/script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f7fa;
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #4d84e2;
+            color: #ffffff;
+            padding: 15px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .sidebar a {
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 0.25rem; /* Rounded corners for normal state */
+            transition: background-color 0.3s; /* Smooth background transition */
+        }
+        .sidebar a:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Highlight on hover */
+        }
+        .sidebar .nav-link.active {
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.2); /* Active link background */
+        }
+        .content {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .card {
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            background-color: #f9f9f9;
+            border-radius: 0.5rem;
+
+            height: 250px;
+        }
+        .status-card {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .status-card .card {
+            flex: 1 1 150px;
+            text-align: center;
+            padding: 15px;
+        }
+        .badge {
+            font-size: 0.85rem;
+        }
+        .small {
+            font-size: 1.0rem;
+        }
+        .fs-4 {
+            font-size: 1.5rem;
+        }
+        /* Custom styles for DataTable pagination */
+        .dataTables_wrapper .dataTables_paginate {
+            float: right; /* Align pagination to the right */
+            margin-top: 1rem;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0.5rem 1rem;
+            margin: 0 0.1rem;
+            border-radius: 0.3rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: #0056b3;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background-color: #0056b3;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; width: 100%;">
+        <nav class="sidebar">
+            <a href="/" class="logo d-flex align-items-center mb-3">
+                <img src="/images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2" style="width: 40px;">
+                <span class="logo-text font-weight-bold text-white">SafePath</span>
+            </a>
+    <ul class="nav flex-column" id="navbar">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/complaints">
+                        <i class="fas fa-comments"></i> Complaints
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin/dashboard/feedback">
+                        <i class="fas fa-star"></i> Feedback
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/customization">
+                        <i class="fas fa-cogs"></i> Customization
+                    </a>
+                </li>
+            </ul>
+            <div class="mt-auto">
+                <!-- <a class="nav-link" href="/admin/dashboard/about">
+                    <i class="fas fa-info-circle"></i> About
+                </a> -->
+                <a class="nav-link" href="/admin/logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+            <!-- <a class="nav-link mt-auto" href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a> -->
+        </nav>
+
+        <div class="content">
+            <header class="bg-light py-2 shadow-sm mb-3">
+                <h1 class="h4">Admin / Feedback</h1>
+            </header>
+
+                    <div class="card-body">
+                        <div class="status-counts">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h5>Total Feedback</h5>
+                                    <p id="totalFeedbackCount">0</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>Average Rating</h5>
+                                    <p id="averageRating">0</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>Recommendations</h5>
+                                    <p id="recommendCount">0</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div>
+                            <table id="feedbackTable" class="table table-hover table-striped align-middle w-100">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Feedback</th>
+                                        <th>Rating</th>
+                                        <th>Suggestions</th>
+                                        <th>Recommend</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (feedback && feedback.length > 0) { %>
+                                        <% feedback.forEach(item => { %>
+                                            <tr>
+                                                <td><%= item.name %></td>
+                                                <td><%= item.feedback %></td>
+                                                <td><%= item.rating %></td>
+                                                <td><%= item.suggestions %></td>
+                                                <td><%= item.recommend ? 'Yes' : 'No' %></td>
+                                            </tr>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="5" class="text-center">No feedback available.</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>                                          
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            // Assuming feedback data is available in the backend
+            const feedback = <%- JSON.stringify(feedback) %>; // Use server-side data
+
+            // Initialize DataTable
+            var feedbackTable = $('#feedbackTable').DataTable({
+                paging: true,
+                searching: false,
+                ordering: true, // Allow ordering
+                order: [[ 2, "desc" ]], // Order by rating descending
+                lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]], // Custom length menu
+                pageLength: 5 // Set default page length
+            });
+
+            // Update counts and averages after the table is initialized
+            if (feedback && feedback.length > 0) {
+                $('#totalFeedbackCount').text(feedback.length);
+
+                const totalRating = feedback.reduce((acc, item) => acc + item.rating, 0);
+                const averageRating = (totalRating / feedback.length).toFixed(2);
+                $('#averageRating').text(averageRating);
+
+                const recommendCount = feedback.filter(item => item.recommend).length;
+                $('#recommendCount').text(recommendCount);
+            }
+        });
+    </script>
+</body>
+</html>

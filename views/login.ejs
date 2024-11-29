@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="SafePath is a platform for reporting bullying incidents and seeking support.">
+    <meta name="author" content="Reymel Rey Mislang">
+    <title>Bullying Reporting System</title>
+    <link rel="stylesheet" type="text/css" href="/css/login.css" />
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="forms-container">
+        <div class="signin-signup">
+          <!-- Sign In Form -->
+          <form action="/admin/login" method="POST" onsubmit="showLoading(this)" class="sign-in-form">
+            <h2 class="form-title">Admin Login</h2>
+
+            <br>
+
+            <!-- Alert message for incorrect login -->
+            <% if (typeof error !== 'undefined' && error) { %>
+              <div class="alert alert-danger text-center">
+                Incorrect email or password. Please try again.
+              </div>
+            <% } %>
+
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="username" name="username" placeholder="Enter your email" required />
+            </div>
+
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="password" name="password" placeholder="Enter your password" required />
+            </div>
+
+           <!-- HTML -->
+<input type="submit" value="Login" class="input-field color-blue" />
+
+          </form>
+
+<!-- Sign Up Form -->
+<!-- Sign Up Form -->
+<form action="/auth/signup" method="POST" class="sign-up-form">
+    <h2 class="form-title">Sign Up</h2>
+  
+    <br>
+  
+    <!-- Conditional Alert Messages -->
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert alert-danger text-center">
+        <% if (error === 'email_exists') { %>
+          This email is already registered. Please try another email.
+        <% } else if (error === 'db_error') { %>
+          A database error occurred. Please try again later.
+        <% } else if (error === 'server_error') { %>
+          An unexpected server error occurred. Please contact support.
+        <% } else { %>
+          Something went wrong. Please try again.
+        <% } %>
+      </div>
+    <% } %>
+  
+    <!-- Email Input with Icon -->
+    <div class="input-field">
+      <i class="fas fa-envelope"></i>
+      <input type="email" id="username" name="username" placeholder="Enter your email" required>
+    </div>
+  
+    <!-- Password Input with Icon -->
+    <div class="input-field">
+      <i class="fas fa-lock"></i>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+    </div>
+  
+    <!-- Submit Button -->
+    <input type="submit" value="Sign Up" class="input-field color-blue" />
+  </form>
+  
+
+
+        </div>
+      </div>
+
+
+      <!-- Panels for Switching -->
+      <div class="panels-container">
+        <!-- Left Panel: For New Users (Sign Up) -->
+        <div class="panel left-panel">
+            <div class="content">
+                <h3>New to SafePath?</h3>
+                <p>Join SafePath today and experience secure, easy navigation through your digital life. Protect your privacy and take control of your data.</p>
+                <button class="btn transparent" id="sign-up-btn">Sign Up</button>          <!-- Forgot Password Link -->
+                <div class="forgot-password-link text-center mt-3">
+                    <a href="/auth/forgot-password">Forgot your password? Reset it here.</a>
+                </div>
+            </div>
+            <img src="/images/log.svg" class="image" alt="SafePath Logo" />
+        </div>
+    
+        <!-- Right Panel: For Existing Users (Sign In) -->
+        <div class="panel right-panel">
+            <div class="content">
+                <h3>Welcome back to SafePath!</h3>
+                <p>Access your account to manage your privacy settings, secure your data, and ensure your digital safety.</p>
+                <button class="btn transparent" id="sign-in-btn">Admin Login</button>
+                <div class="forgot-password-link text-center mt-3">
+                    <a href="/auth/forgot-password">Forgot your password? Reset it here.</a>
+                </div>
+            </div>
+            <img src="/images/register.svg" class="image" alt="SafePath Security" />
+        </div>
+    </div>    
+        
+
+    <script src="/script/app.js"></script>
+
+    <script>
+      // JavaScript to toggle between Sign In and Sign Up forms
+      const signUpBtn = document.getElementById('sign-up-btn');
+      const signInBtn = document.getElementById('sign-in-btn');
+      const signUpForm = document.querySelector('.sign-up-form');
+      const signInForm = document.querySelector('.sign-in-form');
+      const panelsContainer = document.querySelector('.panels-container');
+
+      signUpBtn.addEventListener('click', () => {
+        signUpForm.classList.add('active');
+        signInForm.classList.remove('active');
+        panelsContainer.classList.add('right-panel-active');
+      });
+
+      signInBtn.addEventListener('click', () => {
+        signInForm.classList.add('active');
+        signUpForm.classList.remove('active');
+        panelsContainer.classList.remove('right-panel-active');
+      });
+
+      function showLoading(form) {
+        const button = form.querySelector('input[type="submit"]');
+        button.classList.add('loading');
+        button.disabled = true;
+      }
+    </script>
+
+    <style>
+      /* Center content */
+      .forgot-password-link{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 20px;
+      }
+
+      .forgot-password-link a {
+        color: #ebeff3;
+        text-decoration: none;
+      }
+
+      .forgot-password-link a:hover {
+        text-decoration: underline;
+      }
+
+      /* CSS */
+.color-blue {
+    background-color: #007bff;  /* Blue background */
+    color: white;               /* White text */
+    border: none;               /* Remove border */
+    padding: 10px 20px;         /* Padding */
+    border-radius: 30px;         /* Rounded corners */
+    cursor: pointer;           /* Pointer cursor on hover */
+    transition: background-color 0.3s ease;  /* Smooth transition */
+}
+
+.color-blue:hover {
+    background-color: #0056b3;  /* Darker blue on hover */
+}
+
+
+    </style>
+  </body>
+</html>
+
+

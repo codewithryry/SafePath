@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your feedback matters. Please share your thoughts about our website.">
+    <meta name="author" content="Reymel Rey Mislang">
+    <title>Feedback | Bullying Reporting System</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="/script/script.js" defer></script> 
+
+    <style>
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            font-size: 16px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .required {
+            color: red;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-light py-3 shadow-sm sticky-header">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <a href="/" class="logo d-flex align-items-center ml-2">
+                    <img src="/images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2">
+                    <span class="logo-text font-weight-bold">SafePath</span>
+                </a>
+            </div>
+            <nav id="nav" class="nav-links d-none d-lg-flex">
+                <ul class="nav-links" id="navbar">
+                    <li><a href="/">Home</a></li> 
+                    <li><a href="/advocacy">Advocacy</a></li>    
+                    <li><a href="#contact">Contact Us</a></li>                     
+                    <li><a href="/user/feedback">Feedback</a></li>   
+                </ul>
+            </nav>
+            <button class="navbar-toggler d-lg-none" type="button" id="menuToggle">
+                ☰
+            </button>
+        </div>
+
+        </div>
+    </header>
+<div class="sliding-menu d-lg-none" id="mobileMenu">
+    <div class="menu-content">
+        <div class="menu-text">
+            <p class="welcome-message">Welcome to SafePath!</p>
+            <p class="priority-message">Your safety, our priority.</p>
+        </div>
+        <ul class="menu-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/advocacy">Advocacy</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="/user/feedback">Feedback</a></li>
+        </ul>
+    </div>
+</div>
+
+<style>
+/* Sliding menu container */
+.sliding-menu {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100%;
+    width: 50%;
+    max-width: 300px;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    transition: right 0.3s ease;
+    z-index: 1050;
+    padding: 20px;
+}
+
+/* Content inside sliding menu */
+.menu-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* Text section for the welcome message */
+.menu-text {
+    margin-bottom: 20px; /* Space between text and menu links */
+    color: #333;
+}
+
+.welcome-message {
+    font-size: 18px;
+    font-weight: bold;
+    color: #007BFF; /* Highlighted text color */
+}
+
+.priority-message {
+    font-size: 16px;
+    font-style: italic;
+    color: #555;
+}
+
+/* Menu links section */
+.menu-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-links li {
+    margin: 10px 0;
+}
+
+.menu-links li a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #333;
+}
+
+/* Active state for sliding menu */
+.sliding-menu.active {
+    right: 0;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuToggle.addEventListener('click', function() {
+        mobileMenu.classList.toggle('active');
+    });
+
+    // Close menu if clicking outside the menu
+    window.addEventListener('click', function(event) {
+        if (!mobileMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            mobileMenu.classList.remove('active');
+        }
+    });
+});
+</script>
+
+
+    
+    <div class="container">
+        <h1 class="mt-5">Your Feedback Matters</h1>
+        <form action="/user/submit-feedback" method="POST">
+
+            <label for="name">Name <span class="required">*</span></label>
+            <input type="text" id="name" name="name" placeholder="You may provide your name or remain anonymous." required>
+
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="Provide your email if you wish to receive follow-up information.">
+
+            <label for="feedback">Feedback <span class="required">*</span></label>
+            <textarea id="feedback" name="feedback" rows="5" placeholder="Please share your thoughts." required></textarea>
+
+            <label for="rating">Rate Your Experience</label>
+            <select id="rating" name="rating">
+                <option value="1">1 - Very Poor</option>
+                <option value="2">2 - Poor</option>
+                <option value="3">3 - Average</option>
+                <option value="4">4 - Good</option>
+                <option value="5">5 - Excellent</option>
+            </select>
+
+            <label for="suggestions">Suggestions for Improvement</label>
+            <textarea id="suggestions" name="suggestions" rows="4" placeholder="Any suggestions?"></textarea>
+
+            <label for="recommend">Would you recommend us? <span class="required">*</span></label>
+            <select id="recommend" name="recommend" required>
+                <option value="">Select an option</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+                <option value="maybe">Maybe</option>
+            </select>
+
+            <input type="submit" value="Submit Feedback">
+        </form>
+    </div>
+<!-- Footer -->
+<footer class="bg-light text-dark py-5" style="background-image: url('/images/campus2.jpg'); background-size: cover; background-position: center; color: white;">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-4 mb-4"> <!-- About Us on the left -->
+                <h4 class="font-weight-bold text-white">About</h4>
+                <p class="text-white">SafePath: Bullying Complaint System for Student Safety with Chatbot Support and Sentiment Analysis</p>
+                <h5 class="font-weight-bold text-white">Our Team:</h5>
+                <ul class="text-white">
+                    <li><strong>Reymel Mislang</strong> - Project Manager</li>
+                    <li><strong>Gwen</strong> - Quality Assurance</li>
+                    <li><strong>Erika</strong> - Designer</li>
+                </ul>
+            </div>
+
+            <div class="col-md-4 mb-4 text-left">
+                <!-- Stay Connected Section -->
+                <h4 class="font-weight-bold text-white">Stay Connected</h4>
+                <ul class="list-unstyled mb-3">
+                    <li>
+                        <a href="https://www.facebook.com/MinSUCalapanGuidanceOffice" 
+                           class="text-white d-flex align-items-center" 
+                           aria-label="Facebook" 
+                           target="_blank">
+                            <i class="fab fa-facebook-f mr-2"></i>MinSU Calapan Guidance Office
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" 
+                           class="text-white d-flex align-items-center" 
+                           aria-label="Twitter">
+                            <i class="fab fa-twitter mr-2"></i> Twitter
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" 
+                           class="text-white d-flex align-items-center" 
+                           aria-label="Instagram">
+                            <i class="fab fa-instagram mr-2"></i> Instagram
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-4 mb-4 text-left"> <!-- Help Links on the left -->
+                <h4 class="font-weight-bold text-white">Help Links</h4>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-white">FAQ</a></li>
+                    <li><a href="#" class="text-white">Admissions</a></li>
+                    <li><a href="#" class="text-white">Contact</a></li>
+                    <li><a href="#" class="text-white">Guidance Office</a></li> <!-- Added Guidance Office -->
+                </ul>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <p class="small text-muted">© 2024 SafePath. All Rights Reserved.</p>
+        </div>
+    </div>    
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SafePath is a platform for reporting bullying incidents and seeking support.">
+    <meta name="author" content="Reymel Rey Mislang">
+    <title>Admin Dashboard | Bullying Reporting System</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-21ZRHLSG08"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/script/script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    
+    <style>
+        body {
+            background-color: #f4f7fa;
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+            height: 100vh; /* Make body full height */
+            margin: 0; /* Remove default margin */
+            display: flex; /* Use flexbox for layout */
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #4d84e2;
+            color: #ffffff;
+            padding: 15px;
+            height: 100vh; /* Sidebar should be full height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .sidebar a {
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 0.25rem; /* Rounded corners for normal state */
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Highlight on hover */
+    border-radius: 0.25rem; /* Keep rounded corners on hover */
+}
+
+.sidebar .nav-link.active {
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.2); /* Active link background */
+    border-radius: 0.25rem; /* Keep rounded corners on active */
+}
+
+        .content {
+            flex-grow: 1; /* Allow content to fill the remaining space */
+            padding: 20px;
+            overflow-y: auto; /* Allow scrolling if content exceeds the viewport height */
+        }
+        .card {
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .yearLevelComplaintsChart {
+            background-color: #f9f9f9;
+            border-radius: 0.5rem;
+            padding: 15px;
+            height: 250px;
+        }
+
+        .status-card {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .status-card .card {
+            flex: 1 1 150px;
+            text-align: center;
+            padding: 15px;
+        }
+        .badge {
+            font-size: 0.85rem;
+        }
+        .small {
+            font-size: 1.0rem; /* Adjust as needed */
+        }
+
+            .fs-4 {
+                font-size: 1.5rem; /* Adjust for larger number size */
+            }
+
+           /* Styles for Department chart */
+.department-chart-container {
+  width: 100%;  /* Full width */
+  max-width: 1000px;  /* Maximum width */
+  margin: 0 auto;  /* Center the container */
+  height: 273px;  /* Adjust height based on content */
+}
+
+/* Styles for Year Level chart */
+.year-level-chart-container {
+  width: 100%;  /* Full width */
+  max-width: 1000px;  /* Maximum width */
+  margin: 0 auto;  /* Center the container */
+  height: auto;  /* Adjust height based on content */
+  min-height: 300px;  /* Minimum height */
+}
+
+/* Styles for Analytics Overview chart */
+.overview-chart-container {
+  width: 100vw;  /* Use 100% of the viewport width */
+  max-width: 1180px;  /* Set max-width to prevent it from becoming too wide */
+  height: 500px;  /* Fixed height */
+  margin: 0 auto;  /* Center the container horizontally */
+}
+
+/* Ensure the canvas inside each container takes full width and height */
+#complaintsChart, #yearLevelComplaintsChart, #analyticsOverviewChart {
+  width: 100% !important;  /* Canvas takes up full width of its container */
+  height: 100% !important; /* Canvas takes up full height of its container */
+}
+
+/* Ensure the row does not have any margins */
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+
+
+    </style>
+</head>
+<body>
+    <!-- Sidebar and Content Wrapper -->
+    <div style="display: flex; width: 100%;">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <a href="/" class="logo d-flex align-items-center mb-3">
+                <img src="/images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2" style="width: 40px;">
+                <span class="logo-text font-weight-bold text-white">SafePath</span>
+            </a>
+            <ul class="nav flex-column" id="navbar">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin/dashboard">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/complaints">
+                        <i class="fas fa-comments"></i> Complaints
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/feedback">
+                        <i class="fas fa-star"></i> Feedback
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/customization">
+                        <i class="fas fa-cogs"></i> Customization
+                    </a>
+                </li>
+            </ul>
+
+        
+            <!-- Move About and Logout links to the bottom using flex -->
+            <div class="mt-auto">
+                <!-- <a class="nav-link" href="/admin/dashboard/about">
+                    <i class="fas fa-info-circle"></i>  About
+                </a> -->
+                <a class="nav-link" href="/admin/logout">
+                    <i class="fas fa-sign-out-alt"></i>  Logout
+                </a>
+            </div>
+        </nav>        
+        <!-- Content Area -->
+        <div class="content">
+            <header class="bg-light py-2 shadow-sm mb-3">
+                <h1 class="h4">Admin / Dashboard</h1>
+            </header>
+
+<!-- Row for Complaints Status Counts (Bottom Section) -->
+<div class="status-card mt-2">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title small">Pending Complaints</h5> <!-- Made card-title smaller -->
+            <span class="badge bg-warning p-2 rounded-pill"></span>
+            <span id="pendingCount" class="badge bg-light text-dark fw-bold fs-4"><%= statusCounts.pending || 0 %></span> <!-- Increased font size for numbers -->
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title small">In Progress Complaints</h5> <!-- Made card-title smaller -->
+            <span class="badge bg-info p-2 rounded-pill"></span>
+            <span id="inProgressCount" class="badge bg-light text-dark fw-bold fs-4"><%= statusCounts['in_progress'] || 0 %></span> <!-- Increased font size for numbers -->
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title small">Resolved Complaints</h5> <!-- Made card-title smaller -->
+            <span class="badge bg-success p-2 rounded-pill"></span>
+            <span id="resolvedCount" class="badge bg-light text-dark fw-bold fs-4"><%= statusCounts.resolved || 0 %></span> <!-- Increased font size for numbers -->
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title small">Rejected Complaints</h5> <!-- Made card-title smaller -->
+            <span class="badge bg-secondary p-2 rounded-pill"></span>
+            <span id="rejectedCount" class="badge bg-light text-dark fw-bold fs-4"><%= statusCounts.rejected || 0 %></span> <!-- Increased font size for numbers -->
+        </div>
+    </div>
+</div>
+
+
+<div class="row mt-2">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm rounded-3">
+            <div class="card-body">
+                <h5 class="card-title">Department</h5>
+                <div class="department-chart-container position-relative">
+                    <canvas id="complaintsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm rounded-3">
+            <div class="card-body">
+                <h5 class="card-title">Year Level</h5>
+                <div class="chart-container position-relative">
+                    <canvas id="yearLevelComplaintsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Row for Monthly and Weekly Trends (Full Width) -->
+<div class="row mt-6">
+    <div class="col-12"> <!-- Full-width column for Monthly and Weekly Trends -->
+        <div class="card border-0 shadow-sm rounded-3">
+            <div class="card-body">
+                <h5 class="card-title">Monthly and Weekly Trends</h5>
+                <div class="overview-chart-container position-relative" style="width: 100%; height: 400px;">
+                    <canvas id="trendsChart" style="width: 100%; height: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Row for Analytics Overview (Full Width) -->
+<div class="row mt-4">
+    <div class="col-12"> <!-- Full-width column for Analytics Overview -->
+        <div class="card border-0 shadow-sm rounded-3">
+            <div class="card-body">
+                <h5 class="card-title">Analytics Overview</h5>
+                <div class="overview-chart-container position-relative">
+                    <canvas id="analyticsOverviewChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <%- include('partials/adminScript') %>
+
+
+</body>
+</html>

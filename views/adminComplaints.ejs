@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SafePath is a platform for reporting bullying incidents and seeking support.">
+    <meta name="author" content="Reymel Rey Mislang">
+    <title>Admin Dashboard | Bullying Reporting System</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-21ZRHLSG08"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/script/script.js" defer></script>
+
+    <style>
+        body {
+            background-color: #f4f7fa;
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+            height: 100vh; /* Make body full height */
+            margin: 0; /* Remove default margin */
+            display: flex; /* Use flexbox for layout */
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #4d84e2;
+            color: #ffffff;
+            padding: 15px;
+            height: 100vh; /* Sidebar should be full height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .sidebar a {
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 0.25rem; /* Rounded corners for normal state */
+        transition: background-color 0.3s; /* Smooth background transition */
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Highlight on hover */
+            border-radius: 0.25rem; /* Keep rounded corners on hover */
+        }
+
+        .sidebar .nav-link.active {
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.2); /* Active link background */
+            border-radius: 0.25rem; /* Keep rounded corners on active */
+        }
+
+        .content {
+            flex-grow: 1; /* Allow content to fill the remaining space */
+            padding: 20px;
+            overflow-y: auto; /* Allow scrolling if content exceeds the viewport height */
+        }
+        .card {
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            background-color: #f9f9f9;
+            border-radius: 0.5rem;
+            padding: 15px;
+            height: 250px;
+        }
+        .status-card {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .status-card .card {
+            flex: 1 1 150px;
+            text-align: center;
+            padding: 15px;
+        }
+        .badge {
+            font-size: 0.85rem;
+        }
+        .small {
+    font-size: 1.0rem; /* Adjust as needed */
+}
+
+.fs-4 {
+    font-size: 1.5rem; /* Adjust for larger number size */
+}
+th {
+        background-color: blue; /* Set background color to blue */
+        color: white; /* Set text color to white for contrast */
+        white-space: nowrap; /* Prevent line breaks */
+        text-align: center; /* Center-align text */
+        padding: 8px; /* Add padding for readability */
+    }
+/* Make sure pagination controls are visible */
+.dataTables_wrapper .dataTables_paginate {
+    display: flex;
+    justify-content: center; /* Center the pagination controls */
+    margin-top: 15px; /* Add some space above pagination */
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0.5rem 1rem; /* Adjust padding for buttons */
+    margin: 0 5px; /* Space between buttons */
+    border: 1px solid #007bff; /* Border color */
+    border-radius: 0.25rem; /* Rounded corners */
+    color: #007bff; /* Button text color */
+    background-color: #fff; /* Button background color */
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #007bff; /* Background color on hover */
+    color: #fff; /* Text color on hover */
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #007bff; /* Highlight current page */
+    color: #fff; /* Text color for current page */
+    border: 1px solid #007bff; /* Keep border same as background */
+}
+
+/* Ensure the page adjusts well when in fullscreen mode */
+:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* Optional: Adjust sidebar or other elements */
+:fullscreen .sidebar {
+    display: none; /* Hide the sidebar when in fullscreen */
+}
+
+:fullscreen .content-wrapper {
+    margin-left: 0; /* Adjust the main content layout */
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- Sidebar and Content Wrapper -->
+    <div style="display: flex; width: 100%;">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <a href="/" class="logo d-flex align-items-center mb-3">
+                <img src="/images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2" style="width: 40px;">
+                <span class="logo-text font-weight-bold text-white">SafePath</span>
+            </a>
+            <ul class="nav flex-column" id="navbar">
+                <li class="nav-item">
+                    <a class="nav-link " href="/admin/dashboard">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin/dashboard/complaints">
+                        <i class="fas fa-comments"></i> Complaints
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/feedback">
+                        <i class="fas fa-star"></i> Feedback
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/customization">
+                        <i class="fas fa-cogs"></i> Customization
+                    </a>
+                </li>
+            </ul>
+            <div class="mt-auto">
+                <!-- <a class="nav-link" href="/admin/dashboard/about">
+                    <i class="fas fa-info-circle"></i> About
+                </a> -->
+                <a class="nav-link" href="/admin/logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+            
+            <!-- <a class="nav-link mt-auto" href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a> -->
+        </nav>
+
+        <div class="content">
+            <header class="bg-light py-2 shadow-sm mb-3 d-flex justify-content-between align-items-center">
+                <h1 class="h4 mb-0">Admin / Complaints</h1>
+                <!-- Fullscreen Button -->
+                <button id="fullscreenBtn" class="btn btn-primary">
+                    <i class="fas fa-expand"></i> Fullscreen
+                </button>
+            </header>
+        
+
+            <div class="complaints-table">
+                <p class="text-muted text-left mb-3">
+                    <small>
+                        Tip: To view this page in fullscreen mode, click the <strong>Fullscreen</strong> button in the top-right corner of the header.
+                    </small>
+                </p>
+            
+                <% if (complaints && complaints.length > 0) { %>
+                    <table id="complaintsTable" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Issue Type</th>
+                                <th>Reports Description</th>
+                                <th>Contact Method</th>
+                                <th>Sentiment</th>
+                                <th>Submit At</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% complaints.forEach(complaint => { %>
+                                <tr class="complaint-row" 
+                                    data-student-id="<%= complaint.student_id %>"
+                                    data-name="<%= complaint.name %>"
+                                    data-email="<%= complaint.email %>"
+                                    data-issue_type="<%= complaint.issue_type %>"
+                                    data-description="<%= complaint.issue_description %>"
+                                    data-contact_method="<%= complaint.contact_method %>"
+                                    data-sentiment="<%= complaint.sentiment %>"
+                                    data-created_at="<%= new Date(complaint.created_at).toLocaleString('en-US', { timeZoneName: 'short' }).replace(/ GMT.*/g, '') %>"
+                                    data-status="<%= complaint.status %>">
+                                    <td><%= complaint.student_id %></td>
+                                    <td><%= complaint.name %></td>
+                                    <td><%= complaint.email %></td>
+                                    <td><%= complaint.issue_type %></td>
+                                    <td><%= complaint.issue_description %></td>
+                                    <td><%= complaint.contact_method %></td>
+                                    <td><%= complaint.sentiment %></td>
+                                    <td><%= new Date(complaint.created_at).toLocaleString('en-US', { timeZoneName: 'short' }).replace(/ GMT.*/g, '') %></td>
+            
+                                    <td>
+                                        <select class="form-select status-dropdown rounded-pill" data-id="<%= complaint.id %>">
+                                            <option value="pending" <%= complaint.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                                            <option value="in_progress" <%= complaint.status === 'in_progress' ? 'selected' : '' %>>In Progress</option>
+                                            <option value="resolved" <%= complaint.status === 'resolved' ? 'selected' : '' %>>Resolved</option>
+                                            <option value="rejected" <%= complaint.status === 'rejected' ? 'selected' : '' %>>Rejected</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <p class="text-center">No complaints available.</p>
+                <% } %>
+            </div>
+            
+            <!-- Modal for displaying detailed complaint information -->
+            <div class="modal fade" id="complaintModal" tabindex="-1" aria-labelledby="complaintModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="complaintModalLabel">Complaint Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="complaint-details">
+                                <p><strong>Student ID:</strong> <span id="modalStudentId"></span></p>
+                                <p><strong>Name:</strong> <span id="modalName"></span></p>
+                                <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+                                <p><strong>Issue Type:</strong> <span id="modalIssueType"></span></p>
+                                <p><strong>Description:</strong> <span id="modalDescription"></span></p>
+                                <p><strong>Contact Method:</strong> <span id="modalContactMethod"></span></p>
+                                <p><strong>Sentiment:</strong> <span id="modalSentiment"></span></p>
+                                <p><strong>Submitted At:</strong> <span id="modalSubmitAt"></span></p>
+                                <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+<script>
+    // Event listener for opening the modal with complaint details
+    document.querySelectorAll('.complaint-row').forEach(row => {
+        row.addEventListener('click', function(event) {
+            // Prevent the modal from opening if the status dropdown is clicked
+            if (event.target.classList.contains('status-dropdown')) {
+                return; // Do nothing if the clicked element is the status dropdown
+            }
+
+            // Get data attributes from the clicked row
+            const studentId = this.getAttribute('data-student-id');
+            const name = this.getAttribute('data-name');
+            const email = this.getAttribute('data-email');
+            const issueType = this.getAttribute('data-issue_type');
+            const description = this.getAttribute('data-description');
+            const contactMethod = this.getAttribute('data-contact_method');
+            const sentiment = this.getAttribute('data-sentiment');
+            const createdAt = this.getAttribute('data-created_at');
+            const status = this.getAttribute('data-status');
+            
+            // Populate the modal with the complaint details
+            document.getElementById('modalStudentId').textContent = studentId;
+            document.getElementById('modalName').textContent = name;
+            document.getElementById('modalEmail').textContent = email;
+            document.getElementById('modalIssueType').textContent = issueType;
+            document.getElementById('modalDescription').textContent = description;
+            document.getElementById('modalContactMethod').textContent = contactMethod;
+            document.getElementById('modalSentiment').textContent = sentiment;
+            document.getElementById('modalSubmitAt').textContent = createdAt;
+            document.getElementById('modalStatus').textContent = status;
+
+            // Clear any previous success message in the page
+            const pageSuccessMessage = document.getElementById('pageStatusSuccessMessage');
+            if (pageSuccessMessage) {
+                pageSuccessMessage.remove();
+            }
+
+            // Open the modal
+            const myModal = new bootstrap.Modal(document.getElementById('complaintModal'));
+            myModal.show();
+        });
+    });
+
+    // Event listener for status change
+    document.querySelectorAll('.status-dropdown').forEach(dropdown => {
+        dropdown.addEventListener('change', function() {
+            const newStatus = this.value;
+            const complaintId = this.getAttribute('data-id');
+            const row = this.closest('.complaint-row');  // Get the closest row
+
+            // Simulate status update here (you can replace this with an actual AJAX request)
+            row.setAttribute('data-status', newStatus);  // Update the status in the row
+
+            // Update the status text in the modal (if it's open)
+            document.getElementById('modalStatus').textContent = newStatus;
+
+            // Create success message for the page
+            const pageSuccessMessage = document.createElement('div');
+            pageSuccessMessage.id = 'pageStatusSuccessMessage';
+            pageSuccessMessage.classList.add('alert', 'alert-success', 'mt-3');
+            pageSuccessMessage.textContent = 'Status updated successfully!';
+
+            // Insert the success message into the page's DOM (outside the modal)
+            const complaintsContainer = document.querySelector('.complaints-table'); // Or the element you want
+            complaintsContainer.insertBefore(pageSuccessMessage, complaintsContainer.querySelector('.table'));
+
+            // Optionally, you can hide the success message after a few seconds
+            setTimeout(() => {
+                pageSuccessMessage.style.display = 'none';
+            }, 3000);
+        });
+    });
+
+
+
+
+    
+$(document).ready(function() {
+    $('#complaintsTable').DataTable({
+        "paging": true,                  // Enable pagination
+        "lengthMenu": [5, 10, 25],       // Options for the number of entries to show
+        "pageLength": 10,                // Default number of entries to show
+        "searching": true,               // Enable searching
+        "lengthChange": true,            // Allow changing the number of entries displayed
+        "order": [[7, "desc"]],          // Default sort by 8th column ("Submit At") in descending order
+        "columnDefs": [
+            {
+                "targets": [7],          // Apply sorting to the 8th column (Submit At)
+                "type": "date",          // Sort as a date
+                "render": function(data) {
+                    return moment(data).format('YYYY-MM-DD HH:mm:ss'); // Format date to ensure correct sorting
+                }
+            },
+        ]
+    });
+
+
+    document.getElementById('fullscreenBtn').addEventListener('click', function () {
+        if (!document.fullscreenElement) {
+            // Request fullscreen
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
+        } else {
+            // Exit fullscreen
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { // Firefox
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { // IE/Edge
+                document.msExitFullscreen();
+            }
+        }
+    });
+});
+
+    </script>
+                <%- include('partials/adminScript') %>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+        </div>
+        </div>
+    </body>
+</html>

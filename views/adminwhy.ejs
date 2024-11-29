@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SafePath is a platform for reporting bullying incidents and seeking support.">
+    <meta name="author" content="Reymel Rey Mislang">
+    <title>Admin Dashboard | Bullying Reporting System</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="/script/script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #f4f7fa;
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #4d84e2;
+            color: #ffffff;
+            padding: 15px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .sidebar a {
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 0.25rem; /* Rounded corners for normal state */
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Highlight on hover */
+    border-radius: 0.25rem; /* Keep rounded corners on hover */
+}
+
+.sidebar .nav-link.active {
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.2); /* Active link background */
+    border-radius: 0.25rem; /* Keep rounded corners on active */
+}
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .card {
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            background-color: #f9f9f9;
+            border-radius: 0.5rem;
+            padding: 15px;
+            height: 250px;
+        }
+        .status-card {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .status-card .card {
+            flex: 1 1 150px;
+            text-align: center;
+            padding: 15px;
+        }
+        .badge {
+            font-size: 0.85rem;
+        }
+        .small {
+            font-size: 1.0rem;
+        }
+        .fs-4 {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; width: 100%;">
+        <nav class="sidebar">
+            <a href="/" class="logo d-flex align-items-center mb-3">
+                <img src="/images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2" style="width: 40px;">
+                <span class="logo-text font-weight-bold text-white">SafePath</span>
+            </a>
+            <ul class="nav flex-column" id="navbar">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/complaints">
+                        <i class="fas fa-comments"></i> Complaints
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/feedback">
+                        <i class="fas fa-star"></i> Feedback
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/customization">
+                        <i class="fas fa-cogs"></i> Customization
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin/dashboard/customization/why-we-here">
+                        <i class="fas fa-info-circle"></i> Why We’re Here
+                    </a>
+                </li>
+                
+            </ul>
+
+            <div class="mt-auto">
+                <!-- <a class="nav-link" href="/admin/dashboard/about">
+                    <i class="fas fa-info-circle"></i> About
+                </a> -->
+                <a class="nav-link" href="/admin/logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+            <!-- <a class="nav-link mt-auto" href="/admin/logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a> -->
+            
+        </nav>
+        <div class="content">
+            <header class="bg-light py-2 shadow-sm mb-3">
+                <h1 class="h4">Admin / Customization / Why We Are Here</h1>
+            </header>
+            <div class="row">
+                <div class="col-lg-12 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="mb-0">Add "Why We Are Here" Content</h4>
+                        </div>
+                        <div class="card-body">
+                            <form id="whyWeAreHereForm">
+                                <div class="form-group">
+                                    <label for="why_title">Title:</label>
+                                    <input type="text" id="why_title" class="form-control" placeholder="Enter title here..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="why_paragraph1">Paragraph 1:</label>
+                                    <textarea id="why_paragraph1" class="form-control" rows="2" placeholder="Enter first paragraph here..." required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="why_paragraph2">Paragraph 2:</label>
+                                    <textarea id="why_paragraph2" class="form-control" rows="2" placeholder="Enter second paragraph here..." required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="why_paragraph3">Paragraph 3:</label>
+                                    <textarea id="why_paragraph3" class="form-control" rows="2" placeholder="Enter third paragraph here..." required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="why_video_link">Video Link:</label>
+                                    <input type="url" id="why_video_link" class="form-control" placeholder="Enter video link here..." required>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Add "Why We Are Here" Content</button>
+                            </form>
+                            <div id="whyResponse" class="mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+                
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch existing content
+            fetch('/admin/dashboard/customization/why-we-are-here')
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to fetch content');
+                    return response.json();
+                })
+                .then(data => {
+                    // Populate the form with existing data
+                    document.getElementById('why_title').value = data.title;
+                    document.getElementById('why_paragraph1').value = data.paragraph1;
+                    document.getElementById('why_paragraph2').value = data.paragraph2;
+                    document.getElementById('why_paragraph3').value = data.paragraph3;
+                    document.getElementById('why_video_link').value = data.video_link;
+                })
+                .catch(error => {
+                    console.error('Error loading existing content:', error);
+                });
+
+            // Handle form submission to update content
+            document.getElementById('whyWeAreHereForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const title = document.getElementById('why_title').value;
+                const paragraph1 = document.getElementById('why_paragraph1').value;
+                const paragraph2 = document.getElementById('why_paragraph2').value;
+                const paragraph3 = document.getElementById('why_paragraph3').value;
+                const video_link = document.getElementById('why_video_link').value;
+
+                fetch('/admin/dashboard/customization/why-we-are-here', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ title, paragraph1, paragraph2, paragraph3, video_link }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('whyResponse').innerText = data.message || 'Content updated successfully!';
+                })
+                .catch(error => {
+                    console.error('Error updating content:', error);
+                    document.getElementById('whyResponse').innerText = 'Failed to update content.';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

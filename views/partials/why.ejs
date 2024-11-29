@@ -1,0 +1,40 @@
+<!-- Why We Are Here Section -->
+<section id="why-we-are-here" class="info-section bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-6 order-md-1">
+                <h2 class="text-left" id="dynamic-title">Why We Are Here</h2>
+                <p class="text-left" id="dynamic-paragraph1"></p>
+                <p class="text-left" id="dynamic-paragraph2"></p>
+                <p class="text-left" id="dynamic-paragraph3"></p>
+            </div>
+            <div class="col-md-12 col-lg-6 order-md-2">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe id="dynamic-video" class="embed-responsive-item" src="" title="Why We Are Here Video" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Fetch existing content for "Why We Are Here"
+        fetch('/admin/dashboard/customization/why-we-are-here')
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch content');
+                return response.json();
+            })
+            .then(data => {
+                // Populate the section with existing data
+                document.getElementById('dynamic-title').innerText = data.title;
+                document.getElementById('dynamic-paragraph1').innerText = data.paragraph1;
+                document.getElementById('dynamic-paragraph2').innerText = data.paragraph2;
+                document.getElementById('dynamic-paragraph3').innerText = data.paragraph3;
+                document.getElementById('dynamic-video').src = data.video_link; // Set video link
+            })
+            .catch(error => {
+                console.error('Error loading existing content:', error);
+                // Optionally, you can display an error message to the user here
+            });
+    });
+</script>

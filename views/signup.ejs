@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Signup - SafePath Bullying Complaint System">
+    <meta name="author" content="Reymel Rey Mislang">
+    <title>Admin Signup | SafePath</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Formal font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Main container */
+        .signup-container {
+            display: flex;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #C0EBA6;
+            border-radius: 8px;
+            background-color: #FFFBE6;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-top: 5%;
+            height: auto;
+        }
+
+        /* Signup image section */
+        .signup-image {
+            flex: 1;
+            background-image: url('/images/SafepathLOGO.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Signup form section */
+        .signup-form {
+            flex: 1;
+            padding: 30px;
+            background-color: #FFFBE6;
+            font-family: 'Roboto', sans-serif; /* Apply formal font */
+        }
+
+        /* Header */
+        .signup-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #347928;
+        }
+
+        /* Form group styling */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #347928;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #C0EBA6;
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Button styling */
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #FCCD2A;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-group button:hover {
+            background-color: #D9A10D;
+        }
+
+        .form-group button:active {
+            background-color: #A67900;
+        }
+
+        /* Additional links styling */
+        .additional-links {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .additional-links a {
+            color: #347928;
+            text-decoration: none;
+        }
+
+        .additional-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .signup-container {
+                flex-direction: column;
+            }
+
+            .signup-image {
+                height: 200px;
+            }
+        }
+
+        /* Full-page background styling for the body */
+        body {
+            background-color: #F6F6F6;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif; /* Apply formal font globally */
+        }
+    </style>
+</head>
+<body>
+
+    <header class="bg-light py-3 shadow-sm sticky-header">
+        <div class="container d-flex align-items-center">
+            <div class="d-flex align-items-center">
+                <a href="/" class="logo d-flex align-items-center">
+                    <img src="/images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2">
+                    <span class="logo-text font-weight-bold" style="color: #347928;">SafePath</span>
+                    <span class="login-text ml-1 font-weight-bold text-dark">Signup</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    
+    <br>
+
+    <div class="signup-container">
+        <div class="signup-image"></div>
+        <div class="signup-form">
+            <h2>Admin Signup</h2>
+            <form action="/admin/signup" method="POST">
+                <div class="form-group">
+                    <label for="username">Email:</label>
+                    <input type="email" id="username" name="username" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Sign Up</button>
+                </div>
+                <div class="additional-links">
+                    <p><a href="/admin/login">Already have an account? Login</a></p>
+                    <p><a href="/admin/forgot-password">Forgot Password?</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
