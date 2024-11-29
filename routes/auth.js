@@ -6,14 +6,14 @@ import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 
 const router = express.Router();
-
-// Function to send password reset email
+// Function to send password reset email using Gmail
 async function sendResetEmail(email, token) {
     const transporter = nodemailer.createTransport({
-        host: 'localhost', // smtp4dev runs on localhost
-        port: 25, // Default SMTP port for smtp4dev
-        secure: false, // false for other ports
-        tls: { rejectUnauthorized: false } // Allow self-signed certificates
+        service: 'gmail', // Using Gmail service
+        auth: {
+            user: process.env.EMAIL_USER, // Your Gmail address from environment variable
+            pass: process.env.EMAIL_PASS  // Your Gmail app-specific password from environment variable
+        }
     });
 
     const resetLink = `http://localhost:3000/auth/reset-password/${token}`;
@@ -24,9 +24,13 @@ async function sendResetEmail(email, token) {
         html: `You requested a password reset. Click the link to reset your password: <a href="${resetLink}">${resetLink}</a>`
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Reset email sent successfully');
+    } catch (error) {
+        console.error('Error sending reset email:', error);
+    }
 }
-
 
 // Route to handle forgot password
 router.post('/forgot-password', async (req, res) => {
