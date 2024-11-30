@@ -189,15 +189,22 @@ th {
         </nav>
 
         <div class="content">
-            <header class="bg-light py-2 shadow-sm mb-3 d-flex justify-content-between align-items-center">
+            <header class="bg-light py-3 shadow-sm mb-3 d-flex justify-content-between align-items-center">
                 <h1 class="h4 mb-0">Admin / Complaints</h1>
-                <!-- Fullscreen Button -->
-                <button id="fullscreenBtn" class="btn btn-primary">
-                    <i class="fas fa-expand"></i> Fullscreen
-                </button>
+                <!-- Buttons Container -->
+                <div class="d-flex align-items-center" style="gap: 10px;">
+                    <!-- Download CSV button with icon aligned to the left -->
+                    <button class="btn btn-secondary" id="downloadAllCSVBtn">
+                        <i class="fas fa-download me-2"></i> Download Complaints (CSV)
+                    </button>
+                    <!-- Fullscreen Button aligned to the right -->
+                    <button id="fullscreenBtn" class="btn btn-primary">
+                        <i class="fas fa-expand"></i> Fullscreen
+                    </button>
+                </div>
             </header>
-        
-
+            
+            
             <div class="complaints-table">
                 <p class="text-muted text-left mb-3">
                     <small>
@@ -258,15 +265,17 @@ th {
                 <% } %>
             </div>
             
+
+
             <!-- Modal for displaying detailed complaint information -->
             <div class="modal fade" id="complaintModal" tabindex="-1" aria-labelledby="complaintModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="complaintModalLabel">Complaint Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                            <!-- Complaint Details -->
                             <div class="complaint-details">
                                 <p><strong>Student ID:</strong> <span id="modalStudentId"></span></p>
                                 <p><strong>Name:</strong> <span id="modalName"></span></p>
@@ -280,93 +289,91 @@ th {
                             </div>
                         </div>
                         <div class="modal-footer">
+                            <button class="btn btn-primary" id="sendEmailBtn">Send Email</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
             </div>
             
-<script>
-    // Event listener for opening the modal with complaint details
-    document.querySelectorAll('.complaint-row').forEach(row => {
-        row.addEventListener('click', function(event) {
-            // Prevent the modal from opening if the status dropdown is clicked
-            if (event.target.classList.contains('status-dropdown')) {
-                return; // Do nothing if the clicked element is the status dropdown
-            }
 
-            // Get data attributes from the clicked row
-            const studentId = this.getAttribute('data-student-id');
-            const name = this.getAttribute('data-name');
-            const email = this.getAttribute('data-email');
-            const issueType = this.getAttribute('data-issue_type');
-            const description = this.getAttribute('data-description');
-            const contactMethod = this.getAttribute('data-contact_method');
-            const sentiment = this.getAttribute('data-sentiment');
-            const createdAt = this.getAttribute('data-created_at');
-            const status = this.getAttribute('data-status');
-            
-            // Populate the modal with the complaint details
-            document.getElementById('modalStudentId').textContent = studentId;
-            document.getElementById('modalName').textContent = name;
-            document.getElementById('modalEmail').textContent = email;
-            document.getElementById('modalIssueType').textContent = issueType;
-            document.getElementById('modalDescription').textContent = description;
-            document.getElementById('modalContactMethod').textContent = contactMethod;
-            document.getElementById('modalSentiment').textContent = sentiment;
-            document.getElementById('modalSubmitAt').textContent = createdAt;
-            document.getElementById('modalStatus').textContent = status;
+        <script>
+        // Global variable to store the selected complaint data
+        let selectedComplaint = {};
 
-            // Clear any previous success message in the page
-            const pageSuccessMessage = document.getElementById('pageStatusSuccessMessage');
-            if (pageSuccessMessage) {
-                pageSuccessMessage.remove();
-            }
+        // Event listener for opening the modal with complaint details
+        document.querySelectorAll('.complaint-row').forEach(row => {
+            row.addEventListener('click', function(event) {
+                // Prevent the modal from opening if the status dropdown is clicked
+                if (event.target.classList.contains('status-dropdown')) {
+                    return; // Do nothing if the clicked element is the status dropdown
+                }
 
-            // Open the modal
-            const myModal = new bootstrap.Modal(document.getElementById('complaintModal'));
-            myModal.show();
+                // Get data attributes from the clicked row
+                selectedComplaint = {
+                    studentId: this.getAttribute('data-student-id'),
+                    name: this.getAttribute('data-name'),
+                    email: this.getAttribute('data-email'),
+                    issueType: this.getAttribute('data-issue_type'),
+                    description: this.getAttribute('data-description'),
+                    contactMethod: this.getAttribute('data-contact_method'),
+                    sentiment: this.getAttribute('data-sentiment'),
+                    createdAt: this.getAttribute('data-created_at'),
+                    status: this.getAttribute('data-status')
+                };
+                
+                // Populate the modal with the complaint details
+                document.getElementById('modalStudentId').textContent = selectedComplaint.studentId;
+                document.getElementById('modalName').textContent = selectedComplaint.name;
+                document.getElementById('modalEmail').textContent = selectedComplaint.email;
+                document.getElementById('modalIssueType').textContent = selectedComplaint.issueType;
+                document.getElementById('modalDescription').textContent = selectedComplaint.description;
+                document.getElementById('modalContactMethod').textContent = selectedComplaint.contactMethod;
+                document.getElementById('modalSentiment').textContent = selectedComplaint.sentiment;
+                document.getElementById('modalSubmitAt').textContent = selectedComplaint.createdAt;
+                document.getElementById('modalStatus').textContent = selectedComplaint.status;
+
+                // Open the modal
+                const myModal = new bootstrap.Modal(document.getElementById('complaintModal'));
+                myModal.show();
+            });
         });
-    });
+// Email button functionality for replying to a complaint (after review)
+document.getElementById('sendEmailBtn').addEventListener('click', function() {
+    // Check if the email is present
+    if (!selectedComplaint.email) {
+        alert("No email address available for this complaint.");
+        return;
+    }
 
-    // Event listener for status change
-    document.querySelectorAll('.status-dropdown').forEach(dropdown => {
-        dropdown.addEventListener('change', function() {
-            const newStatus = this.value;
-            const complaintId = this.getAttribute('data-id');
-            const row = this.closest('.complaint-row');  // Get the closest row
+    const subject = encodeURIComponent(`Re: Complaint Review - ${selectedComplaint.issueType}`);
+    const body = encodeURIComponent(`Good Day! ${selectedComplaint.name},\n\nThank you for submitting your complaint. We have reviewed the following details:\n\nIssue Type: ${selectedComplaint.issueType}\nDescription: ${selectedComplaint.description}\nSentiment: ${selectedComplaint.sentiment}\nSubmitted At: ${selectedComplaint.createdAt}\n\nWe will follow up with you shortly regarding any necessary actions.\n\nBest regards,\nSafePath Team`);
 
-            // Simulate status update here (you can replace this with an actual AJAX request)
-            row.setAttribute('data-status', newStatus);  // Update the status in the row
+    // Construct the mailto URL with 'Re:' in the subject for a reply
+    const mailtoUrl = `mailto:${selectedComplaint.email}?subject=${subject}&body=${body}`;
 
-            // Update the status text in the modal (if it's open)
-            document.getElementById('modalStatus').textContent = newStatus;
+    // Attempt to open the email client (Outlook or Gmail if set as default)
+    try {
+        window.location.href = mailtoUrl; // Opens default email client (to reply)
+    } catch (error) {
+        console.error("Email client could not be opened:", error);
+    }
 
-            // Create success message for the page
-            const pageSuccessMessage = document.createElement('div');
-            pageSuccessMessage.id = 'pageStatusSuccessMessage';
-            pageSuccessMessage.classList.add('alert', 'alert-success', 'mt-3');
-            pageSuccessMessage.textContent = 'Status updated successfully!';
+    // If the default email client doesn't work, attempt Gmail and Outlook webmail directly
+    setTimeout(function() {
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${selectedComplaint.email}&su=${subject}&body=${body}`;
 
-            // Insert the success message into the page's DOM (outside the modal)
-            const complaintsContainer = document.querySelector('.complaints-table'); // Or the element you want
-            complaintsContainer.insertBefore(pageSuccessMessage, complaintsContainer.querySelector('.table'));
-
-            // Optionally, you can hide the success message after a few seconds
-            setTimeout(() => {
-                pageSuccessMessage.style.display = 'none';
-            }, 3000);
-        });
-    });
+        window.open(gmailUrl, '_blank'); // Open Gmail in new tab
+    }, 1000); // Delay opening webmail options to give time for the mailto link to trigger
+});
 
 
-
-
+//datatable naman to
     
 $(document).ready(function() {
     $('#complaintsTable').DataTable({
         "paging": true,                  // Enable pagination
-        "lengthMenu": [5, 10, 25],       // Options for the number of entries to show
+        "lengthMenu": [5, 10, 25, 100, 500],       // Options for the number of entries to show
         "pageLength": 10,                // Default number of entries to show
         "searching": true,               // Enable searching
         "lengthChange": true,            // Allow changing the number of entries displayed
@@ -382,6 +389,7 @@ $(document).ready(function() {
         ]
     });
 
+//para sa fullscreen to
 
     document.getElementById('fullscreenBtn').addEventListener('click', function () {
         if (!document.fullscreenElement) {
@@ -409,6 +417,46 @@ $(document).ready(function() {
         }
     });
 });
+
+//basta pandownload to sa complaints
+
+
+   // Event listener for downloading all complaints in CSV format
+   document.getElementById('downloadAllCSVBtn').addEventListener('click', function() {
+        // Collect all complaint data from the table rows
+        const complaintsData = [];
+        
+        // Add header row to the CSV
+        complaintsData.push([
+            "Student ID", "Name", "Email", "Issue Type", "Description", "Contact Method", "Sentiment", "Submitted At", "Status"
+        ]);
+
+        // Get all rows from the table
+        document.querySelectorAll('.complaint-row').forEach(row => {
+            const studentId = row.getAttribute('data-student-id');
+            const name = row.getAttribute('data-name');
+            const email = row.getAttribute('data-email');
+            const issueType = row.getAttribute('data-issue_type');
+            const description = row.getAttribute('data-description');
+            const contactMethod = row.getAttribute('data-contact_method');
+            const sentiment = row.getAttribute('data-sentiment');
+            const createdAt = row.getAttribute('data-created_at');
+            const status = row.getAttribute('data-status');
+            
+            // Add each complaint as a row in the CSV
+            complaintsData.push([studentId, name, email, issueType, description, contactMethod, sentiment, createdAt, status]);
+        });
+
+        // Convert data to CSV format
+        let csvContent = "data:text/csv;charset=utf-8," + complaintsData.map(row => row.join(",")).join("\n");
+
+        // Create a link to download the CSV file
+        const encodedUri = encodeURI(csvContent);
+        const downloadLink = document.createElement("a");
+        downloadLink.setAttribute("href", encodedUri);
+        downloadLink.setAttribute("download", "all_complaints.csv");
+        downloadLink.click();
+    });
 
     </script>
                 <%- include('partials/adminScript') %>
