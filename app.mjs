@@ -83,11 +83,7 @@ app.post('/update-status', (req, res) => {
 });
 
 
-
-
-
-
-// Sample DB query for FAQs endpoint
+// DB query for FAQs endpoint
 app.get('/faqs', (req, res) => {
     db.query('SELECT * FROM faqs', (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
