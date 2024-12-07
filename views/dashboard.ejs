@@ -115,7 +115,7 @@
 /* Styles for Analytics Overview chart */
 .overview-chart-container {
   width: 100vw;  /* Use 100% of the viewport width */
-  max-width: 1180px;  /* Set max-width to prevent it from becoming too wide */
+  max-width: 990px;  /* Set max-width to prevent it from becoming too wide */
   height: 500px;  /* Fixed height */
   margin: 0 auto;  /* Center the container horizontally */
 }
@@ -221,12 +221,12 @@
 </div>
 
 
-<div class="row mt-2">
+<div class="row mt-2 d-flex align-items-stretch">
     <div class="col-md-6">
         <div class="card border-0 shadow-sm rounded-3">
             <div class="card-body">
                 <h5 class="card-title">Department</h5>
-                <div class="department-chart-container position-relative">
+                <div class="department-chart-container position-relative" style="height: 300px;">
                     <canvas id="complaintsChart"></canvas>
                 </div>
             </div>
@@ -237,13 +237,14 @@
         <div class="card border-0 shadow-sm rounded-3">
             <div class="card-body">
                 <h5 class="card-title">Year Level</h5>
-                <div class="chart-container position-relative">
+                <div class="chart-container position-relative" style="height: 300px;">
                     <canvas id="yearLevelComplaintsChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Row for Monthly and Weekly Trends (Full Width) -->
 <div class="row mt-6">
