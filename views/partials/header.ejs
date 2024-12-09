@@ -32,31 +32,26 @@
         </div>
         <nav id="nav" class="nav-links d-none d-lg-flex">
             <ul class="nav-links" id="navbar">
-                <li><a href="/">Home</a></li> 
-                <li><a href="/advocacy">Advocacy</a></li>    
-                <li><a href="#contact">Contact Us</a></li>                     
-                <li><a href="/user/feedback">Feedback</a></li>   
+                <li><a href="/">Home</a></li>
+                <li><a href="/advocacy">Advocacy</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+                <li><a href="/user/feedback">Feedback</a></li>
             </ul>
         </nav>
-        <button class="navbar-toggler d-lg-none" type="button" id="menuToggle">
+        <button class="navbar-toggler d-lg-none" type="button" id="menuToggle" aria-expanded="false">
             ☰
         </button>
     </div>
 </header>
 
-<!-- Mobile Sliding Transparent Menu -->
-<div class="sliding-menu d-lg-none" id="mobileMenu">
-    <div class="menu-content">
-        <div class="menu-text">
-            <p class="welcome-message">Welcome to SafePath!</p>
-            <p class="priority-message">Your safety, our priority.</p>
-        </div>
+<!-- Mobile Dropdown Transparent Menu -->
+<div class="dropdown-menu-container sliding-menu d-lg-none" id="mobileMenu">
+
         <ul class="menu-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/advocacy">Advocacy</a></li>
-            <li><a href="#contact">Contact Us</a></li>
-            <li><a href="/user/feedback">Feedback</a></li>
-            
+            <li><a href="/" class="nav-link">Home</a></li>
+            <li><a href="/advocacy" class="nav-link">Advocacy</a></li>
+            <li><a href="#contact" class="nav-link">Contact Us</a></li>
+            <li><a href="/user/feedback" class="nav-link">Feedback</a></li>
         </ul>
     </div>
 </div>
@@ -64,41 +59,43 @@
 <style>
 /* Sliding menu container */
 .sliding-menu {
-    display: flex;
-    flex-direction: column;
+    display: none;
     position: fixed;
     top: 0;
     right: -100%;
     height: 100%;
-    width: 50%;
+    width: 70%;
     max-width: 300px;
-    background-color: rgba(255, 255, 255, 0.8);
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
     transition: right 0.3s ease;
     z-index: 1050;
     padding: 20px;
 }
 
+.sliding-menu.active {
+    display: block;
+    right: 0;
+}
+
 /* Content inside sliding menu */
 .menu-content {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
     width: 100%;
 }
 
 /* Text section for the welcome message */
 .menu-text {
-    margin-bottom: 20px; /* Space between text and menu links */
+    margin-bottom: 20px;
     color: #333;
 }
 
 .welcome-message {
     font-size: 18px;
     font-weight: bold;
-    color: #007BFF; /* Highlighted text color */
+    color: #007BFF;
 }
 
 .priority-message {
@@ -122,28 +119,46 @@
     text-decoration: none;
     font-size: 18px;
     color: #333;
+    transition: color 0.3s;
 }
 
-/* Active state for sliding menu */
-.sliding-menu.active {
-    right: 0;
+.menu-links li a:hover {
+    color: #007BFF;
+}
+
+/* Navbar Toggle Button */
+.navbar-toggler {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
 }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.getElementById('menuToggle');
     const mobileMenu = document.getElementById('mobileMenu');
 
-    menuToggle.addEventListener('click', function() {
-        mobileMenu.classList.toggle('active');
+    menuToggle.addEventListener('click', function (e) {
+        e.stopPropagation(); // Prevent propagation to the window click event
+        const isActive = mobileMenu.classList.contains('active');
+        mobileMenu.classList.toggle('active', !isActive);
+        menuToggle.setAttribute('aria-expanded', !isActive);
     });
 
     // Close menu if clicking outside the menu
-    window.addEventListener('click', function(event) {
+    window.addEventListener('click', function (event) {
         if (!mobileMenu.contains(event.target) && !menuToggle.contains(event.target)) {
             mobileMenu.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', false);
         }
+    });
+
+    // Prevent menu close when clicking inside the menu
+    mobileMenu.addEventListener('click', function (event) {
+        event.stopPropagation();
     });
 });
 </script>
