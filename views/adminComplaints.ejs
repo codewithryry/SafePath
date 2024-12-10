@@ -221,8 +221,9 @@ th {
                                 <th>Email</th>
                                 <th>Issue Type</th>
                                 <th>Reports Description</th>
-                                <th>Contact</th>
+                                <!-- <th>Contact</th> -->
                                 <th>Sentiment</th>
+                                <th>Accuracy</th> <!-- Added Accuracy column -->
                                 <th>Submit At</th>
                                 <th>Status</th>
                             </tr>
@@ -244,8 +245,10 @@ th {
                                     <td><%= complaint.email %></td>
                                     <td><%= complaint.issue_type %></td>
                                     <td><%= complaint.issue_description %></td>
-                                    <td><%= complaint.contact_method %></td>
+                                    <!-- <td><%= complaint.contact_method %></td> -->
+
                                     <td><%= complaint.sentiment %></td>
+                                    <td><%= complaint.accuracy %></td> <!-- Displaying Accuracy value -->
                                     <td><%= new Date(complaint.created_at).toLocaleString('en-US', { timeZoneName: 'short' }).replace(/ GMT.*/g, '') %></td>
             
                                     <td>

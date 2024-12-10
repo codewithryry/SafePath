@@ -91,6 +91,7 @@ app.get('/faqs', (req, res) => {
     });
 });
 
+
 // Set the port
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

@@ -381,4 +381,19 @@ router.get('/dashboard/severity-analysis', isAuthenticated, async (req, res) => 
 
 
 
+// Fetch severity data
+router.get('/severity-data', (req, res) => {
+    // Query data from the correct table and column
+    db.query('SELECT sentiment AS severity, count(*) AS count FROM complaints GROUP BY sentiment', (error, results) => {
+        if (error) {
+            console.error('Error fetching severity data:', error);
+            res.status(500).json({ error: 'Failed to fetch data' });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+
+
 export default router;

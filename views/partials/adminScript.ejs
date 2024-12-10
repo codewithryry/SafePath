@@ -401,5 +401,86 @@ const analyticsChart = new Chart(document.getElementById('analyticsOverviewChart
 
 
 
+// const sentimentChart = new Chart(document.getElementById('sentimentAnalysisChart').getContext('2d'), {
+//     type: 'pie',
+//     data: {
+//         labels: ['Mild', 'Severe', 'Normal'],
+//         datasets: [{
+//             label: 'Severity Analysis',
+//             data: [0, 0, 0], // Initial placeholder data
+//             backgroundColor: [
+//                 'rgba(255, 206, 86, 0.6)', // Mild
+//                 'rgba(255, 99, 132, 0.6)', // Severe
+//                 'rgba(75, 192, 192, 0.6)'  // Normal
+//             ],
+//             borderWidth: 1
+//         }]
+//     },
+//     options: {
+//         responsive: true,
+//         plugins: {
+//             legend: {
+//                 position: 'top'
+//             },
+//             title: {
+//                 display: true,
+//                 text: 'Severity Analysis'
+//             },
+//             tooltip: {
+//                 callbacks: {
+//                     label: function(tooltipItem) {
+//                         const label = tooltipItem.label || '';
+//                         const value = tooltipItem.raw || 0;
+//                         return `${label}: ${value} cases`;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// });
+
+// // Fetch and update chart data when the page loads
+// fetchSeverityData();
+
+// Fetch data and render the chart
+async function renderSeverityChart() {
+    try {
+        const response = await fetch('/admin/severity-data');
+        const data = await response.json();
+
+        const labels = data.map(item => item.severity); // Extract severity levels
+        const counts = data.map(item => item.count); // Extract corresponding counts
+
+        // Create the chart
+        const ctx = document.getElementById('sentimentAnalysisChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar', // Use a bar chart (or other types as needed)
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Severity Levels',
+                    data: counts,
+                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error rendering severity chart:', error);
+    }
+}
+
+// Call the function on page load
+renderSeverityChart();
+
 
 </script>

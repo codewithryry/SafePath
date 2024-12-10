@@ -2,17 +2,36 @@ import db from '../config/db.js'; // Ensure the .js extension is included
 import vader from 'vader-sentiment'; // Import the vader-sentiment package
 import nodemailer from 'nodemailer'; // Email sending package
 
-// Function to analyze sentiment
+// // Function to analyze sentiment
+// function analyzeSentiment(issue_description) {
+//     const sentimentResult = vader.SentimentIntensityAnalyzer.polarity_scores(issue_description);
+//     const polarity = sentimentResult.compound;  // Compound score: -1 (negative) to 1 (positive)
+
+//     if (polarity > 0.5) {
+//         return 'normal';  // Positive sentiment
+//     } else if (polarity < -0.5) {
+//         return 'severe';  // Negative sentiment
+//     } else {
+//         return 'mild';  // Neutral or mild sentiment
+//     }
+// }
+
+
+// Function to analyze sentiment and calculate accuracy
 function analyzeSentiment(issue_description) {
     const sentimentResult = vader.SentimentIntensityAnalyzer.polarity_scores(issue_description);
     const polarity = sentimentResult.compound;  // Compound score: -1 (negative) to 1 (positive)
+    const accuracy = Math.abs(polarity);  // The accuracy can be derived from the magnitude of the sentiment polarity score.
+
+    console.log(`Sentiment Analysis for Issue Description: ${issue_description}`);
+    console.log(`Polarity: ${polarity}, Accuracy (based on sentiment): ${accuracy}`);
 
     if (polarity > 0.5) {
-        return 'normal';  // Positive sentiment
+        return { sentiment: 'normal', accuracy };  // Positive sentiment
     } else if (polarity < -0.5) {
-        return 'severe';  // Negative sentiment
+        return { sentiment: 'severe', accuracy };  // Strongly negative sentiment
     } else {
-        return 'mild';  // Neutral or mild sentiment
+        return { sentiment: 'mild', accuracy };  // Neutral or weakly negative sentiment
     }
 }
 
@@ -29,25 +48,46 @@ export const getComplaints = (req, res) => {
     });
 };
 
-
-
 // Submit a complaint with sentiment analysis
 export const submitComplaint = (req, res) => {
-    const { name, email, student_id, department, other_department, year_level, issue_type, issue_description, contact_method, phone_number, other_contact_method } = req.body;
+    const { 
+        name, 
+        email, 
+        student_id, 
+        department, 
+        other_department, 
+        year_level, 
+        issue_type, 
+        issue_description, 
+        contact_method, 
+        phone_number, 
+        other_contact_method 
+    } = req.body;
 
-    // Analyze the sentiment of the issue description
-    const sentiment = analyzeSentiment(issue_description);
+    // Analyze the sentiment of the issue description and get accuracy
+    const { sentiment, accuracy } = analyzeSentiment(issue_description);
 
     const query = `
-        INSERT INTO complaints (name, email, student_id, department, other_department, year_level, issue_type, issue_description, contact_method, phone_number, other_contact_method, sentiment)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO complaints (
+            name, email, student_id, department, other_department, year_level, 
+            issue_type, issue_description, contact_method, phone_number, 
+            other_contact_method, sentiment, accuracy
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    db.query(query, [name, email, student_id, department, other_department, year_level, issue_type, issue_description, contact_method, phone_number, other_contact_method, sentiment], (err, result) => {
+    db.query(query, [
+        name, email, student_id, department, other_department, year_level, 
+        issue_type, issue_description, contact_method, phone_number, 
+        other_contact_method, sentiment, accuracy
+    ], (err, result) => {
         if (err) {
             console.error('Error saving complaint:', err);
             return res.status(500).send('Error saving complaint');
         }
+
+        // Log the complaint details and sentiment analysis
+        console.log(`Complaint submitted by: ${name}, Sentiment: ${sentiment}, Accuracy: ${accuracy}`);
 
         // Send email confirmation after successfully saving complaint
         sendComplaintEmail(email, req.body);
@@ -56,6 +96,7 @@ export const submitComplaint = (req, res) => {
         res.redirect('/report?adding=true');
     });
 };
+
 
 // Function to send email after complaint submission
 const sendComplaintEmail = (email, complaintDetails) => {
