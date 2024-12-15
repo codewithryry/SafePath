@@ -641,5 +641,51 @@ router.get('/dashboard/complaints', isAuthenticated, (req, res) => {
     });
 });
 
+
+// Route to get severity analysis data
+router.get('/dashboard/severity-analysis', isAuthenticated, (req, res) => {
+    // Query to get severity counts
+    db.all(
+        'SELECT severity, COUNT(*) AS count FROM complaints GROUP BY severity',
+        (err, results) => {
+            if (err) {
+                console.error('Error retrieving severity counts:', err);
+                return res.status(500).json({ message: 'Error retrieving severity counts' });
+            }
+
+            // Prepare severity counts
+            const severityCounts = {
+                severe: 0,
+                mild: 0,
+                normal: 0,
+            };
+
+            results.forEach(row => {
+                // Ensure severity matches the expected values
+                if (severityCounts.hasOwnProperty(row.severity)) {
+                    severityCounts[row.severity] = row.count;
+                }
+            });
+
+            // Send JSON response for frontend chart rendering
+            res.json(severityCounts);
+        }
+    );
+});
+
+router.get('/severity-data', (req, res) => {
+    // Query data from the correct table and column
+    db.all('SELECT sentiment AS severity, count(*) AS count FROM complaints GROUP BY sentiment', (error, results) => {
+        if (error) {
+            console.error('Error fetching severity data:', error);
+            res.status(500).json({ error: 'Failed to fetch data' });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+
+
 // Export the router
 export default router;
