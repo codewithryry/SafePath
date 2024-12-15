@@ -77,7 +77,7 @@
 import express from 'express';
 
 import db from '../config/db.js';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { isAuthenticated } from '../middlewares/authMiddleware.js'; // Importing the middleware
 
 const router = express.Router();

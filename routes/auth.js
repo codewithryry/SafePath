@@ -121,7 +121,7 @@
 
 // routes/auth.js
 import express from 'express';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import db from '../config/db.js'; // Import your sqlite3 database connection
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
