@@ -1,8 +1,8 @@
 # SafePath: Bullying Complaint System for Student Safety
 
 SafePath is a Node.js-based web application designed to empower students to anonymously report bullying incidents and receive immediate support through an integrated chatbot that utilizes sentiment analysis. Developed by Gwen Basconcillo, Erica Joy Rubio, and Reymel Mislang for our Application Development course at Mindoro State University, SafePath aims to create a safer school environment by enabling proactive measures against bullying
-.
-Note: You can check out the live site for this project at [Live Site](https://safepath-4pzk.onrender.com/), and explore the prototype at: [Prototype](https://codewithryry.github.io/minsu-safepath).
+
+You can check out the live site for this project at [Live Site](https://safepath-4pzk.onrender.com/), and see also the prototype at: [Prototype](https://codewithryry.github.io/minsu-safepath).
 
 
 ## Features
@@ -14,18 +14,28 @@ Note: You can check out the live site for this project at [Live Site](https://sa
   
 ## Technologies Used
 
+### **Framework**
 - **Node.js**: Backend server to handle requests and run the application.
 - **Express.js**: Web framework for handling routes and views.
-- **MySQL**: Database to store user reports and chatbot interactions.
-- **SQLite**: Lightweight, serverless database used for local storage and quick data retrieval in some parts of the application.
-- **Wit.ai**: Integrated chatbot for emotional support and guidance based on sentiment analysis.
-- **Bootstrap**: Front-end framework for responsive design.
-- **Tensorflow**: Machine learning library used for building models to analyze and predict user behavior or sentiment.
-- **Vader-sentiment**: A Python library for sentiment analysis that uses a pre-built lexicon and rules to determine the emotional tone (positive, negative, or neutral) of short texts. It’s effective for analyzing informal language, including slang, emojis, and hashtags, making it ideal for chatbot interactions and user feedback analysis.
-- **SMTP4dev**: SMTP server for testing and debugging email functionalities, particularly for the "forgot password" feature.
-- **GoogleEmail**: Likely refers to using Google's Gmail service for email sending and receiving, which can be done using Nodemailer with Gmail’s SMTP configuration.
-- **Nodemailer**: An essential tool for applications that need to send emails, such as for user registration, password resets, complaint confirmations, notifications, etc.
-- **Render**: A cloud platform used for deploying web applications, ensuring the app is accessible and scalable.
+
+### **Database**
+- **MySQL**: Relational database for storing user reports and chatbot interactions.
+- **SQLite**: Lightweight, serverless database used for local storage and quick data retrieval in certain application parts.
+
+### **NLP Tools / Middleware**
+- **Wit.ai**: Integrated chatbot for providing emotional support and guidance based on sentiment analysis.
+- **Bootstrap**: Front-end framework for responsive design, ensuring the app looks good on any device.
+- **TensorFlow**: Machine learning library used for building models to analyze and predict user behavior or sentiment.
+- **Vader-sentiment**: Python library for sentiment analysis, using a pre-built lexicon to determine the emotional tone (positive, negative, or neutral) of short texts. It’s effective for informal language, including slang, emojis, and hashtags, ideal for chatbot interactions and feedback analysis.
+
+### **Email**
+- **SMTP4dev**: SMTP server for testing and debugging email functionalities, especially for the "forgot password" feature.
+- **GoogleEmail**: Refers to using Google's Gmail service for sending and receiving emails, typically done with Nodemailer.
+- **Nodemailer**: Tool for sending emails, such as for user registration, password resets, complaint confirmations, and notifications.
+
+### **Hosting**
+- **Render**: Cloud platform for deploying web applications, ensuring scalability and accessibility.
+
 
 ## What You Can Do with This Project
 
