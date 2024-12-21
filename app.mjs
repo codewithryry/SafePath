@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import session from 'express-session';
 import { fileURLToPath } from 'url';
+import db from "./config/db.js";
 
 
 // Initialize dotenv

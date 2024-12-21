@@ -86,7 +86,27 @@ section {
     background: url('/images/logominsu2.png') no-repeat center center/cover; /* Replace with your image path */
     color: #fff; /* White text for contrast */
     padding: 180px 20px;
+    background-size: cover; /* Ensures the image covers the entire section */
+    background-position: center; /* Keeps the image centered */
+    background-attachment: fixed; /* Keeps the image fixed when scrolling (optional) */
 }
+
+@media screen and (max-width: 768px) {
+    #hero {
+        padding: 120px 20px; /* Adjust padding for mobile screens */
+        background-size: cover; /* Keeps the image covering the section */
+        background-position: center; /* Keeps the image centered */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #hero {
+        padding: 80px 20px; /* Further adjust padding for smaller mobile screens */
+        background-size: cover; /* Ensures the image still covers the section */
+        background-position: center; /* Keeps the image centered */
+    }
+}
+
 
 .about-content {
     justify-content: space-between; 

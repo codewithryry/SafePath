@@ -11,6 +11,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@firebase/firestore": "^4.7.5",
+    "@grpc/grpc-js": "^1.12.5",
+    "@grpc/proto-loader": "^0.7.13",
     "@tensorflow/tfjs": "^4.22.0",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
@@ -21,7 +24,7 @@
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
-    "firebase": "^11.0.2",
+    "firebase": "^11.1.0",
     "firebase-admin": "^13.0.1",
     "mongodb": "^6.10.0",
     "mysql": "^2.18.1",
