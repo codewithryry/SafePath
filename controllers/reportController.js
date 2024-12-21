@@ -375,7 +375,6 @@ const sendComplaintEmail = (email, complaintDetails) => {
 Thank you for submitting your complaint. Here are the details:
 
 Name: ${complaintDetails.name}
-Email: ${complaintDetails.email}
 Student ID: ${complaintDetails.student_id}
 Department: ${complaintDetails.department}
 Year Level: ${complaintDetails.year_level}

@@ -168,7 +168,7 @@ async function respondToMessage(userMessage) {
     } else {
         setTimeout(() => {
             addMessage("bot", "You will now be redirected to a real person for further assistance. Please hold on a moment...");
-            setTimeout(() => window.location.href = "http://localhost:3000/report", 2000); // Redirect to Google Form
+            setTimeout(() => window.location.href = "/report", 2000); // Redirect to Google Form
         }, 1000);
     }
 }
@@ -179,7 +179,7 @@ async function handleReportResponse(userMessage) {
     if (lowerCaseMessage === "yes" || lowerCaseMessage === "oo" || lowerCaseMessage.includes("report")) {
         addMessage("bot", "Thank you for your willingness to report this. You will be redirected to the reporting form.");
         setTimeout(() => {
-            window.location.href = "http://localhost:3000/report"; // Redirect to Google Form
+            window.location.href = "/report"; // Redirect to Google Form
         }, 2000);
     } else if (lowerCaseMessage === "no" || lowerCaseMessage === "hindi") {
         addMessage("bot", "That's okay! If you need to talk about it or need any help, I'm here.");

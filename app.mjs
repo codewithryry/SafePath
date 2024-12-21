@@ -68,6 +68,8 @@ app.use('/auth', authRoutes); // Ensure this matches your routes structure
 // Placeholder for recent activities
 const recentActivities = [];
 
+
+
 // API endpoint to report a complaint
 app.post('/report', (req, res) => {
     const { complaintId, studentId } = req.body;

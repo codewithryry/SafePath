@@ -21,131 +21,116 @@
             background-color: #f4f7fa;
             font-family: Arial, sans-serif;
             font-size: 0.9rem;
-            height: 100vh; /* Make body full height */
-            margin: 0; /* Remove default margin */
-            display: flex; /* Use flexbox for layout */
+            height: 100vh;
+            margin: 0;
+            display: flex;
         }
         .sidebar {
-            width: 200px;
+            width: 60px;
             background-color: #343a40;
             color: #ffffff;
-            padding: 15px;
-            height: 100vh; /* Sidebar should be full height */
+            padding: 15px 10px;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: width 0.3s;
+            overflow: hidden;
+        }
+        .sidebar.expanded {
+            width: 200px;
         }
         .sidebar a {
             color: #ffffff;
             text-decoration: none;
-            border-radius: 0.25rem; /* Rounded corners for normal state */
-            transition: background-color 0.3s; /* Smooth background transition */
+            border-radius: 0.25rem;
+            transition: background-color 0.3s, padding 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 10px;
+        }
+        .sidebar a i {
+            font-size: 1.25rem;
+        }
+        .sidebar a span {
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .sidebar.expanded a span {
+            opacity: 1;
+        }
+        .sidebar.expanded a {
+            padding: 10px 15px;
         }
         .sidebar a:hover {
-            background-color: rgba(255, 255, 255, 0.1); /* Highlight on hover */
-            border-radius: 0.25rem; /* Keep rounded corners on hover */
-        }
-        .sidebar .nav-link.active {
-            font-weight: bold;
-            background-color: rgba(255, 255, 255, 0.2); /* Active link background */
-            border-radius: 0.25rem; /* Keep rounded corners on active */
-        }
-        .content {
-            flex-grow: 1; /* Allow content to fill the remaining space */
-            padding: 20px;
-            overflow-y: auto; /* Allow scrolling if content exceeds the viewport height */
-        }
-        .card {
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-        }
-        .chart-container {
-            background-color: #f9f9f9;
-            border-radius: 0.5rem;
-            padding: 15px;
-            height: 250px;
-        }
-        .status-card {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .status-card .card {
-            flex: 1 1 150px;
-            text-align: center;
-            padding: 15px;
-        }
-        .badge {
-            font-size: 0.85rem;
-        }
-        .small {
-            font-size: 1.0rem; /* Adjust as needed */
-        }
-        .fs-4 {
-            font-size: 1.5rem; /* Adjust for larger number size */
-        }
-        /* Make sure pagination controls are visible */
-        .dataTables_wrapper .dataTables_paginate {
-            display: flex;
-            justify-content: center; /* Center the pagination controls */
-            margin-top: 15px; /* Add some space above pagination */
-        }
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            padding: 0.5rem 1rem; /* Adjust padding for buttons */
-            margin: 0 5px; /* Space between buttons */
-            border: 1px solid #007bff; /* Border color */
-            border-radius: 0.25rem; /* Rounded corners */
-            color: #007bff; /* Button text color */
-            background-color: #fff; /* Button background color */
-            transition: background-color 0.3s, color 0.3s; /* Smooth transition */
-        }
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-            background-color: #007bff; /* Background color on hover */
-            color: #fff; /* Text color on hover */
-        }
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background-color: #007bff; /* Highlight current page */
-            color: #fff; /* Text color for current page */
-            border: 1px solid #007bff; /* Keep border same as background */
+            background-color: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar and Content Wrapper -->
     <div style="display: flex; width: 100%;">
-        <!-- Sidebar -->
-        <nav class="sidebar">
+        <nav class="sidebar" id="sidebar">
             <a href="/" class="logo d-flex align-items-center mb-3">
-                <img src="/images/logomisnu.png" alt="SafePath Logo" class="logo-img mr-2" style="width: 40px;">
+                <i class="fas fa-home"></i>
                 <span class="logo-text font-weight-bold text-white">SafePath</span>
             </a>
-            <ul class="nav flex-column" id="navbar">
-                <li class="nav-item"><a class="nav-link " href="/admin/dashboard">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin/dashboard/complaints">Complaints</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin/dashboard/feedback">Feedback</a></li>
-                <li class="nav-item"><a class="nav-link active" href="/admin/dashboard/customization">Customization</a></li>
-                <!-- New options under Customization -->
-                <li class="nav-item"><a class="nav-link" href="/admin/dashboard/about">About Us</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin/dashboard/why-we-here">Why We’re Here</a></li>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/complaints">
+                        <i class="fas fa-comment-alt"></i>
+                        <span>Complaints</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/feedback">
+                        <i class="fas fa-star"></i>
+                        <span>Feedback</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/customization">
+                        <i class="fas fa-tools"></i>
+                        <span>Customization</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/about">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About Us</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard/why-we-here">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Why We’re Here</span>
+                    </a>
+                </li>
             </ul>
-            <a class="nav-link mt-auto" href="/admin/logout">Logout</a>
+            <a class="nav-link mt-auto" href="/admin/logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
         </nav>
-            <script>
-                // Add event listeners to nav links
-                const navLinks = document.querySelectorAll('#navbar a');
-
-                navLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        // Remove active class from all links
-                        navLinks.forEach(nav => nav.classList.remove('active'));
-                        // Add active class to the clicked link
-                        this.classList.add('active');
-                    });
-                });
-            </script>
-        </div>
     </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+
+        sidebar.addEventListener('mouseenter', () => {
+            sidebar.classList.add('expanded');
+        });
+
+        sidebar.addEventListener('mouseleave', () => {
+            sidebar.classList.remove('expanded');
+        });
+    </script>
 </body>
 </html>
-

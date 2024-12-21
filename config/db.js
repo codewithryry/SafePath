@@ -107,13 +107,51 @@ const checkIfFaqExists = (question_hash, callback) => {
   const insertFeedback = db.prepare("INSERT INTO feedback (name, email, feedback, rating, suggestions, recommend, created_at, department) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
   insertFeedback.finalize();
 
-  // Create the `why_we_are_here` table
-  db.run("CREATE TABLE IF NOT EXISTS why_we_are_here (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT DEFAULT NULL, paragraph1 TEXT, paragraph2 TEXT, paragraph3 TEXT, video_link TEXT DEFAULT NULL)");
+// Create the `why_we_are_here` table
+db.run("CREATE TABLE IF NOT EXISTS why_we_are_here (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT DEFAULT NULL, paragraph1 TEXT, paragraph2 TEXT, paragraph3 TEXT, video_link TEXT DEFAULT NULL)");
 
-  // Insert data into `why_we_are_here` table
-  const insertWhyWeAreHere = db.prepare("INSERT INTO why_we_are_here (title, paragraph1, paragraph2, paragraph3, video_link) VALUES (?, ?, ?, ?, ?)");
-  insertWhyWeAreHere.run('Why We Are Here', 'SafePath provides a secure platform for students to report bullying incidents and seek support. Our goal is to create a safe, inclusive environment where every student feels protected and heard.\n', 'Bullying can lead to serious mental health issues, including anxiety, depression, and even suicide. By understanding its impact, we can work together to build a culture of empathy and safety.', 'Watch the video below to learn more about the effects of bullying and how we can combat it.', 'https://www.youtube.com/embed/YyDJafzuUK4');
-  insertWhyWeAreHere.finalize();
+// Function to check if data already exists in the 'why_we_are_here' table
+const checkIfWhyWeAreHereExists = (title, callback) => {
+  db.get("SELECT id FROM why_we_are_here WHERE title = ?", [title], (err, row) => {
+    if (err) {
+      console.error('Error checking title:', err);
+      return callback(err);
+    }
+    callback(null, row); // If row exists, it means data already exists
+  });
+};
+
+// Insert data only if it doesn't exist
+const insertWhyWeAreHere = (title, paragraph1, paragraph2, paragraph3, video_link) => {
+  checkIfWhyWeAreHereExists(title, (err, row) => {
+    if (err) {
+      console.error('Error checking existing data:', err);
+    } else if (row) {
+      console.log('Data already exists:', row); // Skip insertion if data already exists
+    } else {
+      // Insert data if it doesn't exist
+      const insertData = db.prepare("INSERT INTO why_we_are_here (title, paragraph1, paragraph2, paragraph3, video_link) VALUES (?, ?, ?, ?, ?)");
+      insertData.run(title, paragraph1, paragraph2, paragraph3, video_link, (err) => {
+        if (err) {
+          console.error('Error inserting data:', err);
+        } else {
+          console.log('Data inserted successfully.');
+        }
+      });
+      insertData.finalize();
+    }
+  });
+};
+
+// Example usage
+insertWhyWeAreHere(
+  'Why We Are Here',
+  'SafePath provides a secure platform for students to report bullying incidents and seek support. Our goal is to create a safe, inclusive environment where every student feels protected and heard.\n',
+  'Bullying can lead to serious mental health issues, including anxiety, depression, and even suicide. By understanding its impact, we can work together to build a culture of empathy and safety.',
+  'Watch the video below to learn more about the effects of bullying and how we can combat it.',
+  'https://www.youtube.com/embed/YyDJafzuUK4'
+);
+
 });
 
 export default db;

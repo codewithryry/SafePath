@@ -443,6 +443,7 @@ const analyticsChart = new Chart(document.getElementById('analyticsOverviewChart
 // fetchSeverityData();
 
 // Fetch data and render the chart
+
 async function renderSeverityChart() {
     try {
         const response = await fetch('/admin/severity-data');
@@ -470,6 +471,22 @@ async function renderSeverityChart() {
                 plugins: {
                     legend: {
                         position: 'top'
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            stepSize: 1, // This ensures that ticks are whole numbers
+                            beginAtZero: true // This ensures the x-axis starts from zero
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            beginAtZero: true, // This ensures the y-axis starts from zero
+                            callback: function(value) {
+                                return value % 1 === 0 ? value : ''; // Show only whole numbers
+                            }
+                        }
                     }
                 }
             }
