@@ -2,8 +2,9 @@
 
 SafePath is a Node.js-based web application designed to empower students to anonymously report bullying incidents and receive immediate support through an integrated chatbot that utilizes sentiment analysis. Developed by Gwen Basconcillo, Erica Joy Rubio, and Reymel Mislang for our Application Development course at Mindoro State University, SafePath aims to create a safer school environment by enabling proactive measures against bullying
 
-You can check out the live site for this project at [Live Site](https://safepath-4pzk.onrender.com/), and see also the prototype at: [Prototype](https://codewithryry.github.io/minsu-safepath).
-
+## Try SafePath
+- **Live Website**: Explore the full features of SafePath by visiting the [Try SafePath Now](https://safepath-4pzk.onrender.com/).
+- **Prototype**: Check out the early version of SafePath and see how it works by visiting the [View the Early Design](https://codewithryry.github.io/minsu-safepath).
 
 ## Features
 - **Anonymous Reporting**: SafePath ensures students can report bullying incidents without fear of identification, fostering a culture of openness and support. This anonymity encourages more students to speak up and seek help.
